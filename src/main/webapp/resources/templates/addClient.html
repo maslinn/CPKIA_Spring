@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Clients</title>
+    <link rel="stylesheet" href="/resources/css/addForm.css">
+</head>
+<body>
+<div class="login-page">
+    <div class="form">
+        <h2>Добавить сотрудников, направляемых на обучение</h2>
+        <form class="addClient-form" th:action="@{/company/client/add}" th:object="${client}" th:method="POST">
+            <div class="row">
+                <label> ФИО: </label>
+                <input type="text" th:field="*{name}"
+                       required
+                       pattern="[А-Яа-яЁё\s]{2,}[\s][А-Яа-яЁё\s]{2,}[А-Яа-яЁё\s]{0,}"
+                       title="Поле должно быть заполненно в формате 'Фамилия Имя Отчество' (минимальная длина - 6 символов)">
+
+                <label> Email: </label>
+                <input type="email" th:field="*{email}" required>
+
+                <label> СНИЛС: </label>
+                <input type="text" th:field="*{snils}" minlength="11" maxlength="11" required>
+            </div>
+            <br>
+            <div class="row">
+                <button id="save" type="submit">Добавить слушателя</button>
+            </div>
+        </form>
+
+        <div class="table" th:if="${!company.getClients().isEmpty()}">
+            <h2>Добавленные слушатели</h2>
+            <table>
+                <thead>
+                <tr>
+                    <td>Имя</td>
+                    <td>Email</td>
+                    <td>СНИЛС</td>
+                    <td></td>
+                </tr>
+                </thead>
+                <tr th:each="client : ${company.getClients()}">
+                    <td th:text="${client.name}"></td>
+                    <td th:text="${client.email}"></td>
+                    <td th:text="${client.snils}"></td>
+                    <td><a th:href="@{/company/client/delete/{snils}(snils=${client.getSnils()})}">Удалить</a></td>
+                </tr>
+            </table>
+
+            <form class="register-form" th:if="${!company.getClients().isEmpty()}" th:action="@{/company/save}"
+                  th:method="POST">
+                <div class="row">
+                    <button type="submit">Отправить заявку</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

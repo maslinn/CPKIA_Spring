@@ -33,7 +33,9 @@ public class LocalCompany {
     public LocalCompany() {
     }
 
-    public LocalCompany(String name, String fullname, String email, String director, String osnovanie, String phone, String adressUr, String adressPocht, String korSchet, String inn_kpp, String raschSchet, String bik, String bank, Set<Client> clients) {
+    public LocalCompany(String name, String fullname, String email, String director, String osnovanie, String phone,
+                        String adressUr, String adressPocht, String korSchet, String inn_kpp, String raschSchet,
+                        String bik, String bank, Set<Client> clients) {
         this.name = name;
         this.fullname = fullname;
         this.email = email;
@@ -60,6 +62,10 @@ public class LocalCompany {
 
     public void setClient(Client client) {
         this.clients.add(client);
+    }
+
+    public void deleteClientFromSnils(String snils) {
+        this.clients.removeIf(client -> client.getSnils().equals(snils));
     }
 
     public String getName() {

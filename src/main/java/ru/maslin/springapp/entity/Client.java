@@ -14,10 +14,12 @@ public class Client {
 
     private String name;
     private String email;
+    private String snils;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
-    @JoinColumn(name = "company_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    //@JoinColumn(name = "company_id")
     private Company company;
+
 
     public Client(String name, String email, Company company, String snils) {
         this.name = name;
@@ -41,8 +43,6 @@ public class Client {
     public void setSnils(String snils) {
         this.snils = snils;
     }
-
-    private String snils;
 
     public Client() {
     }
