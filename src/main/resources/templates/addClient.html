@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Clients</title>
+</head>
+<body>
+
+<h2>Добавить слушателя</h2>
+<form th:action="@{/company/client/add}" th:object="${client}" th:method="POST">
+    <div class="row">
+        <label> Имя слушателя: </label>
+        <input type="text" th:field="*{name}">
+
+        <label> Email: </label>
+        <input type="text" th:field="*{email}">
+
+        <label> СНИЛС: </label>
+        <input type="text" th:field="*{snils}">
+    </div>
+    <br>
+    <div class="row">
+        <button id="save" type="submit">Добавить слушателя</button>
+    </div>
+</form>
+
+
+<h2>Добавленные слушатели</h2>
+
+<table th:if="${!company.getClients().isEmpty()}" th:each="client : ${company.getClients()}">
+    <thead>
+    <tr>
+        <td>Имя</td>
+        <td>Email</td>
+        <td>ИНН</td>
+    </tr>
+    </thead>
+    <tr>
+        <td th:text="${client.name}"></td>
+        <td th:text="${client.email}"></td>
+        <td th:text="${client.snils}"></td>
+    </tr>
+</table>
+
+<form th:if="${!company.getClients().isEmpty()}" th:action="@{/company/save}" th:method="POST">
+    <div class="row">
+        <button type="submit">Сохранить</button>
+    </div>
+</form>
+
+
+</body>
+</html>

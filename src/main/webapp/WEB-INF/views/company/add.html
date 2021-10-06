@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Company order</title>
+</head>
+<body>
+
+<p th:text="${name}"></p>
+
+<!--<form th:action="@{/saveCompany}" th:object="${company}" th:method="POST">
+    <div class="row">
+        <label> Имя: </label>
+        <input type="text" th:field="*{name}">
+
+        <label> Email: </label>
+        <input type="text" th:field="*{email}">
+
+
+        <label> ИНН: </label>
+        <input type="text" th:field="*{inn}">
+    </div>
+    <br>
+    <div class="row">
+        <button id="save" type="submit">Отправить заявку</button>
+    </div>
+</form>-->
+
+
+<h2>Обучающиеся</h2>
+
+<!--<table th:if="${!clients.isEmpty()}" th:each="client : ${clients.getClients()}">
+    <thead>
+    <tr>
+        <td>Имя</td>
+        <td>Email</td>
+        <td>СНИЛС</td>
+    </tr>
+    </thead>
+    <tr>
+        <td th:text="${client.name}"></td>
+        <td th:text="${client.email}"></td>
+        <td th:text="${client.snils}"></td>
+    </tr>
+</table>
+
+<form th:action="@{/saveClient}" th:object="${client}" th:method="POST">
+    <div class="row">
+        <label> Имя: </label>
+        <input type="text" th:field="*{name}">
+
+        <label> Email: </label>
+        <input type="text" th:field="*{email}">
+
+        <label> СНИЛС: </label>
+        <input type="text" th:field="*{snils}">
+    </div>
+    <div class="row">
+        <button id="add" type="submit">Добавить</button>
+    </div>
+</form>-->
+
+
+</body>
+</html>
