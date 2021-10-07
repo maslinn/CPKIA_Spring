@@ -10,9 +10,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.context.annotation.SessionScope;
 import ru.maslin.springapp.entity.Client;
 import ru.maslin.springapp.entity.Company;
+import ru.maslin.springapp.entity.Roles;
 import ru.maslin.springapp.entity.local.LocalCompany;
 import ru.maslin.springapp.repository.ClientRepo;
 import ru.maslin.springapp.repository.CompanyRepo;
+import ru.maslin.springapp.securityAtribute.PasswordGenerator;
+
+import java.util.Collections;
 
 @Controller
 @RequestMapping("/company")
@@ -22,12 +26,14 @@ public class CompanyController {
     private final CompanyRepo companyRepo;
     private final ClientRepo clientRepo;
     private LocalCompany localCompany;
+    private PasswordGenerator passwordGenerator;
 
     @Autowired
-    public CompanyController(CompanyRepo companyRepo, ClientRepo clientRepo, LocalCompany localCompany) {
+    public CompanyController(CompanyRepo companyRepo, ClientRepo clientRepo, LocalCompany localCompany, PasswordGenerator passwordGenerator) {
         this.companyRepo = companyRepo;
         this.clientRepo = clientRepo;
         this.localCompany = localCompany;
+        this.passwordGenerator = passwordGenerator;
     }
 
     //Форма заявки компании
@@ -71,10 +77,24 @@ public class CompanyController {
         Company company = new Company(localCompany);
         Company savedCompany = companyRepo.save(company);
 
+
         for (Client client : localCompany.getClients()) {
-            if (client == null) {
-                continue;
+            System.out.println(client.getName());
+
+            Client clientFromDb = clientRepo.findClientByEmail(client.getEmail());
+
+            if (clientFromDb != null) {
+                System.out.println("client is added");
+                return "redirect:/company/client/add";
             }
+
+            String password = passwordGenerator.generatePassword(10);
+            System.out.println(password);
+
+            client.setPassword(password);
+            client.setActive(false);
+            client.setRoles(Collections.singleton(Roles.CLIENT));
+
             client.setCompany(savedCompany);
             clientRepo.save(client);
         }

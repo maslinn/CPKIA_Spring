@@ -3,6 +3,7 @@ package ru.maslin.springapp.entity;
 import org.springframework.context.annotation.Scope;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Scope("prototype")
@@ -15,6 +16,14 @@ public class Client {
     private String name;
     private String email;
     private String snils;
+
+    private boolean isActive;
+    private String password;
+
+    @ElementCollection(targetClass = Roles.class, fetch = FetchType.EAGER)
+    @CollectionTable(name = "client_role", joinColumns = @JoinColumn(name = "client_id"))
+    @Enumerated(EnumType.STRING)
+    private Set<Roles> roles;
 
     @ManyToOne(fetch = FetchType.LAZY)
     //@JoinColumn(name = "company_id")
@@ -76,4 +85,27 @@ public class Client {
         this.email = email;
     }
 
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public boolean isActive() {
+        return isActive;
+    }
+
+    public void setActive(boolean active) {
+        isActive = active;
+    }
+
+    public Set<Roles> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Roles> roles) {
+        this.roles = roles;
+    }
 }

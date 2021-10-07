@@ -4,4 +4,5 @@ import org.springframework.data.repository.CrudRepository;
 import ru.maslin.springapp.entity.Client;
 
 public interface ClientRepo extends CrudRepository<Client, Integer> {
+    Client findClientByEmail(String email);
 }

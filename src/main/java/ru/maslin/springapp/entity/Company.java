@@ -70,7 +70,7 @@ public class Company {
         this.raschSchet = localCompany.getRaschSchet();
         this.bik = localCompany.getBik();
         this.bank = localCompany.getBank();
-        this.clients = localCompany.getClients();
+        //this.clients = localCompany.getClients();
     }
 
     public Company() {
