@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.context.annotation.SessionScope;
+import ru.maslin.springapp.MailSender;
 import ru.maslin.springapp.entity.Client;
 import ru.maslin.springapp.entity.Company;
 import ru.maslin.springapp.entity.Roles;
@@ -26,20 +27,23 @@ public class CompanyController {
     private final CompanyRepo companyRepo;
     private final ClientRepo clientRepo;
     private LocalCompany localCompany;
-    private PasswordGenerator passwordGenerator;
+    private final PasswordGenerator passwordGenerator;
+    private final MailSender mailSender;
 
     @Autowired
-    public CompanyController(CompanyRepo companyRepo, ClientRepo clientRepo, LocalCompany localCompany, PasswordGenerator passwordGenerator) {
+    public CompanyController(CompanyRepo companyRepo, ClientRepo clientRepo, LocalCompany localCompany, PasswordGenerator passwordGenerator, MailSender mailSender) {
         this.companyRepo = companyRepo;
         this.clientRepo = clientRepo;
         this.localCompany = localCompany;
         this.passwordGenerator = passwordGenerator;
+        this.mailSender = mailSender;
     }
 
     //Форма заявки компании
     @GetMapping("/add")
     public String createApplication(Model model) {
         model.addAttribute("company", localCompany);
+        model.addAttribute("problem", null);
         return "add";
     }
 
@@ -53,7 +57,15 @@ public class CompanyController {
     //добавление в заявку слушателя от компании
     //для каждой сессии создается новый лист слушателей
     @PostMapping("/client/add")
-    public String saveClient(Client client) {
+    public String saveClient(Model model, Client client) {
+
+        //выводим сообщение пользователю, если добавлен повторяющийся email или снилс
+        if (localCompany.containsEmailClient(client.getEmail()) ||
+                localCompany.containsSnilsClient(client.getSnils())) {
+            model.addAttribute("problem", "Невозможно добавить пользователей с одинакомыв Email или СНИЛС");
+            model.addAttribute("company", localCompany);
+            return "addClient";
+        }
         localCompany.setClient(client);
         return "redirect:/company/client/add";
     }
@@ -73,23 +85,26 @@ public class CompanyController {
 
     //сохранение заявки от компании
     @PostMapping("/save")
-    public String saveCompany() {
+    public String saveCompany(Model model) {
         Company company = new Company(localCompany);
         Company savedCompany = companyRepo.save(company);
 
 
         for (Client client : localCompany.getClients()) {
-            System.out.println(client.getName());
 
+            //ищем наличие клиента с этим email в бд
             Client clientFromDb = clientRepo.findClientByEmail(client.getEmail());
 
+            //Если в бд есть сотрудник с таким именем, выводим сообщение
             if (clientFromDb != null) {
-                System.out.println("client is added");
-                return "redirect:/company/client/add";
+                model.addAttribute("problem", "Сотрудник с Email: " + client.getEmail() + " уже обучается!");
+                model.addAttribute("company", localCompany);
+                model.addAttribute("client", new Client());///
+                return "addClient";
             }
 
             String password = passwordGenerator.generatePassword(10);
-            System.out.println(password);
+
 
             client.setPassword(password);
             client.setActive(false);
@@ -97,6 +112,19 @@ public class CompanyController {
 
             client.setCompany(savedCompany);
             clientRepo.save(client);
+
+            //отправляем сотруднику сообщение с его email и паролем
+            String message = String.format(
+                    "Здравствуйте, %s! \n" +
+                            "Вы были зарегистрированы на обучающем портале ЧУДПО ЦПКИА \n" +
+                            "Используйте следующие логин и пароль для входа в обучающий портал\n \n" +
+                            "Логин: %s\n" +
+                            "Пароль: %s\n",
+                    client.getName(),
+                    client.getEmail(),
+                    client.getPassword()
+            );
+            mailSender.send(client.getEmail(), "Регистрация на учебном портале ЦПКИА", message);
         }
 
         return "redirect:/company/add";

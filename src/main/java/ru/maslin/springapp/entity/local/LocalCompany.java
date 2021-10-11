@@ -52,6 +52,20 @@ public class LocalCompany {
         this.clients = clients;
     }
 
+    public boolean containsEmailClient(String innEmail) {
+        Client client = this.getClients().stream()
+                .filter(c -> c.getEmail().equals(innEmail)).findAny().orElse(null);
+        //если клиент с таким email уже существует, то возвращаем true
+        return client != null;
+    }
+
+    public boolean containsSnilsClient(String snils) {
+        Client client = this.getClients().stream()
+                .filter(c -> c.getSnils().equals(snils)).findAny().orElse(null);
+        //если клиент с таким СНИЛС уже существует, то возвращаем true
+        return client != null;
+    }
+
     public Set<Client> getClients() {
         return clients;
     }

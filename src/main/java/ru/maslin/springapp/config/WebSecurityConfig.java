@@ -7,18 +7,17 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
-
-import javax.sql.DataSource;
+import ru.maslin.springapp.service.ClientService;
 
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private DataSource dataSource;
+    private final ClientService clientService;
 
     @Autowired
-    public WebSecurityConfig(DataSource dataSource) {
-        this.dataSource = dataSource;
+    public WebSecurityConfig(ClientService clientService) {
+        this.clientService = clientService;
     }
 
 
@@ -39,13 +38,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.jdbcAuthentication()
-                .dataSource(dataSource)
-                .passwordEncoder(NoOpPasswordEncoder.getInstance())
-                .usersByUsernameQuery("select email, password, 'true' " +
-                        "from client where email=?")
-                .authoritiesByUsernameQuery
-                        ("select c.email, cr.roles from client c " +
-                                "inner join client_role cr on c.id = cr.client_id where c.email=?");
+        auth.userDetailsService(clientService)
+                .passwordEncoder(NoOpPasswordEncoder.getInstance());
     }
+
 }

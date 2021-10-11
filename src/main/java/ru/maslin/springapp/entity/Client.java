@@ -1,13 +1,16 @@
 package ru.maslin.springapp.entity;
 
 import org.springframework.context.annotation.Scope;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import java.util.Collection;
 import java.util.Set;
 
 @Entity
 @Scope("prototype")
-public class Client {
+public class Client implements UserDetails {
 
     @Id
     @GeneratedValue
@@ -26,7 +29,6 @@ public class Client {
     private Set<Roles> roles;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    //@JoinColumn(name = "company_id")
     private Company company;
 
 
@@ -85,8 +87,38 @@ public class Client {
         this.email = email;
     }
 
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return getRoles();
+    }
+
     public String getPassword() {
         return password;
+    }
+
+    @Override
+    public String getUsername() {
+        return email;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
     }
 
     public void setPassword(String password) {

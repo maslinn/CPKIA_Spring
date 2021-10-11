@@ -28,6 +28,7 @@
                 <button id="save" type="submit">Добавить слушателя</button>
             </div>
         </form>
+        <p class="problem" th:text="${problem}"></p>
 
         <div class="table" th:if="${!company.getClients().isEmpty()}">
             <h2>Добавленные слушатели</h2>

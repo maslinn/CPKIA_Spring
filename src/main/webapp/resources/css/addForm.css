@@ -80,3 +80,8 @@ table thead td {
     font-size: 14px;
     border-top: 1px solid #ddd;
 }
+
+.problem {
+    color: firebrick;
+    font-size: medium;
+}
