@@ -31,7 +31,7 @@ public class ClientController {
     @PostMapping("/saveClient")
     public String saveClient(Client client) {
         clientRepository.save(client);
-        return "client/add";
+        return "successfully_add";
     }
 
 }

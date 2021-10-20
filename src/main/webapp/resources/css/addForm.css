@@ -85,3 +85,20 @@ table thead td {
     color: firebrick;
     font-size: medium;
 }
+
+.centered {
+    position: fixed; /* or absolute */
+    top: 50%;
+    left: 50%;
+    width: 200px;
+    height: 100px;
+    margin: -50px 0 0 -100px;
+    background: #f0f0f0;
+    border-radius: 10px;
+
+}
+
+.centered p {
+    text-align: center;
+    font-size: large;
+}

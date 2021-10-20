@@ -127,6 +127,6 @@ public class CompanyController {
             mailSender.send(client.getEmail(), "Регистрация на учебном портале ЦПКИА", message);
         }
 
-        return "redirect:/company/add";
+        return "successfully_add";
     }
 }
