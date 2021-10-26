@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Add admin</title>
+
+</head>
+<body>
+<div>
+    <h1>Добавить нового администратора</h1>
+</div>
+
+<div>
+    <form th:action="@{/admin/save}" th:object="${admin}" th:method="POST">
+        <div class="row">
+            <label> Наименование: </label>
+            <input type="text" th:field="*{name}" required>
+
+            <label> Пароль: </label>
+            <input type="text" th:field="*{password}" required>
+            <!-- Админ сам придумывает пароль, добивим его в email чтобы свалидировать,
+            потом удалим оттуда оставив только в password;))))-->
+            <label> Повторите пароль: </label>
+            <input type="text" th:field="*{email}" required>
+
+            <p style="color: darkred" th:text="${problem}"></p>
+        </div>
+        <br>
+        <div class="row">
+            <button id="save" type="submit">Добавить админа</button>
+        </div>
+    </form>
+</div>
+
+<div>
+    <table>
+        <thead>
+        <tr>
+            <td>Имя</td>
+            <td>Пароль</td>
+            <td>Действия</td>
+        </tr>
+        </thead>
+        <tr th:each="admin : ${admins}">
+            <td th:text="${admin.name}"></td>
+            <td th:text="${admin.password}"></td>
+            <td><a th:href="@{/admin/delete/{id}(id=${admin.getId()})}">Удалить</a></td>
+        </tr>
+    </table>
+</div>
+</body>
+</html>

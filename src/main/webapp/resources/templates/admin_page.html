@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin first page</title>
+</head>
+<body>
+<div>
+    <h1>Админ панель</h1>
+</div>
+<div>
+    <ul><a href="#">Новые заявки</a></ul>
+    <ul><a href="#">Оплаченные заявки</a></ul>
+    <ul><a href="#">Закрытые заявки</a></ul>
+</div>
+<div>
+    <a th:href="@{/admin/addNew}">Добавить</a>
+</div>
+<div>Выход</div>
+</body>
+</html>
