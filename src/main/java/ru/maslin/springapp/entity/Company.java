@@ -4,6 +4,9 @@ import org.springframework.stereotype.Component;
 import ru.maslin.springapp.entity.local.LocalCompany;
 
 import javax.persistence.*;
+import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.util.Date;
 import java.util.Set;
 
 
@@ -27,6 +30,7 @@ public class Company {
     private String raschSchet;//расчетный счет
     private String bik;//бик
     private String bank;//банк
+    private Instant createAt;//дата создания
 
     @OneToMany(mappedBy = "company", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Client> clients;
@@ -39,7 +43,7 @@ public class Company {
         this.clients = clients;
     }
 
-    public Company(String name, String fullname, String email, String director, String osnovanie, String phone, String adressUr, String adressPocht, String korSchet, String inn_kpp, String raschSchet, String bik, String bank, Set<Client> clients) {
+    public Company(String name, String fullname, String email, String director, String osnovanie, String phone, String adressUr, String adressPocht, String korSchet, String inn_kpp, String raschSchet, String bik, String bank, Instant createAt, Set<Client> clients) {
         this.name = name;
         this.fullname = fullname;
         this.email = email;
@@ -53,7 +57,27 @@ public class Company {
         this.raschSchet = raschSchet;
         this.bik = bik;
         this.bank = bank;
+        this.createAt = createAt;
         this.clients = clients;
+    }
+
+    public Instant getCreateAt() {
+        return createAt;
+    }
+
+
+    public String getCreateAtToString() {
+        if (this.createAt == null) {
+            return "";
+        } else {
+            Date myDate = Date.from(this.createAt);
+            SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy");
+            return formatter.format(myDate);
+        }
+    }
+
+    public void setCreateAt(Instant createAt) {
+        this.createAt = createAt;
     }
 
     public Company(LocalCompany localCompany) {
@@ -74,6 +98,10 @@ public class Company {
     }
 
     public Company() {
+    }
+
+    public long getCountOfSuccessClients() {
+        return this.getClients().stream().filter(client -> client.isActive()).count();
     }
 
     public void setClient(Client client) {

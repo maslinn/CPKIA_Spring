@@ -8,11 +8,15 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import ru.maslin.springapp.entity.Client;
+import ru.maslin.springapp.entity.Company;
 import ru.maslin.springapp.entity.Roles;
 import ru.maslin.springapp.repository.ClientRepo;
+import ru.maslin.springapp.repository.CompanyRepo;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 @Controller
 @RequestMapping("/admin")
@@ -20,10 +24,12 @@ import java.util.Collections;
 public class AdminController {
 
     private final ClientRepo clientRepo;
+    private final CompanyRepo companyRepo;
 
     @Autowired
-    public AdminController(ClientRepo clientRepo) {
+    public AdminController(ClientRepo clientRepo, CompanyRepo companyRepo) {
         this.clientRepo = clientRepo;
+        this.companyRepo = companyRepo;
     }
 
     @GetMapping
@@ -62,4 +68,10 @@ public class AdminController {
         return "redirect:/admin/addNew";
     }
 
+    @GetMapping("/table_new")
+    public String getTableWithNew(Model model) {
+        List<Company> companyList = new ArrayList<>(companyRepo.findAll());
+        model.addAttribute("companies", companyList);
+        return "admin_table_new";
+    }
 }

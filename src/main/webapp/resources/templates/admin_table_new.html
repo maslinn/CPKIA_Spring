@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Table New</title>
+</head>
+<body>
+<table>
+    <thead>
+    <tr>
+        <td>№</td>
+        <td>Договор</td>
+        <td>Дата</td>
+        <td>Сдали</td>
+    </tr>
+    </thead>
+    <tr th:each="company : ${companies}">
+        <td th:text="${company.id}"></td>
+        <td th:text="${company.name}"></td>
+        <td th:text="${company.createAtToString}"></td>
+        <td th:text="${company.getCountOfSuccessClients() + ' из ' + company.getClients().size()}"></td>
+    </tr>
+</table>
+</body>
+</html>

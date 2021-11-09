@@ -17,6 +17,7 @@ import ru.maslin.springapp.repository.ClientRepo;
 import ru.maslin.springapp.repository.CompanyRepo;
 import ru.maslin.springapp.securityAtribute.PasswordGenerator;
 
+import java.time.Instant;
 import java.util.Collections;
 
 @Controller
@@ -87,6 +88,7 @@ public class CompanyController {
     @PostMapping("/save")
     public String saveCompany(Model model) {
         Company company = new Company(localCompany);
+        company.setCreateAt(Instant.now());//включаем время добавления
         Company savedCompany = companyRepo.save(company);
 
 
