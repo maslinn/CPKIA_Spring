@@ -31,6 +31,7 @@ public class Company {
     private String bik;//бик
     private String bank;//банк
     private Instant createAt;//дата создания
+    private Integer status;// 1 - не оплачен, 2 - оплачен, 3 - закрыт
 
     @OneToMany(mappedBy = "company", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Client> clients;
@@ -43,7 +44,15 @@ public class Company {
         this.clients = clients;
     }
 
-    public Company(String name, String fullname, String email, String director, String osnovanie, String phone, String adressUr, String adressPocht, String korSchet, String inn_kpp, String raschSchet, String bik, String bank, Instant createAt, Set<Client> clients) {
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
+
+    public Company(String name, String fullname, String email, String director, String osnovanie, String phone, String adressUr, String adressPocht, String korSchet, String inn_kpp, String raschSchet, String bik, String bank, Instant createAt, Integer status, Set<Client> clients) {
         this.name = name;
         this.fullname = fullname;
         this.email = email;
@@ -58,6 +67,7 @@ public class Company {
         this.bik = bik;
         this.bank = bank;
         this.createAt = createAt;
+        this.status = status;
         this.clients = clients;
     }
 

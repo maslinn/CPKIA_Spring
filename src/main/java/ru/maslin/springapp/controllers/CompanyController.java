@@ -89,6 +89,7 @@ public class CompanyController {
     public String saveCompany(Model model) {
         Company company = new Company(localCompany);
         company.setCreateAt(Instant.now());//включаем время добавления
+        company.setStatus(1);//ставим статус на неоплаен
         Company savedCompany = companyRepo.save(company);
 
 
