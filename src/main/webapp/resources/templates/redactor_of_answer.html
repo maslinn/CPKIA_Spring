@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Answers Redactor</title>
+</head>
+<body>
+<h2>Дабавить ответ</h2>
+<br>
+<a th:href="@{/admin/get_question_redactor/{theme_id}(theme_id=${question.getTheme().getId()})}">Назад</a>
+<br>
+<p th:text="${'Вопрос: ' + question.text}"></p>
+<form th:action="@{/admin/save_answer}" th:object="${answer}" th:method="POST">
+    <div class="row">
+        <label> Текст ответа: </label>
+        <label>
+            <input type="text" th:field="*{text}"/>
+        </label>
+        <label style="display: none">
+            <input th:field="*{question}" th:text="${question}"/>
+        </label>
+    </div>
+    <br>
+    <div class="row">
+        <button id="save" type="submit">Добавить ответ</button>
+    </div>
+</form>
+<br>
+
+
+<h2>Добавленные ответы</h2>
+<table>
+    <thead>
+    <tr>
+        <td>Текст ответа</td>
+        <td>Ответ?</td>
+        <td></td>
+    </tr>
+    </thead>
+    <tr th:if="${!answers.isEmpty()}" th:each="one_answer : ${answers}">
+        <td th:style="${one_answer.isAnswer} ? 'color: black' : 'color:green'">
+            <a th:text="${one_answer.text}"
+               th:href="@{/admin/set_answer_value/{answer_id}(answer_id = ${one_answer.id})}">
+            </a>
+        </td>
+        <td th:text="${one_answer.isAnswer()} ? 'Да' : 'Нет'"></td>
+        <td style="color: red"><a
+                th:href="@{/admin/delete_answer/{answer_id}(answer_id=${one_answer.getId()})}">Удалить</a></td>
+    </tr>
+</table>
+</body>
+</html>

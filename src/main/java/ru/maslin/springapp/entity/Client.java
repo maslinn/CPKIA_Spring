@@ -31,12 +31,24 @@ public class Client implements UserDetails {
     @ManyToOne(fetch = FetchType.LAZY)
     private Company company;
 
+    @OneToOne
+    @JoinColumn
+    private Theme theme;
+
 
     public Client(String name, String email, Company company, String snils) {
         this.name = name;
         this.email = email;
         this.company = company;
         this.snils = snils;
+    }
+
+    public Client(String name, String email) {
+        this.name = name;
+        this.email = email;
+    }
+
+    public Client() {
     }
 
     public Company getCompany() {
@@ -53,14 +65,6 @@ public class Client implements UserDetails {
 
     public void setSnils(String snils) {
         this.snils = snils;
-    }
-
-    public Client() {
-    }
-
-    public Client(String name, String email) {
-        this.name = name;
-        this.email = email;
     }
 
     public int getId() {
@@ -139,5 +143,13 @@ public class Client implements UserDetails {
 
     public void setRoles(Set<Roles> roles) {
         this.roles = roles;
+    }
+
+    public Theme getTheme() {
+        return theme;
+    }
+
+    public void setTheme(Theme theme) {
+        this.theme = theme;
     }
 }

@@ -15,6 +15,7 @@ import ru.maslin.springapp.entity.Roles;
 import ru.maslin.springapp.entity.local.LocalCompany;
 import ru.maslin.springapp.repository.ClientRepo;
 import ru.maslin.springapp.repository.CompanyRepo;
+import ru.maslin.springapp.repository.ThemeRepo;
 import ru.maslin.springapp.securityAtribute.PasswordGenerator;
 
 import java.time.Instant;
@@ -30,14 +31,16 @@ public class CompanyController {
     private LocalCompany localCompany;
     private final PasswordGenerator passwordGenerator;
     private final MailSender mailSender;
+    private final ThemeRepo themeRepo;
 
     @Autowired
-    public CompanyController(CompanyRepo companyRepo, ClientRepo clientRepo, LocalCompany localCompany, PasswordGenerator passwordGenerator, MailSender mailSender) {
+    public CompanyController(CompanyRepo companyRepo, ClientRepo clientRepo, LocalCompany localCompany, PasswordGenerator passwordGenerator, MailSender mailSender, ThemeRepo themeRepo) {
         this.companyRepo = companyRepo;
         this.clientRepo = clientRepo;
         this.localCompany = localCompany;
         this.passwordGenerator = passwordGenerator;
         this.mailSender = mailSender;
+        this.themeRepo = themeRepo;
     }
 
     //Форма заявки компании
@@ -75,6 +78,7 @@ public class CompanyController {
     public String addClient(Model model) {
         model.addAttribute("client", new Client());
         model.addAttribute("company", localCompany);
+        model.addAttribute("themes", themeRepo.findAll());
         return "addClient";
     }
 
