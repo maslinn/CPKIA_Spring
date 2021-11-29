@@ -24,4 +24,7 @@ public class Theme {
     @OneToMany(mappedBy = "theme", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Question> questions;
 
+    @OneToMany(mappedBy = "theme", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Client> clients;
+
 }

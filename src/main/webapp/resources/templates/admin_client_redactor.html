@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Client redactor</title>
+</head>
+<body>
+<h2>Редактировать сотрудника</h2>
+<p th:text="${client.getCompany().name}"></p>
+<br>
+<form th:action="@{/admin/edit_client}" th:object="${client}" th:method="POST">
+    <div class="row">
+        <input style="display: none" th:field="*{id}">
+        <label> ФИО: </label>
+        <input type="text" th:field="*{name}">
+        <label> Email/Логин: </label>
+        <input type="text" th:field="*{email}">
+        <label> Пароль: </label>
+        <input type="text" th:field="*{password}">
+        <label> СНИЛС: </label>
+        <input type="text" th:field="*{snils}">
+
+        <select th:field="*{theme.id}">
+            <option th:each="one_theme : ${themes}" th:value="${one_theme.id}" th:text="${one_theme.name}"></option>
+        </select>
+    </div>
+    <br>
+    <div class="row">
+        <button id="save" type="submit">Редактировать слушателя</button>
+    </div>
+</form>
+<br>
+<a th:href="@{/admin/table_new}">Назад</a>
+</body>
+</html>

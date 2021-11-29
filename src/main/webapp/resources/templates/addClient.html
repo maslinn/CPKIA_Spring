@@ -23,8 +23,8 @@
                 <label> СНИЛС: </label>
                 <input type="text" th:field="*{snils}" minlength="11" maxlength="11" required>
 
-                <select th:field="*{theme}">
-                    <option th:each="theme : ${themes}" th:value="${theme}" th:text="${theme.name}"></option>
+                <select th:field="*{theme.id}">
+                    <option th:each="theme : ${themes}" th:value="${theme.id}" th:text="${theme.name}"></option>
                 </select>
             </div>
             <br>

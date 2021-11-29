@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Client Page</title>
+</head>
+<body>
+<div>
+    <form th:action="@{/logout}" th:method="post">
+        <input type="submit" value="Выйти">
+    </form>
+</div>
+<h3 th:text="${'Здравствуйте, ' + client.name}"></h3>
+<br>
+<p th:if="${not client.isActive()}">У вас пока нет доступных курсов</p>
+<p th:if="${client.isActive()}"><a th:href="@{/}"
+                                   th:text="${'Пройти тестирование по программе ' + theme.name}"></a></p>
+</body>
+</html>

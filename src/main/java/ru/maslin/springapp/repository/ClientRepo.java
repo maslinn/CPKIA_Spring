@@ -8,7 +8,11 @@ import java.util.List;
 public interface ClientRepo extends CrudRepository<Client, Integer> {
     Client findClientByEmail(String email);
 
+    Client findById(Long id);
+
     List<Client> findClientsByEmail(String admin);
 
-    void removeClientById(Integer id);
+    Client findAllById(Long id);
+
+    void removeClientById(Long id);
 }

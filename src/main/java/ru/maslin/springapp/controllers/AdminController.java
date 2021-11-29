@@ -66,16 +66,81 @@ public class AdminController {
 
     @GetMapping("/delete/{id}")
     @Transactional //помечаем метод, тк он обращается к транзакционному
-    public String deleteAdmin(@PathVariable("id") Integer id) {
+    public String deleteAdmin(@PathVariable("id") Long id) {
         clientRepo.removeClientById(id);
         return "redirect:/admin/addNew";
     }
 
     @GetMapping("/table_new")
-    public String getTableWithNew(Model model) {
-        List<Company> companyList = new ArrayList<>(companyRepo.findAll());
+    public String getTableWithNewCompanies(Model model) {
+        List<Company> companyList = new ArrayList<>(companyRepo.findByStatus(1));//добавляем в лист заявки со статусом неоплачено
         model.addAttribute("companies", companyList);
         return "admin_table_new";
+    }
+
+    @GetMapping("/payed/{company_id}")
+    public String payedCompanyRequest(@PathVariable Long company_id) {
+        Company company = companyRepo.findAllById(company_id);
+        company.setStatus(2);//устанавливаем статус 2 - оплачено
+        company.getClients().forEach(client -> client.setActive(true));//устанавливаем значения у пользователей
+        companyRepo.save(company);
+        return "redirect:/admin/table_new";
+    }
+
+    @GetMapping("/delete_company/{company_id}")
+    @Transactional
+    public String deleteCompany(@PathVariable Long company_id) {
+        companyRepo.deleteById(company_id);
+        return "redirect:/admin/table_new";
+    }
+
+    @GetMapping("/edit_company/{company_id}")
+    public String editCompany(@PathVariable Long company_id, Model model) {
+        Company company = companyRepo.findAllById(company_id);
+        model.addAttribute("company", company);
+        return "admin_company_redactor";
+    }
+
+    //меняем изменяемые поля
+    @PostMapping("/edit_company")
+    public String editCompanyPost(Company company) {
+        Company companyById = companyRepo.findAllById(company.getId());
+        companyById.setName(company.getName());
+        companyById.setFullname(companyById.getFullname());
+        companyById.setEmail(company.getEmail());
+        companyById.setDirector(company.getDirector());
+        companyById.setOsnovanie(company.getOsnovanie());
+        companyById.setPhone(company.getPhone());
+        companyById.setAdressUr(company.getAdressUr());
+        companyById.setAdressPocht(company.getAdressPocht());
+        companyById.setKorSchet(company.getKorSchet());
+        companyById.setInn_kpp(company.getInn_kpp());
+        companyById.setRaschSchet(company.getRaschSchet());
+        companyById.setBik(company.getBik());
+        companyById.setBank(company.getBank());
+        companyRepo.save(companyById);
+        return "redirect:/admin/table_new";
+    }
+
+    @GetMapping("/edit_client/{client_id}")
+    public String editClient(@PathVariable Long client_id, Model model) {
+        Client clientById = clientRepo.findAllById(client_id);
+        List<Theme> themes = themeRepo.findAll();
+        model.addAttribute("themes", themes);
+        model.addAttribute("client", clientById);
+        return "admin_client_redactor";
+    }
+
+    @PostMapping("edit_client")
+    public String editClientPost(Client client) {
+        Client clientById = clientRepo.findAllById(client.getId());
+        clientById.setName(client.getName());
+        clientById.setEmail(client.getEmail());
+        clientById.setPassword(client.getPassword());
+        clientById.setSnils(client.getSnils());
+        clientById.setTheme(client.getTheme());
+        clientRepo.save(clientById);
+        return "redirect:/admin/table_new";
     }
 
     @GetMapping("/redactor_theme")

@@ -14,13 +14,13 @@ public class Client implements UserDetails {
 
     @Id
     @GeneratedValue
-    private int id;
+    private Long id;
 
     private String name;
     private String email;
     private String snils;
 
-    private boolean isActive;
+    private boolean isActive;//если прошел курс
     private String password;
 
     @ElementCollection(targetClass = Roles.class, fetch = FetchType.EAGER)
@@ -28,19 +28,19 @@ public class Client implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Set<Roles> roles;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     private Company company;
 
-    @OneToOne
-    @JoinColumn
+    @ManyToOne(fetch = FetchType.EAGER)
     private Theme theme;
 
 
-    public Client(String name, String email, Company company, String snils) {
+    public Client(String name, String email, Company company, String snils, Theme theme) {
         this.name = name;
         this.email = email;
         this.company = company;
         this.snils = snils;
+        this.theme = theme;
     }
 
     public Client(String name, String email) {
@@ -49,6 +49,10 @@ public class Client implements UserDetails {
     }
 
     public Client() {
+    }
+
+    public boolean isOpenedTraining() {
+        return !this.isActive && this.getCompany().isPayed();
     }
 
     public Company getCompany() {
@@ -67,11 +71,11 @@ public class Client implements UserDetails {
         this.snils = snils;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

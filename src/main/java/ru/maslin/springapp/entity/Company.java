@@ -15,7 +15,7 @@ import java.util.Set;
 public class Company {
     @Id
     @GeneratedValue
-    private int id;
+    private Long id;
 
     private String name;
     private String fullname;
@@ -114,15 +114,19 @@ public class Company {
         return this.getClients().stream().filter(client -> client.isActive()).count();
     }
 
+    public boolean isPayed() {
+        return this.status == 2;
+    }
+
     public void setClient(Client client) {
         this.clients.add(client);
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
