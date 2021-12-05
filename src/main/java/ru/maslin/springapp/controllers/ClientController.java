@@ -19,6 +19,7 @@ import ru.maslin.springapp.repository.ThemeRepo;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -78,6 +79,7 @@ public class ClientController {
     @PostMapping("/training")
     public String checkAnswers(LocalQuestion localQuestion, Model model) {
         int countOfRightAnswer = 0;
+        String europeanDatePattern = "dd.MM.yyyy";
 
         for (Long answerId : localQuestion.getClientListAnswers()) {
             Answer allById = answerRepo.findAllById(answerId);
@@ -89,26 +91,43 @@ public class ClientController {
         float percentSuccess =
                 (float) countOfRightAnswer / localQuestion.getClientListAnswers().size();//процент правильных вопросов к общему их числу
 
+
         if (percentSuccess > 0.7) {
             SecurityContext securityContext = SecurityContextHolder.getContext();
             Authentication authentication = securityContext.getAuthentication();
 
             Client client = (Client) authentication.getPrincipal();
+            client.setAnswersId(localQuestion.getClientListAnswers());
+            client.setActive(false);
+            client.setDateOfExam(LocalDateTime.now().format(DateTimeFormatter.ofPattern(europeanDatePattern)));
+            client.setPercentResult(percentSuccess);
+            clientRepository.save(client);
+
             List<Question> questions = themeRepo.findAllById(client.getTheme().getId()).getQuestions();
 
-            client.setActive(false);
-            model.addAttribute("client", client);
-            model.addAttribute("questions", questions);
-            model.addAttribute("rightAnswerPercent", percentSuccess * 100);
-            model.addAttribute("date", LocalDateTime.now().format(DateTimeFormatter.ISO_DATE));
-
-            return "client_answers_result_to_pdf";
         }
-//        else {
-//
-//        }
 
-        return "successfully_add";
+        model.addAttribute("rightAnswerPercent", percentSuccess * 100);
+
+        return "training_results_page";
+    }
+
+    @GetMapping("results")
+    public String printResults(Client inputClient, Model model) {
+        Client client = clientRepository.findAllById(inputClient.getId());
+        List<Question> questions = themeRepo.findAllById(client.getTheme().getId()).getQuestions();
+        List<Long> clientAnswersId = client.getAnswersId();
+        List<Answer> clientAnswers = new ArrayList<>();
+
+        for (int i = 0; i < questions.size(); i++) {
+            clientAnswers.add(questions.get(i).getAnswerById(clientAnswersId.get(i)));
+        }
+        model.addAttribute("client", client);
+        model.addAttribute("questions", questions);
+        model.addAttribute("clientAnswers", clientAnswers);
+        model.addAttribute("percentResult", client.getPercentResult() * 100);
+
+        return "client_answers_result_to_pdf";
     }
 
 }

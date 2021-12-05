@@ -18,13 +18,13 @@
     <br>
     <p th:text="${'Тема: ' + client.theme.name}"></p>
     <br>
-    <p th:text="${'Экзаман сдан: ' + date}"></p>
-    <p th:text="${'Правильных ответов ' + rightAnswerPercent + '%'}"></p>
+    <p th:text="${'Экзаман сдан: ' + client.dateOfExam}"></p>
+    <p th:text="${'Правильных ответов ' + percentResult + '%'}"></p>
     <br>
     <br>
-    <div th:each="question : ${questions}">
+    <div th:each="question, stats : ${questions}">
         <p th:text="${'Вопрос: ' + question.text}"></p>
-        <p th:text="${'Ответ: '}"></p>
+        <p th:text="${'Ответ: ' +  clientAnswers[stats.index].text}"></p>
     </div>
 </div>
 <button onclick="createPDF()">Сохранить в PDF</button>

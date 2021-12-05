@@ -5,11 +5,8 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.WebApplicationContext;
-import ru.maslin.springapp.entity.Answer;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 @Component
 @Scope(value = WebApplicationContext.SCOPE_SESSION, proxyMode = ScopedProxyMode.TARGET_CLASS)
@@ -20,7 +17,6 @@ import java.util.Map;
 @EqualsAndHashCode
 public class LocalQuestion {
 
-    private Map<Long, Answer> clientMapAnswers = new HashMap();
     private ArrayList<Long> clientListAnswers = new ArrayList<>();
 
 }

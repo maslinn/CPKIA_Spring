@@ -6,6 +6,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -35,13 +36,24 @@ public class Client implements UserDetails {
     @ManyToOne(fetch = FetchType.EAGER)
     private Theme theme;
 
-    public Client(String name, String email, Company company, String snils, Theme theme, String dateOfBirth) {
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "client_answers_id", joinColumns = @JoinColumn(name = "client_id"))
+    private List<Long> answersId;
+
+    private float percentResult;
+
+    private String dateOfExam;
+
+    public Client(String name, String email, Company company, String snils, Theme theme, String dateOfBirth, List<Long> answersId, float percentResult, String dateOfExam) {
         this.name = name;
         this.email = email;
         this.company = company;
         this.snils = snils;
         this.theme = theme;
         this.dateOfBirth = dateOfBirth;
+        this.answersId = answersId;
+        this.percentResult = percentResult;
+        this.dateOfExam = dateOfExam;
     }
 
     public Client(String name, String email) {
@@ -164,5 +176,29 @@ public class Client implements UserDetails {
 
     public void setDateOfBirth(String dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
+    }
+
+    public List<Long> getAnswersId() {
+        return answersId;
+    }
+
+    public void setAnswersId(List<Long> answersId) {
+        this.answersId = answersId;
+    }
+
+    public float getPercentResult() {
+        return percentResult;
+    }
+
+    public void setPercentResult(float percentResult) {
+        this.percentResult = percentResult;
+    }
+
+    public String getDateOfExam() {
+        return dateOfExam;
+    }
+
+    public void setDateOfExam(String dateOfExam) {
+        this.dateOfExam = dateOfExam;
     }
 }

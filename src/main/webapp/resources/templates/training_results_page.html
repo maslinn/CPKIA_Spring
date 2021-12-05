@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Results Page</title>
+    <link rel="stylesheet" href="/resources/css/addForm.css">
+</head>
+<body>
+<div class="centered">
+    <p th:text="${rightAnswerPercent > 70
+    ? 'Экзамен сдан, ваш результат '
+    : 'Экзамен не сдан, ваш результат '}"></p>
+    <p th:text="${rightAnswerPercent}"></p>
+    <br>
+    <p th:if="${rightAnswerPercent > 70}">Вы можете распечатать результат в
+        <a th:href="@{/client}">личном кабинете</a></p>
+</div>
+</body>
+</html>

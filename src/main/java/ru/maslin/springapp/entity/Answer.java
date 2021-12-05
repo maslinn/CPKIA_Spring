@@ -1,9 +1,6 @@
 package ru.maslin.springapp.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -12,6 +9,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Getter
 @Setter
+@EqualsAndHashCode
 public class Answer {
 
     @Id
@@ -22,7 +20,7 @@ public class Answer {
 
     private boolean isAnswer;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     private Question question;
 
     public void setReversValue() {
