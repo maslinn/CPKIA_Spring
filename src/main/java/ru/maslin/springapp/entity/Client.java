@@ -19,8 +19,9 @@ public class Client implements UserDetails {
     private String name;
     private String email;
     private String snils;
+    private String dateOfBirth;
 
-    private boolean isActive;//если прошел курс
+    private boolean isActive;//если открыт курс
     private String password;
 
     @ElementCollection(targetClass = Roles.class, fetch = FetchType.EAGER)
@@ -34,13 +35,13 @@ public class Client implements UserDetails {
     @ManyToOne(fetch = FetchType.EAGER)
     private Theme theme;
 
-
-    public Client(String name, String email, Company company, String snils, Theme theme) {
+    public Client(String name, String email, Company company, String snils, Theme theme, String dateOfBirth) {
         this.name = name;
         this.email = email;
         this.company = company;
         this.snils = snils;
         this.theme = theme;
+        this.dateOfBirth = dateOfBirth;
     }
 
     public Client(String name, String email) {
@@ -155,5 +156,13 @@ public class Client implements UserDetails {
 
     public void setTheme(Theme theme) {
         this.theme = theme;
+    }
+
+    public String getDateOfBirth() {
+        return dateOfBirth;
+    }
+
+    public void setDateOfBirth(String dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
     }
 }

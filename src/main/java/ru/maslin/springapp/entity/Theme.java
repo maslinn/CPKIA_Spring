@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.Set;
+import java.util.List;
 
 @Entity
 @AllArgsConstructor
@@ -22,9 +22,9 @@ public class Theme {
     private String name;
 
     @OneToMany(mappedBy = "theme", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<Question> questions;
+    private List<Question> questions;
 
     @OneToMany(mappedBy = "theme", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<Client> clients;
+    private List<Client> clients;
 
 }

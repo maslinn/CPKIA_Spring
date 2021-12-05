@@ -10,12 +10,16 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.context.annotation.SessionScope;
-import ru.maslin.springapp.entity.Client;
-import ru.maslin.springapp.entity.Company;
-import ru.maslin.springapp.entity.Theme;
+import ru.maslin.springapp.entity.*;
+import ru.maslin.springapp.entity.local.LocalQuestion;
+import ru.maslin.springapp.repository.AnswerRepo;
 import ru.maslin.springapp.repository.ClientRepo;
 import ru.maslin.springapp.repository.CompanyRepo;
 import ru.maslin.springapp.repository.ThemeRepo;
+
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 @Controller
 @RequestMapping("/client")
@@ -25,12 +29,14 @@ public class ClientController {
     private final ClientRepo clientRepository;
     private final ThemeRepo themeRepo;
     private final CompanyRepo companyRepo;
+    private final AnswerRepo answerRepo;
 
     @Autowired
-    public ClientController(ClientRepo clientRepository, ThemeRepo themeRepo, CompanyRepo companyRepo) {
+    public ClientController(ClientRepo clientRepository, ThemeRepo themeRepo, CompanyRepo companyRepo, LocalQuestion localQuestions, AnswerRepo answerRepo) {
         this.clientRepository = clientRepository;
         this.themeRepo = themeRepo;
         this.companyRepo = companyRepo;
+        this.answerRepo = answerRepo;
     }
 
     @GetMapping()
@@ -50,6 +56,58 @@ public class ClientController {
     @PostMapping("/saveClient")
     public String saveClient(Client client) {
         clientRepository.save(client);
+        return "successfully_add";
+    }
+
+    @GetMapping("/training")
+    public String trainingPage(Client inputClient, Model model) {
+        //if (inputClient.getId() == null) return "redirect:/client/check";
+        Client client = clientRepository.findAllById(inputClient.getId());
+        List<Question> questions = client.getTheme().getQuestions();
+
+        LocalQuestion localQuestion = new LocalQuestion();
+        for (int i = 0; i < questions.size(); i++) {
+            // localQuestion.getClientMapAnswers().put(questions.get(i).getId(), new Answer());
+            localQuestion.getClientListAnswers().add(null);
+        }
+        model.addAttribute("clientAnswers", localQuestion);
+        model.addAttribute("questions", questions);
+        return "training";
+    }
+
+    @PostMapping("/training")
+    public String checkAnswers(LocalQuestion localQuestion, Model model) {
+        int countOfRightAnswer = 0;
+
+        for (Long answerId : localQuestion.getClientListAnswers()) {
+            Answer allById = answerRepo.findAllById(answerId);
+            if (allById.isAnswer()) {
+                countOfRightAnswer += 1;//считаем количество правильных ответов
+            }
+        }
+
+        float percentSuccess =
+                (float) countOfRightAnswer / localQuestion.getClientListAnswers().size();//процент правильных вопросов к общему их числу
+
+        if (percentSuccess > 0.7) {
+            SecurityContext securityContext = SecurityContextHolder.getContext();
+            Authentication authentication = securityContext.getAuthentication();
+
+            Client client = (Client) authentication.getPrincipal();
+            List<Question> questions = themeRepo.findAllById(client.getTheme().getId()).getQuestions();
+
+            client.setActive(false);
+            model.addAttribute("client", client);
+            model.addAttribute("questions", questions);
+            model.addAttribute("rightAnswerPercent", percentSuccess * 100);
+            model.addAttribute("date", LocalDateTime.now().format(DateTimeFormatter.ISO_DATE));
+
+            return "client_answers_result_to_pdf";
+        }
+//        else {
+//
+//        }
+
         return "successfully_add";
     }
 

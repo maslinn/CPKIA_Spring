@@ -10,10 +10,14 @@
         <input type="submit" value="Выйти">
     </form>
 </div>
-<h3 th:text="${'Здравствуйте, ' + client.name}"></h3>
+<h4 th:text="${'Здравствуйте, ' + client.name}"></h4>
 <br>
 <p th:if="${not client.isActive()}">У вас пока нет доступных курсов</p>
-<p th:if="${client.isActive()}"><a th:href="@{/}"
-                                   th:text="${'Пройти тестирование по программе ' + theme.name}"></a></p>
+<div th:if="${client.isActive()}">
+    <form th:action="@{/client/training}" th:object="${client}" th:method="get">
+        <input style="display: none" th:field="*{id}" th:value="*{id}">
+        <input type="submit" th:value="${'Пройти тестирование по программе ' + theme.name}">
+    </form>
+</div>
 </body>
 </html>

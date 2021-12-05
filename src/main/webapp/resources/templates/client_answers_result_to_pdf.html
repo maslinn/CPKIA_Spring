@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Result</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js"></script>
+</head>
+
+<body>
+
+<div id="content">
+    <h2>ЧАСТНОЕ УЧРЕЖДЕНИЕ ДОПОЛНИТЕЛЬНОГО ПРОФЕССИОНАЛЬНОГО
+        ОБРАЗОВАНИЯ «ПРИВОЛЖСКИЙ ЦЕНТР ПОВЫШЕНИЯ КВАЛИФИКАЦИИ»</h2>
+    <br>
+    <br>
+    <p th:text="${client.name}"></p>
+    <br>
+    <p th:text="${'Тема: ' + client.theme.name}"></p>
+    <br>
+    <p th:text="${'Экзаман сдан: ' + date}"></p>
+    <p th:text="${'Правильных ответов ' + rightAnswerPercent + '%'}"></p>
+    <br>
+    <br>
+    <div th:each="question : ${questions}">
+        <p th:text="${'Вопрос: ' + question.text}"></p>
+        <p th:text="${'Ответ: '}"></p>
+    </div>
+</div>
+<button onclick="createPDF()">Сохранить в PDF</button>
+
+<script>
+    function createPDF() {
+        var pdf = document.getElementById("content");
+        var opt = {
+            margin: 1,
+            filename: 'html2pdf-converted.pdf',
+            image: {type: 'jpeg', quality: 1},
+            html2canvas: {scale: 2},
+            jsPDF: {unit: 'in', format: 'a4', orientation: 'portrait'}
+        };
+        html2pdf().set(opt).from(pdf).save();
+    }
+</script>
+</body>
+</html>

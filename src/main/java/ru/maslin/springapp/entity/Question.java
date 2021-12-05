@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.Set;
+import java.util.List;
 
 @Entity
 @AllArgsConstructor
@@ -25,5 +25,5 @@ public class Question {
     private Theme theme;
 
     @OneToMany(mappedBy = "question", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<Answer> answers;
+    private List<Answer> answers;
 }

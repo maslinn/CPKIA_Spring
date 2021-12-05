@@ -66,8 +66,9 @@ public class CompanyController {
         //выводим сообщение пользователю, если добавлен повторяющийся email или снилс
         if (localCompany.containsEmailClient(client.getEmail()) ||
                 localCompany.containsSnilsClient(client.getSnils())) {
-            model.addAttribute("problem", "Невозможно добавить пользователей с одинакомыв Email или СНИЛС");
+            model.addAttribute("problem", "Невозможно добавить пользователей с одинаковым Email или СНИЛС");
             model.addAttribute("company", localCompany);
+            model.addAttribute("themes", themeRepo.findAll());
             return "addClient";
         }
         localCompany.setClient(client);
@@ -91,6 +92,23 @@ public class CompanyController {
     //сохранение заявки от компании
     @PostMapping("/save")
     public String saveCompany(Model model) {
+
+        //валидируем добавляемых сотрудников
+        for (Client client : localCompany.getClients()) {
+
+            //ищем наличие клиента с этим email в бд
+            Client clientFromDb = clientRepo.findClientByEmail(client.getEmail());
+
+            //Если в бд есть сотрудник с таким email, выводим сообщение
+            if (clientFromDb != null) {
+                model.addAttribute("problem", "Сотрудник с Email: " + client.getEmail() + " уже обучается!");
+                model.addAttribute("company", localCompany);
+                model.addAttribute("client", new Client());
+                model.addAttribute("themes", themeRepo.findAll());
+                return "addClient";
+            }
+        }
+
         Company company = new Company(localCompany);
         company.setCreateAt(Instant.now());//включаем время добавления
         company.setStatus(1);//ставим статус на неоплачен
@@ -99,19 +117,7 @@ public class CompanyController {
 
         for (Client client : localCompany.getClients()) {
 
-            //ищем наличие клиента с этим email в бд
-            Client clientFromDb = clientRepo.findClientByEmail(client.getEmail());
-
-            //Если в бд есть сотрудник с таким именем, выводим сообщение
-            if (clientFromDb != null) {
-                model.addAttribute("problem", "Сотрудник с Email: " + client.getEmail() + " уже обучается!");
-                model.addAttribute("company", localCompany);
-                model.addAttribute("client", new Client());///
-                return "addClient";
-            }
-
             String password = passwordGenerator.generatePassword(10);
-
 
             client.setPassword(password);
             client.setActive(false);
