@@ -13,10 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.context.annotation.SessionScope;
 import ru.maslin.springapp.entity.*;
 import ru.maslin.springapp.entity.local.LocalQuestion;
-import ru.maslin.springapp.repository.AnswerRepo;
-import ru.maslin.springapp.repository.ClientRepo;
-import ru.maslin.springapp.repository.CompanyRepo;
-import ru.maslin.springapp.repository.ThemeRepo;
+import ru.maslin.springapp.repository.*;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -32,13 +29,15 @@ public class ClientController {
     private final ThemeRepo themeRepo;
     private final CompanyRepo companyRepo;
     private final AnswerRepo answerRepo;
+    private final QuestionRepo questionRepo;
 
     @Autowired
-    public ClientController(ClientRepo clientRepository, ThemeRepo themeRepo, CompanyRepo companyRepo, LocalQuestion localQuestions, AnswerRepo answerRepo) {
+    public ClientController(ClientRepo clientRepository, ThemeRepo themeRepo, CompanyRepo companyRepo, LocalQuestion localQuestions, AnswerRepo answerRepo, QuestionRepo questionRepo) {
         this.clientRepository = clientRepository;
         this.themeRepo = themeRepo;
         this.companyRepo = companyRepo;
         this.answerRepo = answerRepo;
+        this.questionRepo = questionRepo;
     }
 
     @GetMapping()
@@ -79,6 +78,9 @@ public class ClientController {
 
     @PostMapping("/training")
     public String checkAnswers(LocalQuestion localQuestion, Model model) {
+        SecurityContext securityContext = SecurityContextHolder.getContext();
+        Authentication authentication = securityContext.getAuthentication();
+        Client client = (Client) authentication.getPrincipal();
         int countOfRightAnswer = 0;
         String europeanDatePattern = "dd.MM.yyyy";
 
@@ -89,15 +91,13 @@ public class ClientController {
             }
         }
 
+        int countOfQuestions = questionRepo.countAllByTheme(client.getTheme());
         float percentSuccess =
-                (float) countOfRightAnswer / localQuestion.getClientListAnswers().size();//процент правильных вопросов к общему их числу
+                (float) countOfRightAnswer / countOfQuestions;//процент правильных вопросов к общему их числу
 
 
         if (percentSuccess > 0.7) {
-            SecurityContext securityContext = SecurityContextHolder.getContext();
-            Authentication authentication = securityContext.getAuthentication();
 
-            Client client = (Client) authentication.getPrincipal();
             client.setAnswersId(localQuestion.getClientListAnswers());
             client.setActive(false);
             client.setDateOfExam(LocalDateTime.now().format(DateTimeFormatter.ofPattern(europeanDatePattern)));
@@ -121,7 +121,12 @@ public class ClientController {
         List<Answer> clientAnswers = new ArrayList<>();
 
         for (int i = 0; i < questions.size(); i++) {
-            clientAnswers.add(questions.get(i).getAnswerById(clientAnswersId.get(i)));
+            if (clientAnswersId.size() > i) {
+                Long answerId = clientAnswersId.get(i);
+                clientAnswers.add(questions.get(i).getAnswerById(answerId));
+            } else {
+                clientAnswers.add(new Answer());//заглушка для просмотра результатов после добавления вопросов
+            }
         }
         model.addAttribute("client", client);
         model.addAttribute("questions", questions);

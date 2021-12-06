@@ -1,28 +1,18 @@
-<!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title>Client Page</title>
-</head>
-<body>
-<div>
-    <form th:action="@{/logout}" th:method="post">
-        <input type="submit" value="Выйти">
-    </form>
-</div>
-<h4 th:text="${'Здравствуйте, ' + client.name}"></h4>
+<div th:insert="~{header}"></div>
 <br>
-<p th:if="${not client.isActive()}">У вас пока нет доступных курсов</p>
-<div th:if="${client.isActive()}">
-    <form th:action="@{/client/training}" th:object="${client}" th:method="get">
-        <input style="display: none" th:field="*{id}" th:value="*{id}">
-        <input type="submit" th:value="${'Пройти тестирование по программе ' + theme.name}">
-    </form>
-</div>
-<br>
-<div th:if="${not client.getAnswersId().isEmpty() and not client.isActive()}">
-    <a th:href="@{/client/results/{id}(id = ${client.id})}">Результат <p
-            th:text="${'по программе ' + client.theme}"></p></a>
+<div class="mx-2">
+    <p th:if="${not client.isActive()}">У вас пока нет доступных курсов</p>
+    <div th:if="${client.isActive()}">
+        <form th:action="@{/client/training}" th:object="${client}" th:method="get">
+            <input style="display: none" th:field="*{id}" th:value="*{id}">
+            <input type="submit" th:value="${'Пройти тестирование по программе ' + theme.name}">
+        </form>
+    </div>
+    <br>
+    <div th:if="${not client.getAnswersId().isEmpty() and not client.isActive()}">
+        <a th:href="@{/client/results/{id}(id = ${client.id})}">Результат <span
+                th:text="${'по программе ' + client.theme.name}"></span></a>
+    </div>
 </div>
 </body>
 </html>

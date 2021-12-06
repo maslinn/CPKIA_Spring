@@ -1,13 +1,5 @@
-<!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title>Admin first page</title>
-</head>
-<body>
-<div>
-    <h1>Админ панель</h1>
-</div>
+<div th:insert="~{header}"></div>
+<br>
 <div>
     <ul><a th:href="@{/admin/table_new}">Новые заявки</a></ul>
     <ul><a th:href="@{/admin/table_payed}">Оплаченные заявки</a></ul>
@@ -17,9 +9,9 @@
     <br>
     <ul><a th:href="@{/admin/redactor_theme}">Редактирование вопросов</a></ul>
 </div>
+<br>
 <div>
     <a th:href="@{/admin/addNew}">Добавить админа</a>
 </div>
-<div>Выход</div>
 </body>
 </html>

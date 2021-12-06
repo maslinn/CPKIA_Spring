@@ -1,11 +1,4 @@
-<!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title>Training</title>
-</head>
-<body>
-
+<div th:insert="~{header}"></div>
 <div>
     <form th:href="@{/client/training}" th:object="${clientAnswers}" th:method="post">
         <th:block th:each="question, stats : ${questions}">
