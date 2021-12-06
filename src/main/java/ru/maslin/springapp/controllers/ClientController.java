@@ -7,6 +7,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.context.annotation.SessionScope;
@@ -112,9 +113,9 @@ public class ClientController {
         return "training_results_page";
     }
 
-    @GetMapping("results")
-    public String printResults(Client inputClient, Model model) {
-        Client client = clientRepository.findAllById(inputClient.getId());
+    @GetMapping("results/{id}")
+    public String printResults(@PathVariable Long id, Model model) {
+        Client client = clientRepository.findAllById(id);
         List<Question> questions = themeRepo.findAllById(client.getTheme().getId()).getQuestions();
         List<Long> clientAnswersId = client.getAnswersId();
         List<Answer> clientAnswers = new ArrayList<>();

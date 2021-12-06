@@ -21,10 +21,8 @@
 </div>
 <br>
 <div th:if="${not client.getAnswersId().isEmpty() and not client.isActive()}">
-    <form th:action="@{/client/results}" th:object="${client}" th:method="get">
-        <input style="display: none" th:field="*{id}" th:value="*{id}">
-        <input type="submit" th:value="${'Распечатать результат ' + theme.name}">
-    </form>
+    <a th:href="@{/client/results/{id}(id = ${client.id})}">Результат <p
+            th:text="${'по программе ' + client.theme}"></p></a>
 </div>
 </body>
 </html>

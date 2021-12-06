@@ -78,11 +78,34 @@ public class AdminController {
         return "admin_table_new";
     }
 
+    @GetMapping("/table_payed")
+    public String getTableWithPayedCompany(Model model) {
+        List<Company> companyList = new ArrayList<>(companyRepo.findByStatus(2));//добавляем в лист заявки со статусом оплачено
+        model.addAttribute("companies", companyList);
+        return "admin_table_payed";
+    }
+
+    @GetMapping("/table_closed")
+    public String getTableWithClosedCompanies(Model model) {
+        List<Company> companyList = new ArrayList<>(companyRepo.findByStatus(3));//добавляем в лист заявки со статусом закрыто
+        model.addAttribute("companies", companyList);
+        return "admin_table_closed";
+    }
+
     @GetMapping("/payed/{company_id}")
     public String payedCompanyRequest(@PathVariable Long company_id) {
         Company company = companyRepo.findAllById(company_id);
         company.setStatus(2);//устанавливаем статус 2 - оплачено
-        company.getClients().forEach(client -> client.setActive(true));//устанавливаем значения у пользователей
+        company.getClients().forEach(client -> client.setActive(true));//активируем тесты у пользователей
+        companyRepo.save(company);
+        return "redirect:/admin/table_new";
+    }
+
+    @GetMapping("/payed_back/{company_id}")
+    public String payedBackCompanyRequest(@PathVariable Long company_id) {
+        Company company = companyRepo.findAllById(company_id);
+        company.setStatus(1);//устанавливаем статус 1 - не оплачено
+        company.getClients().forEach(client -> client.setActive(false));//деактивируем тесты у пользователей
         companyRepo.save(company);
         return "redirect:/admin/table_new";
     }
@@ -99,6 +122,15 @@ public class AdminController {
         Company company = companyRepo.findAllById(company_id);
         model.addAttribute("company", company);
         return "admin_company_redactor";
+    }
+
+    @GetMapping("/closed_company/{company_id}")
+    public String closedCompanyRequest(@PathVariable Long company_id) {
+        Company company = companyRepo.findAllById(company_id);
+        company.setStatus(1);//устанавливаем статус 3 - закрыто
+        company.getClients().forEach(client -> client.setActive(false));//деактивируем тесты у пользователей
+        companyRepo.save(company);
+        return "redirect:/admin/table_new";
     }
 
     //меняем изменяемые поля
@@ -221,6 +253,13 @@ public class AdminController {
         answer.setReversValue();
         answerRepo.save(answer);
         return "redirect:/admin/get_answer_redactor/" + questionId;
+    }
+
+    @GetMapping("tests_results")
+    public String getTestResults(Model model) {
+        List<Client> clientsByDateOfExamExistsAndActiveFalse = clientRepo.findAllByDateOfExamNotNull();
+        model.addAttribute("clients", clientsByDateOfExamExistsAndActiveFalse);
+        return "admin_tests_result";
     }
 
 }

@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Admin Table New</title>
+    <title>Admin Table Payed</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
           integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
@@ -57,8 +57,9 @@
             <td th:text="${company.createAtToString}"></td>
             <td th:text="${company.getCountOfSuccessClients() + ' из ' + company.getClients().size()}"></td>
             <td>
-                <ul><a th:href="@{/admin/payed/{company_id}(company_id = ${company.getId()})}">ОТМЕНИТЬ ОПЛАТУ</a></ul>
-                <ul><a th:href="@{/admin/edit_company/{company_id}(company_id = ${company.id})}">ЗАКРЫТЬ</a></ul>
+                <ul><a th:href="@{/admin/payed_back/{company_id}(company_id = ${company.getId()})}">ОТМЕНИТЬ ОПЛАТУ</a>
+                </ul>
+                <ul><a th:href="@{/admin/closed_company/{company_id}(company_id = ${company.id})}">ЗАКРЫТЬ</a></ul>
             </td>
         </tr>
         </tbody>

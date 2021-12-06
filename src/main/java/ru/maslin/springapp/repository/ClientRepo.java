@@ -15,4 +15,6 @@ public interface ClientRepo extends CrudRepository<Client, Integer> {
     Client findAllById(Long id);
 
     void removeClientById(Long id);
+
+    List<Client> findAllByDateOfExamNotNull();
 }

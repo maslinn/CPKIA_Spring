@@ -10,12 +10,15 @@
 </div>
 <div>
     <ul><a th:href="@{/admin/table_new}">Новые заявки</a></ul>
-    <ul><a href="#">Оплаченные заявки</a></ul>
-    <ul><a href="#">Закрытые заявки</a></ul>
+    <ul><a th:href="@{/admin/table_payed}">Оплаченные заявки</a></ul>
+    <ul><a th:href="@{/admin/table_closed}">Закрытые заявки</a></ul>
+    <br>
+    <ul><a th:href="@{/admin/tests_results}">Результаты тестов</a></ul>
+    <br>
     <ul><a th:href="@{/admin/redactor_theme}">Редактирование вопросов</a></ul>
 </div>
 <div>
-    <a th:href="@{/admin/addNew}">Добавить</a>
+    <a th:href="@{/admin/addNew}">Добавить админа</a>
 </div>
 <div>Выход</div>
 </body>
