@@ -17,6 +17,7 @@ import ru.maslin.springapp.repository.*;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 
 @Controller
@@ -163,6 +164,14 @@ public class AdminController {
         return "redirect:/admin/table_new";
     }
 
+    @GetMapping("/dopusk/{idCompany}")
+    public String dopusk(@PathVariable Long idCompany, Model model) {
+        Company companyInRepo = companyRepo.findAllById(idCompany);
+        List<Client> clients = new LinkedList<>(companyInRepo.getClients());
+        model.addAttribute("clients", clients);
+        return "dopusk";
+    }
+
     @GetMapping("/edit_client/{client_id}")
     public String editClient(@PathVariable Long client_id, Model model) {
         Client clientById = clientRepo.findAllById(client_id);
@@ -269,6 +278,36 @@ public class AdminController {
         List<Client> clientsByDateOfExamExistsAndActiveFalse = clientRepo.findAllByDateOfExamNotNull();
         model.addAttribute("clients", clientsByDateOfExamExistsAndActiveFalse);
         return "admin_tests_result";
+    }
+
+    @GetMapping("template_akt")
+    public String getTemplateAkt(Model model) {
+        SecurityContext securityContext = SecurityContextHolder.getContext();
+        Authentication authentication = securityContext.getAuthentication();
+
+        Client client = (Client) authentication.getPrincipal();
+        model.addAttribute("client", client);
+        return "template_akt";
+    }
+
+    @GetMapping("template_schet")
+    public String getTemplateSchet(Model model) {
+        SecurityContext securityContext = SecurityContextHolder.getContext();
+        Authentication authentication = securityContext.getAuthentication();
+
+        Client client = (Client) authentication.getPrincipal();
+        model.addAttribute("client", client);
+        return "template_schet";
+    }
+
+    @GetMapping("template_dogovor")
+    public String getTemplateDogovor(Model model) {
+        SecurityContext securityContext = SecurityContextHolder.getContext();
+        Authentication authentication = securityContext.getAuthentication();
+
+        Client client = (Client) authentication.getPrincipal();
+        model.addAttribute("client", client);
+        return "template_dogovor";
     }
 
 }

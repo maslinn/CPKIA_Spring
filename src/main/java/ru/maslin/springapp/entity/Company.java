@@ -32,6 +32,7 @@ public class Company {
     private String bank;//банк
     private Instant createAt;//дата создания
     private Integer status;// 1 - не оплачен, 2 - оплачен, 3 - закрыт
+    //
 
     @OneToMany(mappedBy = "company", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Client> clients;

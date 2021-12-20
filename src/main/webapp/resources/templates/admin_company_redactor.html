@@ -5,6 +5,10 @@
     <title>Redactor Company</title>
 </head>
 <body>
+<div>
+    <a th:href="@{/admin/dopusk/{idCompany}(idCompany = ${company.id})}">Допуски</a>
+</div>
+<br>
 <h2>Редактор заявки от компании</h2>
 <form th:action="@{/admin/edit_company}" th:object="${company}" th:method="POST">
     <div style="display: none">

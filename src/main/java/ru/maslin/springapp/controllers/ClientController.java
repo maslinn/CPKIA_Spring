@@ -82,12 +82,15 @@ public class ClientController {
         Authentication authentication = securityContext.getAuthentication();
         Client client = (Client) authentication.getPrincipal();
         int countOfRightAnswer = 0;
+        List<String> materials = new ArrayList<>();
         String europeanDatePattern = "dd.MM.yyyy";
 
         for (Long answerId : localQuestion.getClientListAnswers()) {
             Answer allById = answerRepo.findAllById(answerId);
             if (allById.isAnswer()) {
                 countOfRightAnswer += 1;//считаем количество правильных ответов
+            } else {
+                materials.add(allById.getQuestion().getMaterial());
             }
         }
 
@@ -108,6 +111,7 @@ public class ClientController {
 
         }
 
+        model.addAttribute("materials", materials);
         model.addAttribute("rightAnswerPercent", percentSuccess * 100);
 
         return "training_results_page";

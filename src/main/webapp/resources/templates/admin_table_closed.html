@@ -56,8 +56,9 @@
             <td th:text="${company.createAtToString}"></td>
             <td th:text="${company.getCountOfSuccessClients() + ' из ' + company.getClients().size()}"></td>
             <td>
-                <ul><a th:href="@{/admin/payed/{company_id}(company_id = ${company.getId()})}">ОТМЕНИТЬ ОПЛАТУ</a></ul>
-                <ul><a th:href="@{/admin/edit_company/{company_id}(company_id = ${company.id})}">ЗАКРЫТЬ</a></ul>
+                <ul><a th:href="@{/admin/payed/{company_id}(company_id = ${company.getId()})}">ОТМЕНИТЬ ЗАКРЫТИЕ</a>
+                </ul>
+                <ul><a th:href="@{/admin/edit_company/{company_id}(company_id = ${company.id})}">РЕДАКТИРОВАТЬ</a></ul>
             </td>
         </tr>
         </tbody>

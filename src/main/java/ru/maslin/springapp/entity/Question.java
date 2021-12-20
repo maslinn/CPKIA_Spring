@@ -27,6 +27,8 @@ public class Question {
     @OneToMany(mappedBy = "question", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Answer> answers;
 
+    private String material;
+
     public Answer getAnswerById(Long answerId) {
         for (Answer answer : answers) {
             if (answer.getId().equals(answerId)) {

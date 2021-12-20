@@ -53,11 +53,12 @@
         <tbody>
         <tr th:each="company : ${companies}" th:class="${company.status != 1}? 'table-success': 'table-warning'">
             <td th:text="${company.id}"></td>
-            <td th:text="${company.name}"></td>
+            <td><a th:text="${company.name}"
+                   th:href="@{/admin/edit_company/{company_id}(company_id = ${company.id})}"></a></td>
             <td th:text="${company.createAtToString}"></td>
             <td th:text="${company.getCountOfSuccessClients() + ' из ' + company.getClients().size()}"></td>
             <td>
-                <ul><a th:href="@{/admin/payed/{company_id}(company_id = ${company.getId()})}">ОПЛАТИТЬ</a></ul>
+                <ul><a th:href="@{/admin/payed/{company_id}(company_id = ${company.getId()})}">ОТКРЫТЬ ТЕСТЫ</a></ul>
                 <ul><a th:href="@{/admin/edit_company/{company_id}(company_id = ${company.id})}">РЕДАКТИРОВАТЬ</a></ul>
                 <ul><a th:href="@{/admin/delete_company/{company_id}(company_id = ${company.id})}">УДАЛИТЬ</a></ul>
             </td>

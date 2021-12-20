@@ -4,4 +4,10 @@
 
 <web-app>
     <display-name>Archetype Created Web Application</display-name>
+
+    <error-page>
+        <location>/errors</location>
+    </error-page>
 </web-app>
+
+
