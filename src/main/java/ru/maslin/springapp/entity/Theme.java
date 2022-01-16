@@ -21,6 +21,8 @@ public class Theme {
 
     private String name;
 
+    private double price = 0;
+
     @OneToMany(mappedBy = "theme", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Question> questions;
 

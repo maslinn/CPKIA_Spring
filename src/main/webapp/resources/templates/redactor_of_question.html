@@ -9,7 +9,28 @@
 <br>
 <a th:href="@{/admin/redactor_theme}">Назад</a>
 <br>
-<p th:text="${'Тема: ' + theme.name}"></p>
+<form th:action="@{/admin/save_theme}" th:object="${theme}" th:method="POST">
+    <div class="row">
+        <input style="display: none" th:field="*{id}">
+        <input style="display: none" th:field="*{questions}">
+        <input style="display: none" th:field="*{clients}">
+        <label> Тема: </label>
+        <label>
+            <input type="text" th:field="*{name}"/>
+        </label>
+
+        <label> Цена: </label>
+        <label>
+            <input type="number" th:field="*{price}"/><a> рублей</a>
+        </label>
+    </div>
+    <br>
+    <div class="row">
+        <button id="edit_theme" type="submit">Изменить</button>
+    </div>
+</form>
+<br>
+<br>
 <form th:action="@{/admin/save_question}" th:object="${question}" th:method="POST">
     <div class="row">
         <label> Текст вопроса: </label>

@@ -11,6 +11,11 @@
 <form th:action="@{/admin/edit_client}" th:object="${client}" th:method="POST">
     <div class="row">
         <input style="display: none" th:field="*{id}">
+        <input style="display: none" th:field="*{company.id}">
+        <input style="display: none" th:field="*{answersId}">
+        <input style="display: none" th:field="*{active}">
+        <input style="display: none" th:field="*{dateOfExam}">
+        <input style="display: none" th:field="*{percentResult}">
         <label> ФИО: </label>
         <input type="text" th:field="*{name}">
         <label> Email/Логин: </label>
@@ -19,6 +24,8 @@
         <input type="text" th:field="*{password}">
         <label> СНИЛС: </label>
         <input type="text" th:field="*{snils}">
+        <label> Дата рождения: </label>
+        <input type="date" th:field="*{dateOfBirth}">
 
         <select th:field="*{theme.id}">
             <option th:each="one_theme : ${themes}" th:value="${one_theme.id}" th:text="${one_theme.name}"></option>

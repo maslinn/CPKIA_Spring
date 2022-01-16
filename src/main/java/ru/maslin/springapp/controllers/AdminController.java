@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import ru.maslin.springapp.entity.*;
 import ru.maslin.springapp.repository.*;
+import ru.maslin.springapp.securityAtribute.MoneyInWords;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
@@ -172,6 +173,17 @@ public class AdminController {
         return "dopusk";
     }
 
+    @GetMapping("/akt/{idCompany}")
+    public String akt(@PathVariable Long idCompany, Model model) {
+        Company companyInRepo = companyRepo.findAllById(idCompany);
+        double price = companyInRepo.getClients().stream().mapToDouble(client -> client.getTheme().getPrice()).sum();
+        model.addAttribute("company", companyInRepo);
+        model.addAttribute("sumInWord", MoneyInWords.inwords(price));
+        model.addAttribute("price", price);
+        model.addAttribute("countOfClients", companyInRepo.getClients().size());
+        return "akt";
+    }
+
     @GetMapping("/edit_client/{client_id}")
     public String editClient(@PathVariable Long client_id, Model model) {
         Client clientById = clientRepo.findAllById(client_id);
@@ -181,15 +193,22 @@ public class AdminController {
         return "admin_client_redactor";
     }
 
+    @GetMapping("/new_client/{company_id}")
+    public String newClient(@PathVariable Long company_id, Model model) {
+        Company company = companyRepo.findAllById(company_id);
+
+        Client client = new Client();
+        client.setCompany(company);
+
+        List<Theme> themes = themeRepo.findAll();
+        model.addAttribute("themes", themes);
+        model.addAttribute("client", client);
+        return "admin_client_redactor";
+    }
+
     @PostMapping("edit_client")
     public String editClientPost(Client client) {
-        Client clientById = clientRepo.findAllById(client.getId());
-        clientById.setName(client.getName());
-        clientById.setEmail(client.getEmail());
-        clientById.setPassword(client.getPassword());
-        clientById.setSnils(client.getSnils());
-        clientById.setTheme(client.getTheme());
-        clientRepo.save(clientById);
+        clientRepo.save(client);
         return "redirect:/admin/table_new";
     }
 
@@ -280,6 +299,10 @@ public class AdminController {
         return "admin_tests_result";
     }
 
+
+    /**
+     * Шаблоны
+     **/
     @GetMapping("template_akt")
     public String getTemplateAkt(Model model) {
         SecurityContext securityContext = SecurityContextHolder.getContext();
