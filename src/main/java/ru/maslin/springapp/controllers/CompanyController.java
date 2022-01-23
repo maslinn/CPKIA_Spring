@@ -112,6 +112,7 @@ public class CompanyController {
         Company company = new Company(localCompany);
         company.setCreateAt(Instant.now());//включаем время добавления
         company.setStatus(1);//ставим статус на неоплачен
+        company.setSchets(null);
         Company savedCompany = companyRepo.save(company);
 
 

@@ -3,7 +3,13 @@ package ru.maslin.springapp.entity;
 import org.springframework.stereotype.Component;
 import ru.maslin.springapp.entity.local.LocalCompany;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.util.Date;
@@ -14,7 +20,8 @@ import java.util.Set;
 @Component
 public class Company {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "company_generator")
+    @SequenceGenerator(name = "company_generator", sequenceName = "company_seq", allocationSize = 1, initialValue = 3000)
     private Long id;
 
     private String name;
@@ -32,10 +39,12 @@ public class Company {
     private String bank;//банк
     private Instant createAt;//дата создания
     private Integer status;// 1 - не оплачен, 2 - оплачен, 3 - закрыт
-    //
 
     @OneToMany(mappedBy = "company", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Client> clients;
+
+    @OneToMany(mappedBy = "company", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Schet> schets;
 
     public Set<Client> getClients() {
         return this.clients;
@@ -53,7 +62,7 @@ public class Company {
         this.status = status;
     }
 
-    public Company(String name, String fullname, String email, String director, String osnovanie, String phone, String adressUr, String adressPocht, String korSchet, String inn_kpp, String raschSchet, String bik, String bank, Instant createAt, Integer status, Set<Client> clients) {
+    public Company(String name, String fullname, String email, String director, String osnovanie, String phone, String adressUr, String adressPocht, String korSchet, String inn_kpp, String raschSchet, String bik, String bank, Instant createAt, Integer status, Set<Client> clients, Set<Schet> schets) {
         this.name = name;
         this.fullname = fullname;
         this.email = email;
@@ -70,6 +79,7 @@ public class Company {
         this.createAt = createAt;
         this.status = status;
         this.clients = clients;
+        this.schets = schets;
     }
 
     public Instant getCreateAt() {
@@ -233,5 +243,13 @@ public class Company {
 
     public void setBank(String bank) {
         this.bank = bank;
+    }
+
+    public Set<Schet> getSchets() {
+        return schets;
+    }
+
+    public void setSchets(Set<Schet> schets) {
+        this.schets = schets;
     }
 }

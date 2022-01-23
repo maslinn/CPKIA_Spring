@@ -4,7 +4,16 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import javax.persistence.*;
+import javax.persistence.CollectionTable;
+import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
@@ -40,6 +49,9 @@ public class Client implements UserDetails {
     @CollectionTable(name = "client_answers_id", joinColumns = @JoinColumn(name = "client_id"))
     private List<Long> answersId;
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    private Schet schet;
+
     private float percentResult;
 
     private String dateOfExam;
@@ -62,6 +74,14 @@ public class Client implements UserDetails {
     }
 
     public Client() {
+    }
+
+    public Schet getSchet() {
+        return schet;
+    }
+
+    public void setSchet(Schet schet) {
+        this.schet = schet;
     }
 
     public boolean isOpenedTraining() {

@@ -11,8 +11,19 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import ru.maslin.springapp.entity.*;
-import ru.maslin.springapp.repository.*;
+import ru.maslin.springapp.entity.Answer;
+import ru.maslin.springapp.entity.Client;
+import ru.maslin.springapp.entity.Company;
+import ru.maslin.springapp.entity.Question;
+import ru.maslin.springapp.entity.Roles;
+import ru.maslin.springapp.entity.Schet;
+import ru.maslin.springapp.entity.Theme;
+import ru.maslin.springapp.repository.AnswerRepo;
+import ru.maslin.springapp.repository.ClientRepo;
+import ru.maslin.springapp.repository.CompanyRepo;
+import ru.maslin.springapp.repository.QuestionRepo;
+import ru.maslin.springapp.repository.SchetRepo;
+import ru.maslin.springapp.repository.ThemeRepo;
 import ru.maslin.springapp.securityAtribute.MoneyInWords;
 
 import javax.transaction.Transactional;
@@ -20,6 +31,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 @Controller
 @RequestMapping("/admin")
@@ -31,14 +43,16 @@ public class AdminController {
     private final ThemeRepo themeRepo;
     private final QuestionRepo questionRepo;
     private final AnswerRepo answerRepo;
+    private final SchetRepo schetRepo;
 
     @Autowired
-    public AdminController(ClientRepo clientRepo, CompanyRepo companyRepo, ThemeRepo themeRepo, QuestionRepo questionRepo, AnswerRepo answerRepo) {
+    public AdminController(ClientRepo clientRepo, CompanyRepo companyRepo, ThemeRepo themeRepo, QuestionRepo questionRepo, AnswerRepo answerRepo, SchetRepo schetRepo) {
         this.clientRepo = clientRepo;
         this.companyRepo = companyRepo;
         this.themeRepo = themeRepo;
         this.questionRepo = questionRepo;
         this.answerRepo = answerRepo;
+        this.schetRepo = schetRepo;
     }
 
     @GetMapping
@@ -300,6 +314,56 @@ public class AdminController {
     }
 
 
+    @GetMapping("uch_list/{idCompany}")
+    public String uchList(@PathVariable Long idCompany, Model model) {
+        Company company = companyRepo.findAllById(idCompany);
+        Set<Schet> schets = company.getSchets();
+
+        model.addAttribute("schets", schets);
+        model.addAttribute("company", company);
+
+        return "admin_table_schet_faktur";
+    }
+
+    @GetMapping("add_schet/{idCompany}")
+    public String addSchet(@PathVariable Long idCompany, Model model) {
+        Company company = companyRepo.findAllById(idCompany);
+        double price = company.getClients().stream().mapToDouble(client -> client.getTheme().getPrice()).sum();
+
+        ArrayList<Client> clientsWithoutSchet = new ArrayList<>(company.getClients());
+        clientsWithoutSchet.removeIf(client -> client.getSchet() != null);
+
+        Schet schet = new Schet();
+        schet.setClients(clientsWithoutSchet);
+        schet.setCompany(company);
+
+        model.addAttribute("company", company);
+        model.addAttribute("schet", schet);
+        model.addAttribute("price", price);
+
+        return "schet_faktura";
+    }
+
+    @PostMapping("/add_schet")
+    public String saveSchet(Schet schet) {
+        schet.getClients().removeIf(client -> client.getId() == null);
+        if (schet.getClients().isEmpty()) {
+            return "redirect:/admin";
+        }
+
+        for (int i = 0; i < schet.getClients().size(); i++) {
+            schet.getClients().set(i, clientRepo.findAllById(schet.getClients().get(i).getId()));
+        }
+
+        Schet savedSchet = schetRepo.save(schet);
+
+        for (Client client : schet.getClients()) {
+            client.setSchet(savedSchet);
+            clientRepo.save(client);
+        }
+        return "redirect:/admin";
+    }
+
     /**
      * Шаблоны
      **/
@@ -332,5 +396,6 @@ public class AdminController {
         model.addAttribute("client", client);
         return "template_dogovor";
     }
+
 
 }
