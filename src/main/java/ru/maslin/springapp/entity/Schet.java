@@ -14,6 +14,8 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Entity
@@ -45,6 +47,16 @@ public class Schet {
             return .0;
         }
         return clients.stream().mapToDouble(client -> client.getTheme().getPrice()).sum();
+    }
+
+    public String getDateDocInEuropeFormat() {
+        LocalDate datetime = LocalDate.parse(this.dateDoc, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        return datetime.format(DateTimeFormatter.ofPattern("dd.MM.yyyy"));
+    }
+
+    public String getDateSchetInEuropeFormat() {
+        LocalDate datetime = LocalDate.parse(this.dateSchet, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        return datetime.format(DateTimeFormatter.ofPattern("dd.MM.yyyy"));
     }
 
 }

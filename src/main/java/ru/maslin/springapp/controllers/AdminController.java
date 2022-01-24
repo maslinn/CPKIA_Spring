@@ -309,6 +309,7 @@ public class AdminController {
     @GetMapping("tests_results")
     public String getTestResults(Model model) {
         List<Client> clientsByDateOfExamExistsAndActiveFalse = clientRepo.findAllByDateOfExamNotNull();
+        clientsByDateOfExamExistsAndActiveFalse.removeIf(client -> client.getDateOfExam().isEmpty());
         model.addAttribute("clients", clientsByDateOfExamExistsAndActiveFalse);
         return "admin_tests_result";
     }
@@ -362,6 +363,21 @@ public class AdminController {
             clientRepo.save(client);
         }
         return "redirect:/admin";
+    }
+
+    @GetMapping("get_schet_table")
+    public String getSchetTable(Model model) {
+        Set<Schet> schets = schetRepo.findAll();
+        model.addAttribute("schets", schets);
+        return "admin_table_schet_faktur";
+    }
+
+    @GetMapping("get_schet/{schet_id}")
+    public String getSchet(@PathVariable Long schet_id, Model model) {
+        Schet schet = schetRepo.findAllById(schet_id);
+
+        model.addAttribute("schet", schet);
+        return "static_schet_faktura";
     }
 
     /**

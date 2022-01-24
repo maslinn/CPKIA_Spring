@@ -19,11 +19,13 @@
             font-size: 7pt;
         }
     </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js"></script>
 </head>
 <body style="background-color: rgb(255, 255, 255); color: rgb(0,0, 0)">
 <a th:href="@{/admin/get_schet_table}">Реестр счет фактур</a>
 
-<form th:action="@{/admin/add_schet}" th:object="${schet}" th:method="POST">
+<div id="content">
 
     <table width="100%" align="center" border="0" style="font-family: " times="" new="" roman
     ",times,serif;="" font-size:="" 6pt;"="">
@@ -43,9 +45,9 @@
     </tr>
     <tr>
         <td colspan="2" align="center">
-            <h4>УЧЁТНЫЙ № <input type="number" th:value="*{id}" th:field="*{id}"> от
-                <input type="date" th:field="*{dateSchet}"><br>
-                ИСПРАВЛЕНИЕ № _____ от ______________ </h4>
+            <h4>УЧЁТНЫЙ № <a th:text="${schet.id}"></a> от
+                <a th:text="${schet.getDateSchetInEuropeFormat()}"></a><br>
+                ИСПРАВЛЕНИЕ № _____ от ______________</h4>
         </td>
     </tr>
     <tr>
@@ -65,11 +67,11 @@
             ИНН/КПП продавца &nbsp; 6455038915/645001001<br>
             Грузоотправитель и его адрес &nbsp; - <br>
             Грузополучатель и его адрес &nbsp; - <br>
-            К платежно-расчетному документу № <input type="number" th:field="*{numberDoc}"> от
-            <input type="date" th:field="*{dateDoc}"><br>
-            Покупатель &nbsp; <a th:text="*{company.name}"></a><br>
-            Адрес &nbsp; <a th:text="*{company.adressPocht}"></a><br>
-            ИНН/КПП покупателя &nbsp; <a th:text="*{company.inn_kpp}"></a><br>
+            К платежно-расчетному документу № <a th:text="${schet.numberDoc}"></a> от
+            <a th:text="${schet.getDateDocInEuropeFormat()}"></a><br>
+            Покупатель &nbsp; <a th:text="${schet.company.name}"></a><br>
+            Адрес &nbsp; <a th:text="${schet.company.adressPocht}"></a><br>
+            ИНН/КПП покупателя &nbsp; <a th:text="${schet.company.inn_kpp}"></a><br>
             Валюта: наименование, код российский рубль, 643
         </td>
         <td>
@@ -172,7 +174,7 @@
         <td align="center">---
         </td>
         <td align="center">---</td>
-        <td align="center" th:text="${price}">price
+        <td align="center" th:text="${schet.getPrice()}">price
         </td>
         <td align="center">без акциза
         </td>
@@ -180,7 +182,7 @@
         </td>
         <td align="center">без НДС
         </td>
-        <td align="center" th:text="${price}">price
+        <td align="center" th:text="${schet.getPrice()}">price
         </td>
         <td align="center">---
         </td>
@@ -191,12 +193,12 @@
     </tr>
     <tr>
         <td colspan="5" border="0">Всего к оплате</td>
-        <td align="center" th:text="${price}">price</td>
+        <td align="center" th:text="${schet.getPrice()}">price</td>
         <td colspan="2" align="center">X
         </td>
         <td align="center">без НДС
         </td>
-        <td align="center" th:text="${price}">price
+        <td align="center" th:text="${schet.getPrice()}">price
 
 
         </td>
@@ -254,22 +256,26 @@
     <br>
     <br>
     <br>
-    <input style="display: none" th:field="*{company.id}" th:value="*{company.id}">
-    <label> Слушатели: </label>
-    <th:block th:each="client, itemStat  :  ${schet.clients}">
-        <select th:field="*{clients[__${itemStat.index}__].id}">
-            <option th:value="${client.id}" th:text="${client.name} + ' ' + ${client.theme.price}"></option>
-            <option th:value="${null}">Нет</option>
-        </select>
-    </th:block>
     <br>
     <br>
     <br>
     <br>
-    <div class="row">
-        <button id="add" type="submit">Сохранить</button>
-    </div>
-</form>
+
+</div>
+<button onclick="createPDF()">Сохранить в PDF</button>
+<script>
+    function createPDF() {
+        var pdf = document.getElementById("content");
+        var opt = {
+            margin: 1,
+            filename: 'schet-faktura.pdf',
+            image: {type: 'jpeg', quality: 1},
+            html2canvas: {scale: 2},
+            jsPDF: {unit: 'in', format: 'a4', orientation: 'landscape'}
+        };
+        html2pdf().set(opt).from(pdf).save();
+    }
+</script>
 </body>
 
 </html>

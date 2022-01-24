@@ -57,13 +57,13 @@
         </thead>
         <tbody th:if="${!schets.isEmpty()}">
         <tr th:each="schet : ${schets}">
-            <td th:text="${schet.id}"></td>
-            <td th:text="${schet.dateSchet}"></td>
+            <td><a th:text="${schet.id}" th:href="@{/admin/get_schet/{schet_id}(schet_id = ${schet.id})}"></a></td>
+            <td th:text="${schet.getDateSchetInEuropeFormat()}"></td>
             <td th:text="${schet.company.name}"></td>
             <td th:text="${schet.company.inn_kpp}"></td>
             <td th:text="${schet.clients.size()}"></td>
             <td th:text="${schet.numberDoc}"></td>
-            <td th:text="${schet.dateDoc}"></td>
+            <td th:text="${schet.getDateDocInEuropeFormat()}"></td>
             <td th:text="${schet.getPrice()}"></td>
             <td th:text="${schet.company.id}"></td>
             <td>
@@ -75,7 +75,7 @@
     </table>
 </div>
 
-<div class="m-2">
+<div class="m-2" th:if="${company} != null">
     <a class="btn btn-success btn-lg" th:href="@{/admin/add_schet/{idCompany}(idCompany = ${company.id})}">Добавить</a>
 </div>
 
