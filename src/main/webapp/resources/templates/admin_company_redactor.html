@@ -69,6 +69,13 @@
         <input type="text" th:field="*{bank}">
     </div>
     <br>
+    <div class="field">
+        <label> Регион: </label>
+        <select th:field="*{region}">
+            <option th:each="region : ${regions}" th:value="${region}" th:text="${region}"></option>
+        </select>
+    </div>
+    <br>
     <div class="row">
         <button id="add" type="submit">Сохранить изменения</button>
     </div>

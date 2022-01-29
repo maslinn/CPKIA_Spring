@@ -14,4 +14,6 @@ public interface CompanyRepo extends CrudRepository<Company, Integer> {
 
     //@Query("select List<Company> from Company where status = 1")
     List<Company> findByStatus(Integer status);
+
+    List<Company> findByStatusAndRegion(Integer status, String region);
 }

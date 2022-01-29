@@ -10,8 +10,13 @@
     color:#000000;
     font-family:'Times New Roman', Times, serif;
     font-size:12pt; margin:0; padding:0;">
-<br>
-<a th:href="@{/admin}">Главная</a>
+
+<div th:if="${contextClient.name} == 'admin'">
+    <a th:href="@{/admin}">Главная</a>
+</div>
+<div th:if="${contextClient.name} == 'manager'">
+    <a th:href="@{/manager}">Главная</a>
+</div>
 <br>
 <div id="content">
     <th:block th:each="client : ${clients}">
@@ -20,7 +25,7 @@
             <tr>
                 <td width="50%" style="border-top:1px dashed #404040;border-bottom:1px dashed #404040;">
                     <b><i th:text="${'Допуск для: ' + client.name}"></i></b>
-                    <p th:text="${'По договору: ' + client.company.name}"></p>
+                    <p th:text="${'По договору с ' + client.company.name + ' к рамочному договору ' + client.company.id}"></p>
                     <p th:text="${'Логин для входа: ' + client.email}"></p>
                     <p th:text="${'Пароль для входа: ' + client.password}"></p>
                 </td>

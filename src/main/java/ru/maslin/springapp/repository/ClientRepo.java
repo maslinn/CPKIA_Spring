@@ -10,11 +10,17 @@ public interface ClientRepo extends CrudRepository<Client, Integer> {
 
     Client findById(Long id);
 
-    List<Client> findClientsByEmail(String admin);
+    List<Client> findClientsByEmail(String email);
+
+    List<Client> findClientsBySnils(String snils);
+
+    List<Client> findClientsByName(String name);
 
     Client findAllById(Long id);
 
     void removeClientById(Long id);
 
     List<Client> findAllByDateOfExamNotNull();
+
+    List<Client> findAllByDateOfExamNotNullAndCompanyRegion(String companyRegion);
 }

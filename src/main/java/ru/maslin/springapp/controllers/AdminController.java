@@ -1,5 +1,6 @@
 package ru.maslin.springapp.controllers;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
@@ -32,10 +33,12 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/admin")
 @PreAuthorize("hasAnyAuthority('ADMIN')")
+@Slf4j
 public class AdminController {
 
     private final ClientRepo clientRepo;
@@ -69,24 +72,24 @@ public class AdminController {
     public String addNewAdmin(Model model) {
         model.addAttribute("admin", new Client());
         model.addAttribute("problem", null);
-        model.addAttribute("admins", clientRepo.findClientsByEmail("admin"));
+        model.addAttribute("managers", clientRepo.findClientsByName("manager"));
         return "add_admin";
     }
 
     @PostMapping("/save")
     public String saveNewAdmin(Model model, Client client) {
-        System.out.println(client.getEmail().equals(client.getPassword()));
-        if (!client.getEmail().equals(client.getPassword())) {
+        if (!client.getSnils().equals(client.getPassword())) {
             model.addAttribute("admin", client);
             model.addAttribute("problem", "Пароли не совпадают");
             return "add_admin";
         }
 
-        client.setEmail("admin");
-        client.setRoles(Collections.singleton(Roles.ADMIN));// ставим роль админа
+        client.setName("manager");
+        client.setRoles(Collections.singleton(Roles.MANAGER));// ставим роль менеджера
 
-        clientRepo.save(client);
-        return "redirect:/admin";
+        Client savedClient = clientRepo.save(client);
+        log.info("Saved manager: {}", savedClient);
+        return "redirect:/admin/addNew";
     }
 
     @GetMapping("/delete/{id}")
@@ -98,13 +101,24 @@ public class AdminController {
 
     @GetMapping("/table_new")
     public String getTableWithNewCompanies(Model model) {
+        SecurityContext securityContext = SecurityContextHolder.getContext();
+        Authentication authentication = securityContext.getAuthentication();
+        Client client = (Client) authentication.getPrincipal();
+        model.addAttribute("client", client);
+
         List<Company> companyList = new ArrayList<>(companyRepo.findByStatus(1));//добавляем в лист заявки со статусом неоплачено
         model.addAttribute("companies", companyList);
+        model.addAttribute("client", client);
         return "admin_table_new";
     }
 
     @GetMapping("/table_payed")
     public String getTableWithPayedCompany(Model model) {
+        SecurityContext securityContext = SecurityContextHolder.getContext();
+        Authentication authentication = securityContext.getAuthentication();
+        Client client = (Client) authentication.getPrincipal();
+        model.addAttribute("client", client);
+
         List<Company> companyList = new ArrayList<>(companyRepo.findByStatus(2));//добавляем в лист заявки со статусом оплачено
         model.addAttribute("companies", companyList);
         return "admin_table_payed";
@@ -112,6 +126,11 @@ public class AdminController {
 
     @GetMapping("/table_closed")
     public String getTableWithClosedCompanies(Model model) {
+        SecurityContext securityContext = SecurityContextHolder.getContext();
+        Authentication authentication = securityContext.getAuthentication();
+        Client client = (Client) authentication.getPrincipal();
+        model.addAttribute("client", client);
+
         List<Company> companyList = new ArrayList<>(companyRepo.findByStatus(3));//добавляем в лист заявки со статусом закрыто
         model.addAttribute("companies", companyList);
         return "admin_table_closed";
@@ -145,14 +164,18 @@ public class AdminController {
     @GetMapping("/edit_company/{company_id}")
     public String editCompany(@PathVariable Long company_id, Model model) {
         Company company = companyRepo.findAllById(company_id);
+        List<Client> managers = clientRepo.findClientsByName("manager");
+        List<String> regions = managers.stream().map(Client::getDateOfBirth).collect(Collectors.toList());
+
         model.addAttribute("company", company);
+        model.addAttribute("regions", regions);
         return "admin_company_redactor";
     }
 
     @GetMapping("/closed_company/{company_id}")
     public String closedCompanyRequest(@PathVariable Long company_id) {
         Company company = companyRepo.findAllById(company_id);
-        company.setStatus(1);//устанавливаем статус 3 - закрыто
+        company.setStatus(3);//устанавливаем статус 3 - закрыто
         company.getClients().forEach(client -> client.setActive(false));//деактивируем тесты у пользователей
         companyRepo.save(company);
         return "redirect:/admin/table_closed";
@@ -175,12 +198,18 @@ public class AdminController {
         companyById.setRaschSchet(company.getRaschSchet());
         companyById.setBik(company.getBik());
         companyById.setBank(company.getBank());
+        companyById.setRegion(company.getRegion());
         companyRepo.save(companyById);
         return "redirect:/admin/table_new";
     }
 
     @GetMapping("/dopusk/{idCompany}")
     public String dopusk(@PathVariable Long idCompany, Model model) {
+        SecurityContext securityContext = SecurityContextHolder.getContext();
+        Authentication authentication = securityContext.getAuthentication();
+        Client contextClient = (Client) authentication.getPrincipal();
+        model.addAttribute("contextClient", contextClient);
+
         Company companyInRepo = companyRepo.findAllById(idCompany);
         List<Client> clients = new LinkedList<>(companyInRepo.getClients());
         model.addAttribute("clients", clients);
@@ -189,6 +218,11 @@ public class AdminController {
 
     @GetMapping("/akt/{idCompany}")
     public String akt(@PathVariable Long idCompany, Model model) {
+        SecurityContext securityContext = SecurityContextHolder.getContext();
+        Authentication authentication = securityContext.getAuthentication();
+        Client contextClient = (Client) authentication.getPrincipal();
+        model.addAttribute("contextClient", contextClient);
+
         Company companyInRepo = companyRepo.findAllById(idCompany);
         double price = companyInRepo.getClients().stream().mapToDouble(client -> client.getTheme().getPrice()).sum();
         model.addAttribute("company", companyInRepo);
@@ -308,6 +342,11 @@ public class AdminController {
 
     @GetMapping("tests_results")
     public String getTestResults(Model model) {
+        SecurityContext securityContext = SecurityContextHolder.getContext();
+        Authentication authentication = securityContext.getAuthentication();
+        Client contextClient = (Client) authentication.getPrincipal();
+        model.addAttribute("contextClient", contextClient);
+
         List<Client> clientsByDateOfExamExistsAndActiveFalse = clientRepo.findAllByDateOfExamNotNull();
         clientsByDateOfExamExistsAndActiveFalse.removeIf(client -> client.getDateOfExam().isEmpty());
         model.addAttribute("clients", clientsByDateOfExamExistsAndActiveFalse);
@@ -317,6 +356,11 @@ public class AdminController {
 
     @GetMapping("uch_list/{idCompany}")
     public String uchList(@PathVariable Long idCompany, Model model) {
+        SecurityContext securityContext = SecurityContextHolder.getContext();
+        Authentication authentication = securityContext.getAuthentication();
+        Client contextClient = (Client) authentication.getPrincipal();
+        model.addAttribute("contextClient", contextClient);
+
         Company company = companyRepo.findAllById(idCompany);
         Set<Schet> schets = company.getSchets();
 
@@ -365,8 +409,25 @@ public class AdminController {
         return "redirect:/admin";
     }
 
+    @GetMapping("edit_schet/{schetId}")
+    public String editSchet(@PathVariable Schet schetId, Model model) {
+        model.addAttribute("schet", schetId);
+        return "schet_faktura";
+    }
+
+    @GetMapping("delete_schet/{schet}")
+    public String deleteSchet(@PathVariable Schet schet) {
+        schetRepo.delete(schet);
+        return "redirect:/admin/get_schet_table";
+    }
+
     @GetMapping("get_schet_table")
     public String getSchetTable(Model model) {
+        SecurityContext securityContext = SecurityContextHolder.getContext();
+        Authentication authentication = securityContext.getAuthentication();
+        Client contextClient = (Client) authentication.getPrincipal();
+        model.addAttribute("contextClient", contextClient);
+
         Set<Schet> schets = schetRepo.findAll();
         model.addAttribute("schets", schets);
         return "admin_table_schet_faktur";
@@ -379,39 +440,5 @@ public class AdminController {
         model.addAttribute("schet", schet);
         return "static_schet_faktura";
     }
-
-    /**
-     * Шаблоны
-     **/
-    @GetMapping("template_akt")
-    public String getTemplateAkt(Model model) {
-        SecurityContext securityContext = SecurityContextHolder.getContext();
-        Authentication authentication = securityContext.getAuthentication();
-
-        Client client = (Client) authentication.getPrincipal();
-        model.addAttribute("client", client);
-        return "template_akt";
-    }
-
-    @GetMapping("template_schet")
-    public String getTemplateSchet(Model model) {
-        SecurityContext securityContext = SecurityContextHolder.getContext();
-        Authentication authentication = securityContext.getAuthentication();
-
-        Client client = (Client) authentication.getPrincipal();
-        model.addAttribute("client", client);
-        return "template_schet";
-    }
-
-    @GetMapping("template_dogovor")
-    public String getTemplateDogovor(Model model) {
-        SecurityContext securityContext = SecurityContextHolder.getContext();
-        Authentication authentication = securityContext.getAuthentication();
-
-        Client client = (Client) authentication.getPrincipal();
-        model.addAttribute("client", client);
-        return "template_dogovor";
-    }
-
 
 }

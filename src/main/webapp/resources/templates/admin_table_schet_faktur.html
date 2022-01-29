@@ -34,7 +34,12 @@
 <script src="https://unpkg.com/bootstrap-table@1.19.0/dist/extensions/export/bootstrap-table-export.min.js"></script>
 
 <body>
-
+<div th:if="${contextClient.name} == 'admin'">
+    <a th:href="@{/admin}">Главная</a>
+</div>
+<div th:if="${contextClient.name} == 'manager'">
+    <a th:href="@{/manager}">Главная</a>
+</div>
 <div class="container-fluid">
     <h2>Реестр счет фактур</h2>
     <table class="table table-fluid " id="myTable"
@@ -67,8 +72,8 @@
             <td th:text="${schet.getPrice()}"></td>
             <td th:text="${schet.company.id}"></td>
             <td>
-                <ul><a th:href="@{/admin/}">РЕДАКТИРОВАТЬ</a></ul>
-                <ul><a th:href="@{/admin/}">УДАЛИТЬ</a></ul>
+                <ul><a th:href="@{/admin/edit_schet/{schetId}(schetId = ${schet.id})}">РЕДАКТИРОВАТЬ</a></ul>
+                <ul><a th:href="@{/admin/delete_schet/{schet}(schet = ${schet.id})}">УДАЛИТЬ</a></ul>
             </td>
         </tr>
         </tbody>

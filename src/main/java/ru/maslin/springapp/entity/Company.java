@@ -13,6 +13,7 @@ import javax.persistence.SequenceGenerator;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.util.Date;
+import java.util.Objects;
 import java.util.Set;
 
 
@@ -39,6 +40,8 @@ public class Company {
     private String bank;//банк
     private Instant createAt;//дата создания
     private Integer status;// 1 - не оплачен, 2 - оплачен, 3 - закрыт
+
+    private String region;
 
     @OneToMany(mappedBy = "company", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Client> clients;
@@ -122,7 +125,7 @@ public class Company {
     }
 
     public long getCountOfSuccessClients() {
-        return this.getClients().stream().filter(client -> client.isActive()).count();
+        return this.getClients().stream().filter(client -> Objects.nonNull(client.getDateOfExam())).count();
     }
 
     public boolean isPayed() {
@@ -251,5 +254,13 @@ public class Company {
 
     public void setSchets(Set<Schet> schets) {
         this.schets = schets;
+    }
+
+    public String getRegion() {
+        return region;
+    }
+
+    public void setRegion(String region) {
+        this.region = region;
     }
 }

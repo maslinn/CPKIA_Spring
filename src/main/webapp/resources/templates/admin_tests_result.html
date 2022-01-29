@@ -34,7 +34,12 @@
 <script src="https://unpkg.com/bootstrap-table@1.19.0/dist/extensions/export/bootstrap-table-export.min.js"></script>
 
 <body>
-
+<div th:if="${client.name} == 'admin'">
+    <a th:href="@{/admin}">Главная</a>
+</div>
+<div th:if="${client.name} == 'manager'">
+    <a th:href="@{/manager}">Главная</a>
+</div>
 <div class="container">
     <h2>Список пользователей, прошедших экзамен</h2>
     <table class="table table-fluid" id="myTable"

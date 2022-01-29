@@ -1,6 +1,6 @@
 <div th:insert="~{header}"></div>
 <br>
-<div>
+<div th:if="${client.name} == 'admin'">
     <ul><a th:href="@{/admin/table_new}">Новые заявки</a></ul>
     <ul><a th:href="@{/admin/table_payed}">Открытые заявки</a></ul>
     <ul><a th:href="@{/admin/table_closed}">Закрытые заявки</a></ul>
@@ -9,21 +9,28 @@
     <br>
     <ul><a th:href="@{/admin/redactor_theme}">Редактирование вопросов</a></ul>
 </div>
+<div th:if="${client.name} == 'manager'">
+    <ul><a th:href="@{/manager/table_new}">Новые заявки</a></ul>
+    <ul><a th:href="@{/manager/table_payed}">Открытые заявки</a></ul>
+    <ul><a th:href="@{/manager/table_closed}">Закрытые заявки</a></ul>
+    <br>
+    <ul><a th:href="@{/manager/tests_results}">Результаты тестов</a></ul>
+</div>
 <br>
-<div>
+<div th:if="${client.name} == 'admin'">
     <ul><a th:href="@{/admin/addNew}">Добавить админа</a></ul>
 </div>
 <br>
 <br>
-<div>
+<div th:if="${client.name} == 'admin'">
     <ul><a th:href="@{/admin/get_schet_table}">Реестр счет фактур</a></ul>
 </div>
-<br>
-<br>
+<br th:if="${client.name} == 'admin'">
+<br th:if="${client.name} == 'admin'">
 <div>
-    <ul><a th:href="@{/admin/template_akt}">Шаблон акта</a></ul>
-    <ul><a th:href="@{/admin/template_schet}">Шаблон счета</a></ul>
-    <ul><a th:href="@{/admin/template_dogovor}">Шаблон договора</a></ul>
+    <ul><a th:href="@{/template_akt}">Шаблон акта</a></ul>
+    <ul><a th:href="@{/template_schet}">Шаблон счета</a></ul>
+    <ul><a th:href="@{/template_dogovor}">Шаблон договора</a></ul>
 </div>
 </body>
 </html>

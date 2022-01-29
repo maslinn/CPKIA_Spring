@@ -11,9 +11,17 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.context.annotation.SessionScope;
-import ru.maslin.springapp.entity.*;
+import ru.maslin.springapp.entity.Answer;
+import ru.maslin.springapp.entity.Client;
+import ru.maslin.springapp.entity.Company;
+import ru.maslin.springapp.entity.Question;
+import ru.maslin.springapp.entity.Theme;
 import ru.maslin.springapp.entity.local.LocalQuestion;
-import ru.maslin.springapp.repository.*;
+import ru.maslin.springapp.repository.AnswerRepo;
+import ru.maslin.springapp.repository.ClientRepo;
+import ru.maslin.springapp.repository.CompanyRepo;
+import ru.maslin.springapp.repository.QuestionRepo;
+import ru.maslin.springapp.repository.ThemeRepo;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -105,6 +113,7 @@ public class ClientController {
             client.setActive(false);
             client.setDateOfExam(LocalDateTime.now().format(DateTimeFormatter.ofPattern(europeanDatePattern)));
             client.setPercentResult(percentSuccess);
+            client.setEmail("closed/" + client.getEmail());
             clientRepository.save(client);
 
             List<Question> questions = themeRepo.findAllById(client.getTheme().getId()).getQuestions();
