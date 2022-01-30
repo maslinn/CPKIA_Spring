@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Redactor</title>
+</head>
+<body>
+<h2>Дабавить тему</h2>
+<br>
+<a th:href="@{/admin/}">Назад</a>
+<br>
+<form th:action="@{/admin/save_theme}" th:object="${theme}" th:method="POST">
+    <div class="row">
+        <label> Назвние: </label>
+        <label>
+            <input type="text" th:field="*{name}"/>
+        </label>
+        <label> Цена: </label>
+        <label>
+            <input type="number" th:field="*{price}"/>
+        </label>
+    </div>
+    <br>
+    <div class="row">
+        <button id="save" type="submit">Добавить тему</button>
+    </div>
+</form>
+
+<br>
+
+<h2>Добавленные темы</h2>
+<table>
+    <thead>
+    <tr>
+        <td>Название</td>
+        <td></td>
+        <td></td>
+    </tr>
+    </thead>
+    <tr th:each="theme : ${themes}">
+        <td><a th:text="${theme.name}"
+               th:href="@{/admin/get_question_redactor/{theme_id}(theme_id=${theme.getId()})}"></a></td>
+        <td></td>
+        <td style="color: red"><a th:method="delete"
+                                  th:href="@{/admin/delete_theme/{id}(id=${theme.getId()})}">Удалить</a></td>
+    </tr>
+</table>
+</body>
+</html>
