@@ -130,7 +130,7 @@ public class CompanyController {
             //отправляем сотруднику сообщение с его email и паролем
             String message = String.format(
                     "Здравствуйте, %s! \n" +
-                            "Вы были зарегистрированы на обучающем портале ЧУДПО ЦПКИА \n" +
+                            "Вы были зарегистрированы на обучающем портале ЧУДПО ЦПК \n" +
                             "Используйте следующие логин и пароль для входа в обучающий портал\n \n" +
                             "Логин: %s\n" +
                             "Пароль: %s\n",
@@ -138,7 +138,7 @@ public class CompanyController {
                     client.getEmail(),
                     client.getPassword()
             );
-            mailSender.send(client.getEmail(), "Регистрация на учебном портале ЦПКИА", message);
+            mailSender.send(client.getEmail(), "Регистрация на учебном портале ЦПК", message);
         }
         return "successfully_add";
     }

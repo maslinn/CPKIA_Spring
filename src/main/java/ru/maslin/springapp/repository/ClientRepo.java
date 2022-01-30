@@ -22,5 +22,7 @@ public interface ClientRepo extends CrudRepository<Client, Integer> {
 
     List<Client> findAllByDateOfExamNotNull();
 
+    boolean existsByName(String name);
+
     List<Client> findAllByDateOfExamNotNullAndCompanyRegion(String companyRegion);
 }
