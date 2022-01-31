@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js"></script>
+</head>
+<body style="background-color:#FFF;
+    color:#000000;
+    font-family:'Times New Roman', Times, serif;
+    font-size:12pt; margin:0; padding:0;">
+
+<div th:if="${contextClient.name} == 'admin'">
+    <a th:href="@{/admin}">Главная</a>
+</div>
+<div th:if="${contextClient.name} == 'manager'">
+    <a th:href="@{/manager}">Главная</a>
+</div>
+<br>
+<div id="content">
+    <th:block th:each="client : ${clients}">
+        <table align="center" width="90%" border="0" cellspacing="0" cellpadding="20" style="font-size:10pt;">
+            <tbody>
+            <tr>
+                <td width="50%" style="border-top:1px dashed #404040;border-bottom:1px dashed #404040;">
+                    <b><i th:text="${'Допуск для: ' + client.name}"></i></b>
+                    <p th:text="${'По договору с ' + client.company.name + ' к рамочному договору ' + client.company.id}"></p>
+                    <p th:text="${'Логин для входа: ' + client.email}"></p>
+                    <p th:text="${'Пароль для входа: ' + client.password}"></p>
+                </td>
+                <td width="50%" style="border-top:1px dashed #404040;border-bottom:1px dashed #404040;">
+                    С правилами ознакомлен. Согласие на обработку и хранение личных данных получено.<br>
+                    &nbsp;
+                    __________________/__________________/<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<small>(подпись)</small>
+                    <p>
+                        &nbsp;&nbsp;&nbsp;"____"___________________20&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;г.</p>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </th:block>
+</div>
+<br>
+<button onclick="createPDF()">Сохранить в PDF</button>
+<script>
+    function createPDF() {
+        var pdf = document.getElementById("content");
+        var opt = {
+            margin: 1,
+            filename: 'dopusk.pdf',
+            image: {type: 'jpeg', quality: 1},
+            html2canvas: {scale: 2},
+            jsPDF: {unit: 'in', format: 'a4', orientation: 'portrait'}
+        };
+        html2pdf().set(opt).from(pdf).save();
+    }
+</script>
+</body>
+</html>

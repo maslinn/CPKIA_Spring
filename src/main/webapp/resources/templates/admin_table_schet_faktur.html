@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Table Schet Faktur</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
+          integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+            integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"
+            integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut"
+            crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"
+            integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k"
+            crossorigin="anonymous"></script>
+
+    <script
+            src="http://code.jquery.com/jquery-3.3.1.min.js"
+            integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+            crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
+    <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+
+</head>
+
+<link href="https://unpkg.com/bootstrap-table@1.19.0/dist/bootstrap-table.min.css" rel="stylesheet">
+
+<script src="https://cdn.jsdelivr.net/npm/tableexport.jquery.plugin@1.10.21/tableExport.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/tableexport.jquery.plugin@1.10.21/libs/jsPDF/jspdf.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/tableexport.jquery.plugin@1.10.21/libs/jsPDF-AutoTable/jspdf.plugin.autotable.js"></script>
+<script src="https://unpkg.com/bootstrap-table@1.19.0/dist/bootstrap-table.min.js"></script>
+<script src="https://unpkg.com/bootstrap-table@1.19.0/dist/extensions/export/bootstrap-table-export.min.js"></script>
+
+<body>
+<div th:if="${contextClient.name} == 'admin'">
+    <a th:href="@{/admin}">Главная</a>
+</div>
+<div th:if="${contextClient.name} == 'manager'">
+    <a th:href="@{/manager}">Главная</a>
+</div>
+<div class="container-fluid">
+    <h2>Реестр счет фактур</h2>
+    <table class="table table-fluid " id="myTable"
+           data-show-export="true"
+           data-pagination="true"
+           data-search="true">
+        <thead>
+        <tr>
+            <th class="th-sm" data-sortable="true">№ счет фактуры</th>
+            <th class="th-sm" data-sortable="true">Дата выдачи</th>
+            <th class="th-sm" data-sortable="true">Название организации</th>
+            <th class="th-sm">ИНН/КПП</th>
+            <th class="th-sm">Пользователи</th>
+            <th class="th-sm">№ пл. документа (заказчика)</th>
+            <th class="th-sm" data-sortable="true">Дата пл. документа</th>
+            <th class="th-sm">Стоимость</th>
+            <th class="th-sm" data-sortable="true">Код договора</th>
+            <th class="th-sm">Действия</th>
+        </tr>
+        </thead>
+        <tbody th:if="${!schets.isEmpty()}">
+        <tr th:each="schet : ${schets}">
+            <td><a th:text="${schet.id}" th:href="@{/admin/get_schet/{schet_id}(schet_id = ${schet.id})}"></a></td>
+            <td th:text="${schet.getDateSchetInEuropeFormat()}"></td>
+            <td th:text="${schet.company.name}"></td>
+            <td th:text="${schet.company.inn_kpp}"></td>
+            <td th:text="${schet.clients.size()}"></td>
+            <td th:text="${schet.numberDoc}"></td>
+            <td th:text="${schet.getDateDocInEuropeFormat()}"></td>
+            <td th:text="${schet.getPrice()}"></td>
+            <td th:text="${schet.company.id}"></td>
+            <td>
+                <ul><a th:href="@{/admin/edit_schet/{schetId}(schetId = ${schet.id})}">РЕДАКТИРОВАТЬ</a></ul>
+                <ul><a th:href="@{/admin/delete_schet/{schet}(schet = ${schet.id})}">УДАЛИТЬ</a></ul>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<div class="m-2" th:if="${company} != null">
+    <a class="btn btn-success btn-lg" th:href="@{/admin/add_schet/{idCompany}(idCompany = ${company.id})}">Добавить</a>
+</div>
+
+<div id="toolbar" class="select" style="display: none">
+    <select class="form-control">
+        <option value="">Export Basic</option>
+        <option value="all">Export All</option>
+    </select>
+</div>
+
+<table id="table"
+       data-show-export="true"
+       data-pagination="true"
+       data-side-pagination="server"
+       data-click-to-select="true"
+       data-toolbar="#toolbar"
+       data-show-toggle="true"
+       data-show-columns="true"
+       data-url="https://examples.wenzhixin.net.cn/examples/bootstrap_table/data">
+</table>
+
+<script>
+    var $table = $('#myTable')
+    $(function () {
+        $('#toolbar').find('select').change(function () {
+            $table.bootstrapTable('destroy').bootstrapTable({
+                exportDataType: $(this).val(),
+                exportTypes: ['txt', 'excel']
+            })
+        }).trigger('change')
+    })
+</script>
+
+</body>
+</html>

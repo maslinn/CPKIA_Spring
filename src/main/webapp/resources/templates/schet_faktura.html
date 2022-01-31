@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Schet Faktura</title>
+    <style>
+        table {
+            font-family: "Times New Roman", Times, serif;
+            font-size: 7pt;
+        }
+
+        table td {
+            font-family: "Times New Roman", Times, serif;
+            font-size: 7pt;
+        }
+
+        table th {
+            font-family: "Times New Roman", Times, serif;
+            font-size: 7pt;
+        }
+    </style>
+</head>
+<body style="background-color: rgb(255, 255, 255); color: rgb(0,0, 0)">
+<a th:href="@{/admin/get_schet_table}">Реестр счет фактур</a>
+
+<form th:action="@{/admin/add_schet}" th:object="${schet}" th:method="POST">
+
+    <table width="100%" align="center" border="0" style="font-family: " times="" new="" roman
+    ",times,serif;="" font-size:="" 6pt;"="">
+    <tbody>
+    <tr>
+        <td width="100%">&nbsp;</td>
+        <td width="1%">Приложение №1<br>
+            <nobr>к постановлению Правительства</nobr>
+            <br>
+            Российской Федерации<br>
+            от 26.12.2011 № 1137<br>
+            <nobr>(в редакции постановления</nobr>
+            <br>
+            Правительства РФ<br>
+            от 26.12.2011 № 981)
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2" align="center">
+            <h4>УЧЁТНЫЙ № <input type="number" th:value="*{id}" th:field="*{id}"> от
+                <input type="date" th:field="*{dateSchet}"><br>
+                ИСПРАВЛЕНИЕ № _____ от ______________ </h4>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <table width="100%" border="0">
+                <tbody>
+                <tr>
+                    <td>Продавец&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                    <td>Негосударственное (частное) образовательное учреждение дополнительного профессионального<br>
+                        образования (повышения квалификации) специалистов "Приволжский центр повышения квалификации<br>
+                        и профессиональной аттестации в строительстве и ЖКХ" (НОУДПО "ЦПКиА")
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            Адрес &nbsp; Россия, 410031, Саратов, ул. Комсомольская, 52<br>
+            ИНН/КПП продавца &nbsp; 6455038915/645001001<br>
+            Грузоотправитель и его адрес &nbsp; - <br>
+            Грузополучатель и его адрес &nbsp; - <br>
+            К платежно-расчетному документу № <input type="number" th:field="*{numberDoc}"> от
+            <input type="date" th:field="*{dateDoc}"><br>
+            Покупатель &nbsp; <a th:text="*{company.name}"></a><br>
+            Адрес &nbsp; <a th:text="*{company.adressPocht}"></a><br>
+            ИНН/КПП покупателя &nbsp; <a th:text="*{company.inn_kpp}"></a><br>
+            Валюта: наименование, код российский рубль, 643
+        </td>
+        <td>
+            <br>&nbsp;<br>&nbsp;<br>
+            &nbsp;<br>
+            &nbsp;<br>
+            &nbsp;<br>
+            &nbsp;<br>
+            &nbsp;<br>
+            &nbsp;<br>
+            &nbsp;<br>
+            &nbsp;<br>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2">
+
+            <table border="1" cellpadding="5" cellspacing="0" width="100%" style="font-family: " times="" new="" roman
+            ",times,serif;="" font-size:="" 6pt;"="">
+    <tbody>
+    <tr>
+        <th rowspan="2">Наименование товара<br>(описание выполненных<br>работ, оказанных услуг),<br> имущественного
+            права
+        </th>
+        <th colspan="2">Единица<br>измерения
+
+        </th>
+        <th rowspan="2"> Коли-<br>чество
+        </th>
+        <th rowspan="2">Цена (тариф)<br>за единицу<br>измерения
+        </th>
+        <th rowspan="2">Стоимость товаров<br>(работ, услуг), <br>имущественных <br>прав без<br> налога - всего
+        </th>
+        <th rowspan="2">В том числе<br> сумма акциза
+        </th>
+        <th rowspan="2">Налоговая<br>ставка
+        </th>
+        <th rowspan="2">Сумма <br>налога, предъявляемая покупателю
+        </th>
+        <th rowspan="2">Стоимость товаров<br> (работ, услуг), <br>имущественных прав, <br>с налогом - всего
+        </th>
+        <th colspan="2">Страна<br>происхождения товара
+
+        </th>
+        <th rowspan="2">Номер<br> таможенной <br>декларации
+        </th>
+    </tr>
+    <tr>
+        <th>Код
+        </th>
+        <th>Условное обозначение (национальное)
+        </th>
+        <th>Цифровой код
+        </th>
+        <th>Краткое наименование
+
+        </th>
+    </tr>
+    <tr>
+        <td align="center">1
+        </td>
+        <td align="center">2
+        </td>
+        <td align="center">2а
+        </td>
+        <td align="center">3
+        </td>
+        <td align="center">4
+        </td>
+        <td align="center">5
+        </td>
+        <td align="center">6
+        </td>
+        <td align="center">7
+        </td>
+        <td align="center">8
+        </td>
+        <td align="center">9
+        </td>
+        <td align="center">10
+        </td>
+        <td align="center">10а
+        </td>
+        <td align="center">11
+
+
+        </td>
+    </tr>
+    <tr>
+        <td align="left">Образовательные услуги (повышение квалификации) по договору
+            <a th:text="${schet.company.id}"></a> от <a th:text="${schet.company.createAtToString}"></a>, количество
+            слушателей
+            <a th:text="${schet.company.clients.size()}"></a>
+
+        </td>
+        <td align="center">---
+        </td>
+        <td align="center">---
+        </td>
+        <td align="center">---
+        </td>
+        <td align="center">---</td>
+        <td align="center" th:text="${price}">price
+        </td>
+        <td align="center">без акциза
+        </td>
+        <td align="center">без НДС
+        </td>
+        <td align="center">без НДС
+        </td>
+        <td align="center" th:text="${price}">price
+        </td>
+        <td align="center">---
+        </td>
+        <td align="center">---
+        </td>
+        <td align="center">---
+        </td>
+    </tr>
+    <tr>
+        <td colspan="5" border="0">Всего к оплате</td>
+        <td align="center" th:text="${price}">price</td>
+        <td colspan="2" align="center">X
+        </td>
+        <td align="center">без НДС
+        </td>
+        <td align="center" th:text="${price}">price
+
+
+        </td>
+    </tr>
+    </tbody>
+    </table>
+    </td></tr>
+    <tr>
+        <td colspan="2"><p>&nbsp;
+
+            <table width="100%" border="0">
+                <tbody>
+                <tr>
+                    <td>Руководитель организации или<br>
+                        иное уполномоченное лицо ____________________ Циденков М.К.
+                    </td>
+                    <td>Главный бухгалтер или <br> иное уполномоченное лицо ____________________ Скрипник О.Н.
+                    </td>
+                </tr>
+                <tr>
+                    <td valign="top">
+                        <pre>                        (подпись)       (Ф.И.О.)</pre>
+                    </td>
+                    <td valign="top">
+                        <pre>                     (подпись)      (Ф.И.О.)</pre>
+                    </td>
+
+                </tr>
+                <tr>
+                    <td>Индивидуальный предприниматель ______________ ________________</td>
+                    <td>__________________________________________________
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <pre>                          (подпись)      (Ф.И.О.)</pre>
+                    </td>
+                    <td valign="top">(реквизиты свидетельства о государственной<br>регистрации индивидуального
+                        предпринимателя)
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <small>П р и м е ч а н и е. Первый экземпляр - покупателю, второй экземпляр - продавцу.</small>
+
+            </p>
+        </td>
+    </tr>
+    </tbody>
+    </table>
+    <br>
+    <br>
+    <br>
+    <input style="display: none" th:field="*{company.id}" th:value="*{company.id}">
+    <label> Слушатели: </label>
+    <th:block th:each="client, itemStat  :  ${schet.clients}">
+        <select th:field="*{clients[__${itemStat.index}__].id}">
+            <option th:value="${client.id}" th:text="${client.name} + ' ' + ${client.theme.price}"></option>
+            <option th:value="${null}">Нет</option>
+        </select>
+    </th:block>
+    <br>
+    <br>
+    <br>
+    <br>
+    <div class="row">
+        <button id="add" type="submit">Сохранить</button>
+    </div>
+</form>
+</body>
+
+</html>

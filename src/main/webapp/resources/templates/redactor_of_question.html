@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Question Redactor</title>
+</head>
+<body>
+<h2>Добавить вопрос</h2>
+<br>
+<a th:href="@{/admin/redactor_theme}">Назад</a>
+<br>
+<form th:action="@{/admin/save_theme}" th:object="${theme}" th:method="POST">
+    <div class="row">
+        <input style="display: none" th:field="*{id}">
+        <input style="display: none" th:field="*{questions}">
+        <input style="display: none" th:field="*{clients}">
+        <label> Тема: </label>
+        <label>
+            <input type="text" th:field="*{name}"/>
+        </label>
+
+        <label> Цена: </label>
+        <label>
+            <input type="number" th:field="*{price}"/><a> рублей</a>
+        </label>
+    </div>
+    <br>
+    <div class="row">
+        <button id="edit_theme" type="submit">Изменить</button>
+    </div>
+</form>
+<br>
+<br>
+<form th:action="@{/admin/save_question}" th:object="${question}" th:method="POST">
+    <div class="row">
+        <label> Текст вопроса: </label>
+        <label>
+            <input type="text" th:field="*{text}"/>
+        </label>
+
+        <label> Материалы для подготовки: </label>
+        <label>
+            <input type="text" th:field="*{material}"/>
+        </label>
+
+        <label style="display: none">
+            <input th:field="*{theme}" th:text="${theme}"/>
+        </label>
+    </div>
+    <br>
+    <div class="row">
+        <button id="save" type="submit">Добавить вопрос</button>
+    </div>
+</form>
+
+<br>
+
+<h2>Добавленные вопросы</h2>
+<table>
+    <thead>
+    <tr>
+        <td>Вопросы</td>
+        <td></td>
+    </tr>
+    </thead>
+    <tr th:if="${!questions.isEmpty()}" th:each="one_question : ${questions}">
+        <td style="margin: 2em"><a th:text="${one_question.text}"
+                                   th:href="@{/admin/get_answer_redactor/{question_id}(question_id=${one_question.getId()})}"></a>
+        </td>
+        <td style="margin: 2em"><p th:text="${one_question.material}"></p></td>
+        <td><a style="color: #be0606" th:method="delete"
+               th:href="@{/admin/delete_question/{id}(id=${one_question.getId()})}">Удалить</a></td>
+    </tr>
+</table>
+</body>
+</html>
