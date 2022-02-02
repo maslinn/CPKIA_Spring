@@ -63,12 +63,12 @@
         <tbody th:if="${!schets.isEmpty()}">
         <tr th:each="schet : ${schets}">
             <td><a th:text="${schet.id}" th:href="@{/admin/get_schet/{schet_id}(schet_id = ${schet.id})}"></a></td>
-            <td th:text="${schet.getDateSchetInEuropeFormat()}"></td>
+            <td th:text="${schet.getDateSchet().isEmpty() ? '' : schet.getDateSchetInEuropeFormat()}"></td>
             <td th:text="${schet.company.name}"></td>
             <td th:text="${schet.company.inn_kpp}"></td>
             <td th:text="${schet.clients.size()}"></td>
             <td th:text="${schet.numberDoc}"></td>
-            <td th:text="${schet.getDateDocInEuropeFormat()}"></td>
+            <td th:text="${schet.getDateDoc().isEmpty() ? '' :schet.getDateDocInEuropeFormat()}"></td>
             <td th:text="${schet.getPrice()}"></td>
             <td th:text="${schet.company.id}"></td>
             <td>
