@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Add Company order</title>
-    <link media="all" rel="stylesheet" th:href="@{/resources/css/addForm.css}" type="text/css"/>
+    <link media="all" rel="stylesheet" th:href="@{/addForm.css}" type="text/css"/>
 </head>
 <body>
 <div class="login-page">
@@ -22,7 +22,8 @@
 
                 <label> Директор (должность, ФИО полностью) в родительном падеже: </label>
                 <input type="text" th:field="*{director}" required pattern="[А-Яа-яЁё\s]{3,}[,][А-Яа-яЁё\s]{6,}"
-                       title="Поле должно быть заполненно в формате 'должность, ФИО в Р.П.' (минимальная длина - 12 символов)">
+                       title="Поле должно быть заполненно в формате 'должность, ФИО в Р.П.' (минимальная длина - 12 символов)"
+                       placeholder="Директора, Иванова Ивана Ивановича">
 
                 <label> Основание: </label>
                 <input type="text" th:field="*{osnovanie}" required>

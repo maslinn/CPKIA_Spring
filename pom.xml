@@ -10,7 +10,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
-    <groupId>cpkia-new</groupId>
+    <groupId>cpkia</groupId>
     <artifactId>CPKIA</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
