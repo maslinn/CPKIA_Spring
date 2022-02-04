@@ -1,5 +1,5 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
-<html>
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
     <title></title>
@@ -96,8 +96,8 @@
         Циденкова М.К., действующего на основании
         Устава, именуемое в дальнейшем –
         «Исполнитель», с одной стороны, и
-        ______________________________ в лице директора
-        ________________________________, действующего на
+        <a th:text=" ${company.name} "></a> в лице директора
+        <a th:text=" ${company.director} "></a>, действующего на
         основании Устава, именуемое в дальнейшем
         – «Заказчик», с другой стороны, совместно
         именуемые «Стороны», заключили в
@@ -330,7 +330,7 @@
         <font face="Times New Roman, serif"><b>4. Стоимость услуг,
             сроки и порядок их оплаты</b></font></p>
     <p lang="ru-RU" class="western" style="margin-bottom: 0in"><font face="Times New Roman, serif">4.1.
-        Стоимость услуг составляет ___&nbsp;(__)
+        Стоимость услуг составляет <a th:text=" ${price / company.clients.size()} "></a>(<a th:text=" ${sumInWord} "></a>)
         рублей 00 копеек за каждого Слушателя.
         Услуги налогом НДС не облагаются согласно
         пп.14 п.2 ст. 149 гл. 21 «налог на добавленную
@@ -338,13 +338,13 @@
     <p lang="ru-RU" class="western" style="margin-bottom: 0in"><font face="Times New Roman, serif"><span
             style="background: #ffffff">4.2.
 Количество слушателей от Заказчика по
-данному договору составляет __&nbsp;(__)
+данному договору составляет <a th:text=" ${company.clients.size()} "></a>
 человек(ка).</span></font><font face="Times New Roman, serif"><br/>
     </font><font face="Times New Roman, serif"><span style="background: #ffffff">Общая
 стоимость </span></font><font face="Times New Roman, serif">платных
         образовательных услуг за весь период
-        обучения составляет ___ (______) рублей 00
-        копеек.<br/>
+        обучения составляет <a th:text=" ${sumInWord} "></a>.
+        <br/>
     </font><font face="Times New Roman, serif">4.3.
     </font><font face="Times New Roman, serif"><span style="background: #ffffff">Заказчик
 производит 100% предоплату услуг, путем

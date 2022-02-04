@@ -232,6 +232,22 @@ public class AdminController {
         return "akt";
     }
 
+    @GetMapping("/dogovor/{idCompany}")
+    public String dogovor(@PathVariable Long idCompany, Model model) {
+        SecurityContext securityContext = SecurityContextHolder.getContext();
+        Authentication authentication = securityContext.getAuthentication();
+        Client contextClient = (Client) authentication.getPrincipal();
+        model.addAttribute("contextClient", contextClient);
+
+        Company companyInRepo = companyRepo.findAllById(idCompany);
+        double price = companyInRepo.getClients().stream().mapToDouble(client -> client.getTheme().getPrice()).sum();
+        model.addAttribute("company", companyInRepo);
+        model.addAttribute("sumInWord", MoneyInWords.inwords(price));
+        model.addAttribute("price", price);
+        model.addAttribute("countOfClients", companyInRepo.getClients().size());
+        return "dogovor";
+    }
+
     @GetMapping("/edit_client/{client_id}")
     public String editClient(@PathVariable Long client_id, Model model) {
         Client clientById = clientRepo.findAllById(client_id);

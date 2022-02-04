@@ -26,7 +26,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers("/", "/company/**", "/resources/**", "/css/**")
+                .antMatchers("/", "/company/**", "/resources/**", "/*")
                 .permitAll()
                 .anyRequest().authenticated()
                 .and()
@@ -38,14 +38,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .logout()
                 .permitAll();
         //http.csrf().disable(); если надо закрыть csrf защиту
-    }
-
-    @Override
-    public void configure(WebSecurity web) {
-        web.ignoring()
-                .antMatchers(
-                        "resources/static/**", "/fonts/**",
-                        "/images/**");
     }
 
     @Override
