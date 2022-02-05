@@ -7,6 +7,11 @@
             <input style="display: none" th:field="*{id}" th:value="*{id}">
             <input type="submit" th:value="${'Пройти тестирование по программе ' + theme.name}">
         </form>
+
+        <p>Материалы для подготовки</p>
+        <div th:each="question : ${theme.questions}">
+            <a th:if="${question.material != null}" th:text="${question.material}" th:href="${question.material}"></a>
+        </div>
     </div>
     <br>
     <div th:if="${not client.getAnswersId().isEmpty() and not client.isActive()}">
