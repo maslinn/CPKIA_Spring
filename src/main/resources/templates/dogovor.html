@@ -58,7 +58,7 @@
        align="center"
        style="line-height: 100%; margin-bottom: 0.14in">
         <font face="Times New Roman, serif"><font size="4" style="font-size: 14pt"><b>Договор
-            №&nbsp;&nbsp;&nbsp;</b></font></font></p>
+            №&nbsp;&nbsp;<a th:text="${company.id}"></a></b></font></font></p>
     <p lang="ru-RU" class="western" align="center" style="line-height: 100%; margin-bottom: 0in">
         <font face="Times New Roman, serif">об оказании
             образовательных услуг по повышению
@@ -96,7 +96,7 @@
         Циденкова М.К., действующего на основании
         Устава, именуемое в дальнейшем –
         «Исполнитель», с одной стороны, и
-        <a th:text=" ${company.name} "></a> в лице директора
+        <a th:text=" ${company.name} "></a> в лице
         <a th:text=" ${company.director} "></a>, действующего на
         основании Устава, именуемое в дальнейшем
         – «Заказчик», с другой стороны, совместно
