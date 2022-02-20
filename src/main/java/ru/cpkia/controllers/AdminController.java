@@ -461,6 +461,36 @@ public class AdminController {
         return "dogovor";
     }
 
+    @GetMapping("/prilojenie_1/{idCompany}")
+    public String prolojenie1(@PathVariable Long idCompany, Model model) {
+        SecurityContext securityContext = SecurityContextHolder.getContext();
+        Authentication authentication = securityContext.getAuthentication();
+        Client contextClient = (Client) authentication.getPrincipal();
+        model.addAttribute("contextClient", contextClient);
 
+        Company companyInRepo = companyRepo.findAllById(idCompany);
+        double price = companyInRepo.getClients().stream().mapToDouble(client -> client.getTheme().getPrice()).sum();
+        model.addAttribute("company", companyInRepo);
+        model.addAttribute("sumInWord", MoneyInWords.inwords(price));
+        model.addAttribute("price", price);
+        model.addAttribute("countOfClients", companyInRepo.getClients().size());
+        return "prilojenie_1";
+    }
+
+    @GetMapping("/prilojenie_2/{idCompany}")
+    public String prilojenie2(@PathVariable Long idCompany, Model model) {
+        SecurityContext securityContext = SecurityContextHolder.getContext();
+        Authentication authentication = securityContext.getAuthentication();
+        Client contextClient = (Client) authentication.getPrincipal();
+        model.addAttribute("contextClient", contextClient);
+
+        Company companyInRepo = companyRepo.findAllById(idCompany);
+        double price = companyInRepo.getClients().stream().mapToDouble(client -> client.getTheme().getPrice()).sum();
+        model.addAttribute("company", companyInRepo);
+        model.addAttribute("sumInWord", MoneyInWords.inwords(price));
+        model.addAttribute("price", price);
+        model.addAttribute("countOfClients", companyInRepo.getClients().size());
+        return "prilojenie_2";
+    }
 
 }

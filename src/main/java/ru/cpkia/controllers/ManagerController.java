@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import ru.cpkia.entity.Client;
 import ru.cpkia.entity.Company;
@@ -19,6 +20,7 @@ import ru.cpkia.securityAtribute.MoneyInWords;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/manager")
@@ -163,6 +165,75 @@ public class ManagerController {
         model.addAttribute("price", price);
         model.addAttribute("countOfClients", companyInRepo.getClients().size());
         return "dogovor";
+    }
+
+    @GetMapping("/edit_company/{company_id}")
+    public String editCompany(@PathVariable Long company_id, Model model) {
+        SecurityContext securityContext = SecurityContextHolder.getContext();
+        Authentication authentication = securityContext.getAuthentication();
+        Client contextClient = (Client) authentication.getPrincipal();
+        model.addAttribute("contextClient", contextClient);
+
+        Company company = companyRepo.findAllById(company_id);
+        List<Client> managers = clientRepo.findClientsByName("manager");
+        List<String> regions = managers.stream().map(Client::getDateOfBirth).collect(Collectors.toList());
+
+        model.addAttribute("company", company);
+        model.addAttribute("regions", regions);
+        return "admin_company_redactor";
+    }
+
+    @PostMapping("/edit_company")
+    public String editCompanyPost(Company company) {
+        Company companyById = companyRepo.findAllById(company.getId());
+        companyById.setName(company.getName());
+        companyById.setFullname(companyById.getFullname());
+        companyById.setEmail(company.getEmail());
+        companyById.setDirector(company.getDirector());
+        companyById.setOsnovanie(company.getOsnovanie());
+        companyById.setPhone(company.getPhone());
+        companyById.setAdressUr(company.getAdressUr());
+        companyById.setAdressPocht(company.getAdressPocht());
+        companyById.setKorSchet(company.getKorSchet());
+        companyById.setInn_kpp(company.getInn_kpp());
+        companyById.setRaschSchet(company.getRaschSchet());
+        companyById.setBik(company.getBik());
+        companyById.setBank(company.getBank());
+        companyById.setRegion(company.getRegion());
+        companyRepo.save(companyById);
+        return "redirect:/admin/table_new";
+    }
+
+    @GetMapping("/prilojenie_1/{idCompany}")
+    public String prolojenie1(@PathVariable Long idCompany, Model model) {
+        SecurityContext securityContext = SecurityContextHolder.getContext();
+        Authentication authentication = securityContext.getAuthentication();
+        Client contextClient = (Client) authentication.getPrincipal();
+        model.addAttribute("contextClient", contextClient);
+
+        Company companyInRepo = companyRepo.findAllById(idCompany);
+        double price = companyInRepo.getClients().stream().mapToDouble(client -> client.getTheme().getPrice()).sum();
+        model.addAttribute("company", companyInRepo);
+        model.addAttribute("sumInWord", MoneyInWords.inwords(price));
+        model.addAttribute("price", price);
+        model.addAttribute("countOfClients", companyInRepo.getClients().size());
+        return "prilojenie_1";
+    }
+
+    @GetMapping("/prilojenie_2/{idCompany}")
+    public String prilojenie2(@PathVariable Long idCompany, Model model) {
+        SecurityContext securityContext = SecurityContextHolder.getContext();
+        Authentication authentication = securityContext.getAuthentication();
+        Client contextClient = (Client) authentication.getPrincipal();
+        model.addAttribute("contextClient", contextClient);
+
+        Company companyInRepo = companyRepo.findAllById(idCompany);
+        double price = companyInRepo.getClients().stream().mapToDouble(client -> client.getTheme().getPrice()).sum();
+        model.addAttribute("company", companyInRepo);
+        model.addAttribute("sumInWord", MoneyInWords.inwords(price));
+        model.addAttribute("price", price);
+        model.addAttribute("countOfClients", companyInRepo.getClients().size());
+        return "prilojenie_2";
     }
 
 }

@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class TemplateController {
 
     @GetMapping("/")
-    public String homePage(){
+    public String homePage() {
         return "home";
     }
 
@@ -24,9 +24,19 @@ public class TemplateController {
         return "/template_schet";
     }
 
-    @GetMapping("template_dogovor")
+    @GetMapping("/template_dogovor")
     public String getTemplateDogovor() {
         return "template_dogovor";
+    }
+
+    @GetMapping("/template_prilojenie_1")
+    public String getTemplatePriloj1() {
+        return "template_prilojenie_1";
+    }
+
+    @GetMapping("/template_prilojenie_2")
+    public String getTemplatePriloj2() {
+        return "template_prilojenie_2";
     }
 
 }

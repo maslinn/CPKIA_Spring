@@ -41,7 +41,7 @@
     <a th:href="@{/manager}">Главная</a>
 </div>
 <div class="container">
-    <h2>Список заявок</h2>
+    <h2>Список новых заявок</h2>
     <table class="table table-fluid" id="myTable"
            data-show-export="true"
            data-pagination="true"
@@ -71,17 +71,8 @@
                 <ul><a th:href="@{/admin/delete_company/{company_id}(company_id = ${company.id})}">УДАЛИТЬ</a></ul>
             </td>
             <td th:if="${client.name} == 'manager'">
-                <div class="row">
-                    <div class="col"><a th:href="@{/manager/payed/{company_id}(company_id = ${company.getId()})}">ОТКРЫТЬ
-                        ТЕСТЫ</a></div>
-                </div>
-                <div class="row">
-                    <div class="col"><a
-                            th:href="@{/manager/dopusk/{idCompany}(idCompany = ${company.id})}">Допуски</a></div>
-                    <div class="col"><a th:href="@{/manager/akt/{idCompany}(idCompany = ${company.id})}">Акт</a></div>
-                    <div class="col"><a th:href="@{/manager/akt/{idCompany}(idCompany = ${company.id})}">Договор</a>
-                    </div>
-                </div>
+                <ul><a th:href="@{/manager/payed/{company_id}(company_id = ${company.getId()})}">ОТКРЫТЬ ТЕСТЫ</a></ul>
+                <ul><a th:href="@{/manager/edit_company/{company_id}(company_id = ${company.id})}">РЕДАКТИРОВАТЬ</a></ul>
             </td>
         </tr>
         </tbody>

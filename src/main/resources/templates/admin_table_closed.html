@@ -40,7 +40,7 @@
     <a th:href="@{/manager}">Главная</a>
 </div>
 <div class="container">
-    <h2>Список заявок</h2>
+    <h2>Список закрытых заявок</h2>
     <table class="table table-fluid" id="myTable"
            data-show-export="true"
            data-pagination="true"
@@ -75,6 +75,10 @@
                     <ul><a th:if="${client.name} == 'admin'"
                            th:href="@{/admin/edit_company/{company_id}(company_id = ${company.id})}">РЕДАКТИРОВАТЬ</a>
                     </ul>
+                    <ul><a th:if="${client.name} == 'manager'"
+                           th:href="@{/manager/edit_company/{company_id}(company_id = ${company.id})}">РЕДАКТИРОВАТЬ</a>
+                    </ul>
+                </ul>
             </td>
         </tr>
         </tbody>
