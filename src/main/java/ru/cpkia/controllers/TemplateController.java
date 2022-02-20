@@ -39,4 +39,8 @@ public class TemplateController {
         return "template_prilojenie_2";
     }
 
+    @GetMapping("/template_vedomost")
+    public String getTemplateVedomost() {
+        return "template_vedomost";
+    }
 }

@@ -1,0 +1,111 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+    <title></title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js"></script>
+    <style type="text/css">
+        @page {
+            size: 8.27in 11.69in;
+            margin-right: 0.59in;
+            margin-top: 0.79in;
+            margin-bottom: 0.79in
+        }
+
+        p {
+            color: #000000;
+            line-height: 115%;
+            orphans: 2;
+            widows: 2;
+            margin-bottom: 0.1in;
+            direction: ltr;
+            background: transparent
+        }
+
+        p.western {
+            font-family: "Calibri", sans-serif;
+            font-size: 11pt;
+            so-language: ru-RU
+        }
+
+        p.cjk {
+            font-family: "Calibri", sans-serif;
+            font-size: 11pt
+        }
+
+        p.ctl {
+            font-family: "Times New Roman", serif;
+            font-size: 11pt;
+            so-language: ar-SA
+        }
+
+        a:link {
+            color: #0000ff;
+            text-decoration: underline
+        }
+    </style>
+</head>
+<body style="background-color:#FFF;color:#000000; font-family:'Times New Roman', Times, serif; font-size:10pt;">
+<div id="content">
+    <center>Приказы<br>
+        <span style="visibility:visible;"> (№ <a th:text="${company.id}"></a> от <a
+                th:text="${company.createAtToString}"></a>)</span></center>
+    <th:block th:each="client : ${company.clients}">
+        <hr>
+        <b>ЧУДПО "ЦПК"</b><br>Приказ <a th:text="${company.id}"></a> от <a th:text="${company.createAtToString}"></a>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;г. Саратов
+        <p>О зачислении на курсы повышения квалификации</p>
+        <p align="left">
+            Зачислить с <a th:text="${company.createAtToString}"></a> на курсы повышения квалификации с применением
+            электронного обучения и
+            дистанционных образовательных технологий, успешно выдержавшего вступительные
+            испытания (входной контроль)<br>со следующей тематикой обучения:<br><a th:text="${client.theme.name}"></a>
+        </p>
+        <p>ФИО:<a th:text="${client.name}"></a></p>
+        <p>Директор ЧУДПО "ЦПК"<br>
+            Циденков М.К.</p>
+    </th:block>
+</div>
+<div style="display: inline-block">
+    <button onclick="createPDF()">Сохранить в PDF</button>
+    <button onclick="Export2Word('content', 'Приказ зачисления');">Сохранить в DOC</button>
+</div>
+
+<script>
+    function Export2Word(element, filename = '') {
+        var preHtml = "<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'><head><meta charset='utf-8'><title>Export HTML To Doc</title></head><body>";
+        var postHtml = "</body></html>";
+        var html = preHtml + document.getElementById(element).innerHTML + postHtml;
+        var blob = new Blob(['\ufeff', html], {
+            type: 'application/msword'
+        });
+        var url = 'data:application/vnd.ms-word;charset=utf-8,' + encodeURIComponent(html);
+        filename = filename ? filename + '.doc' : 'document.doc';
+        var downloadLink = document.createElement("a");
+        document.body.appendChild(downloadLink);
+        if (navigator.msSaveOrOpenBlob) {
+            navigator.msSaveOrOpenBlob(blob, filename);
+        } else {
+            downloadLink.href = url;
+            downloadLink.download = filename;
+            downloadLink.click();
+        }
+        document.body.removeChild(downloadLink);
+    }
+</script>
+<script>
+    function createPDF() {
+        var pdf = document.getElementById("content");
+        var opt = {
+            margin: 1,
+            filename: 'Приказ зачисления.pdf',
+            image: {type: 'jpeg', quality: 1},
+            html2canvas: {scale: 2},
+            jsPDF: {unit: 'in', format: 'a4', orientation: 'portrait'}
+        };
+        html2pdf().set(opt).from(pdf).save();
+    }
+</script>
+</body>
+</html>

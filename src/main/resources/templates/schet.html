@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
@@ -50,9 +50,10 @@
     </table>
 
     <p>&nbsp;</p>
-    <center><b>СЧЕТ № _______ от "____" _________________ 20____ г.</b></center>
+    <center><b>СЧЕТ № <a th:text="${company.id}"></a> от <a th:text="${company.createAtToString}"></a></b></center>
 
-    &nbsp;<p><b>Заказчик: </b><br><b>Плательщик: </b></p>
+    &nbsp;<p><b>Заказчик: <a th:text="${company.name}"></a></b><br><b>Плательщик: <a th:text="${company.name}"></a></b>
+</p>
     <p>&nbsp;
     <table style="background-color:#FFF;color:#000000; font-family:'Times New Roman', Times, serif;
     font-size:12pt;"
@@ -71,15 +72,15 @@
             <td>Образовательные услуги (повышение квалификации)</td>
             <td align="center">шт.</td>
             <td>
-                &nbsp;
+                &nbsp;<a th:text="${company.clients.size()}"></a>
             </td>
-            <td>&nbsp;</td>
-            <td>&nbsp;</td>
+            <td>&nbsp;<a th:text="${price / company.clients.size()}"></a></td>
+            <td>&nbsp;<a th:text="${price}"></a></td>
         </tr>
         <tr>
             <td colspan="5" align="right" style="border-bottom:0px solid black;"><b>Итого:</b></td>
             <td>
-                &nbsp;
+                &nbsp;<a th:text="${price}"></a>
             </td>
         </tr>
         <tr>
@@ -89,14 +90,16 @@
         </tr>
         <tr>
             <td colspan="5" align="right" style="border-top:0px solid black;"><b>Всего к оплате:</b></td>
-            <td>&nbsp;</td>
+            <td>
+                <a th:text="${price}"></a>
+            </td>
         </tr>
         </tbody>
     </table>
     </p><p>
-    Всего наименований 1, на сумму ___________________________</p>
+    Всего наименований <a th:text="${company.clients.size()}"></a>, на сумму <a th:text="${price}"></a> р.</p>
     <p>
-        <b>Сумма итого: _________________________________________________________________ рублей 00 копеек</b></p>
+        <b>Сумма итого: <a th:text="${sumInWord}"></a></b></p>
     <p>
         <b>&nbsp;</b></p>
     <p>

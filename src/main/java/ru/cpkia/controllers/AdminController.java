@@ -28,8 +28,10 @@ import ru.cpkia.repository.ThemeRepo;
 import ru.cpkia.securityAtribute.MoneyInWords;
 
 import javax.transaction.Transactional;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
@@ -491,6 +493,75 @@ public class AdminController {
         model.addAttribute("price", price);
         model.addAttribute("countOfClients", companyInRepo.getClients().size());
         return "prilojenie_2";
+    }
+
+    @GetMapping("/schet/{idCompany}")
+    public String schet(@PathVariable Long idCompany, Model model) {
+        SecurityContext securityContext = SecurityContextHolder.getContext();
+        Authentication authentication = securityContext.getAuthentication();
+        Client contextClient = (Client) authentication.getPrincipal();
+        model.addAttribute("contextClient", contextClient);
+
+        Company companyInRepo = companyRepo.findAllById(idCompany);
+        double price = companyInRepo.getClients().stream().mapToDouble(client -> client.getTheme().getPrice()).sum();
+        model.addAttribute("company", companyInRepo);
+        model.addAttribute("sumInWord", MoneyInWords.inwords(price));
+        model.addAttribute("price", price);
+        model.addAttribute("countOfClients", companyInRepo.getClients().size());
+        return "schet";
+    }
+
+    @GetMapping("/vedomost/{idCompany}")
+    public String vedomost(@PathVariable Long idCompany, Model model) {
+        SecurityContext securityContext = SecurityContextHolder.getContext();
+        Authentication authentication = securityContext.getAuthentication();
+        Client contextClient = (Client) authentication.getPrincipal();
+        model.addAttribute("contextClient", contextClient);
+
+        Company companyInRepo = companyRepo.findAllById(idCompany);
+        double price = companyInRepo.getClients().stream().mapToDouble(client -> client.getTheme().getPrice()).sum();
+        model.addAttribute("company", companyInRepo);
+        model.addAttribute("sumInWord", MoneyInWords.inwords(price));
+        model.addAttribute("price", price);
+        model.addAttribute("countOfClients", companyInRepo.getClients().size());
+        return "vedomost";
+    }
+
+
+    @GetMapping("/prikaz_zach/{idCompany}")
+    public String zach(@PathVariable Long idCompany, Model model) {
+        SecurityContext securityContext = SecurityContextHolder.getContext();
+        Authentication authentication = securityContext.getAuthentication();
+        Client contextClient = (Client) authentication.getPrincipal();
+        model.addAttribute("contextClient", contextClient);
+
+        Company companyInRepo = companyRepo.findAllById(idCompany);
+        double price = companyInRepo.getClients().stream().mapToDouble(client -> client.getTheme().getPrice()).sum();
+        model.addAttribute("company", companyInRepo);
+        model.addAttribute("sumInWord", MoneyInWords.inwords(price));
+        model.addAttribute("price", price);
+        model.addAttribute("countOfClients", companyInRepo.getClients().size());
+        return "prikaz_zach";
+    }
+
+    @GetMapping("/prikaz_vypusk/{idCompany}")
+    public String vypusk(@PathVariable Long idCompany, Model model) {
+        SecurityContext securityContext = SecurityContextHolder.getContext();
+        Authentication authentication = securityContext.getAuthentication();
+        Client contextClient = (Client) authentication.getPrincipal();
+        model.addAttribute("contextClient", contextClient);
+
+        Company companyInRepo = companyRepo.findAllById(idCompany);
+        double price = companyInRepo.getClients().stream().mapToDouble(client -> client.getTheme().getPrice()).sum();
+        model.addAttribute("company", companyInRepo);
+        model.addAttribute("sumInWord", MoneyInWords.inwords(price));
+        model.addAttribute("price", price);
+        model.addAttribute("countOfClients", companyInRepo.getClients().size());
+
+        Date plusTwoWeek = Date.from(companyInRepo.getCreateAt().plusSeconds(604800 * 2));
+        SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy");
+        model.addAttribute("createDatePlusTwoWeek", formatter.format(plusTwoWeek));
+        return "prikaz_vypusk";
     }
 
 }

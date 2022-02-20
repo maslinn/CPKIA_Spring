@@ -1,0 +1,207 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+    <title></title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js"></script>
+    <style type="text/css">
+        @page {
+            size: 8.27in 11.69in;
+            margin-right: 0.59in;
+            margin-top: 0.79in;
+            margin-bottom: 0.79in
+        }
+
+        p {
+            color: #000000;
+            line-height: 115%;
+            orphans: 2;
+            widows: 2;
+            margin-bottom: 0.1in;
+            direction: ltr;
+            background: transparent
+        }
+
+        p.western {
+            font-family: "Calibri", sans-serif;
+            font-size: 11pt;
+            so-language: ru-RU
+        }
+
+        p.cjk {
+            font-family: "Calibri", sans-serif;
+            font-size: 11pt
+        }
+
+        p.ctl {
+            font-family: "Times New Roman", serif;
+            font-size: 11pt;
+            so-language: ar-SA
+        }
+
+        a:link {
+            color: #0000ff;
+            text-decoration: underline
+        }
+    </style>
+</head>
+<body lang="en-US" text="#000000" link="#0000ff" vlink="#800000" dir="ltr">
+<div id="content">
+    <p lang="ru-RU" class="western"
+       align="center"
+       style="line-height: 100%; margin-bottom: 0.14in">
+        <font face="Times New Roman, serif"><font size="3" style="font-size: 12pt"><b>ЧАСТНОЕ
+            УЧРЕЖДЕНИЕ ДОПОЛНИТЕЛЬНОГО ПРОФЕССИОНАЛЬНОГО
+            ОБРАЗОВАНИЯ<br/>
+            «ПРИВОЛЖСКИЙ ЦЕНТР
+            ПОВЫШЕНИЯ КВАЛИФИКАЦИИ»</b></font></font></p>
+    <p lang="ru-RU" class="western" align="center" style="line-height: 100%; margin-bottom: 0in">
+        <font color="#000000"><font face="Times New Roman, serif"><font size="3" style="font-size: 12pt">ВЕДОМОСТЬ
+            ВЫДАЧИ УДОСТОВЕРЕНИЙ </font></font></font><font color="#000000"><font face="Times New Roman, serif"><font
+            size="3" style="font-size: 12pt"><span lang="en-US"><a
+            th:text="${company.id}"></a></span></font></font></font>
+    </p>
+    <p lang="ru-RU" class="western" style="line-height: 100%; margin-bottom: 0in">
+    </p>
+    <center>
+        <table width="100%" cellpadding="1" cellspacing="0">
+            <col width="61*"/>
+
+            <col width="195*"/>
+
+            <tr>
+                <td width="24%" style="border: none; padding: 0in"><p lang="ru-RU" class="western">
+                    <font face="Times New Roman, serif"><font size="3" style="font-size: 12pt">г.
+                        Саратов</font></font></p>
+                </td>
+                <td width="76%" style="border: none; padding: 0in"><p lang="ru-RU" class="western" align="right">
+                    <font face="Times New Roman, serif"><font size="3" style="font-size: 12pt"><a
+                            th:text="${company.createAtToString}"></a></font></font></p>
+                </td>
+            </tr>
+        </table>
+    </center>
+    <p lang="ru-RU" class="western" style="line-height: 100%; margin-top: 0.19in; margin-bottom: 0.19in">
+        <font face="Times New Roman, serif"><font size="3" style="font-size: 12pt">Название
+            организации: <a th:text="${company.name}"></a></font></font>
+    </p>
+    <center>
+        <table width="100%" cellpadding="7" cellspacing="1" style="border-collapse: collapse">
+            <col width="13*"/>
+
+            <col width="53*"/>
+
+            <col width="40*"/>
+
+            <col width="53*"/>
+
+            <col width="42*"/>
+
+            <col width="55*"/>
+
+            <tr>
+                <td width="5%" style="border: 1.00pt solid black; padding: 0.07in"><p lang="ru-RU" class="western"
+                                                                                      align="center">
+                    №</p>
+                </td>
+                <td width="21%" style="border: 1.00pt solid black; padding: 0.07in"><p lang="ru-RU" class="western"
+                                                                                       align="center">
+                    <font face="Times New Roman, serif"><font size="3" style="font-size: 12pt"><b>Номер
+                        серия удостоверения</b></font></font></p>
+                </td>
+                <td width="16%" style="border: 1.00pt solid black; padding: 0.07in"><p lang="ru-RU" class="western"
+                                                                                       align="center">
+                    <font face="Times New Roman, serif"><font size="3" style="font-size: 12pt"><b>Фамилия,
+                        имя, отчество</b></font></font></p>
+                </td>
+                <td width="21%" style="border: 1.00pt solid black; padding: 0.07in"><p lang="ru-RU" class="western"
+                                                                                       align="center">
+                    <font face="Times New Roman, serif"><font size="3" style="font-size: 12pt"><b>Дата
+                        выдачи удостоверения</b></font></font></p>
+                </td>
+                <td width="16%" style="border: 1.00pt solid black; padding: 0.07in"><p lang="ru-RU" class="western"
+                                                                                       align="center">
+                    <font face="Times New Roman, serif"><font size="3" style="font-size: 12pt"><b>Подпись
+                        секретаря комиссии</b></font></font></p>
+                </td>
+                <td width="22%" style="border: 1.00pt solid black; padding: 0.07in"><p lang="ru-RU" class="western"
+                                                                                       align="center">
+                    <font face="Times New Roman, serif"><font size="3" style="font-size: 12pt"><b>Подпись
+                        получившего удостоверение</b></font></font></p>
+                </td>
+            </tr>
+            <th:block th:each="client,num : ${company.clients}">
+                <tr>
+                    <td width="5%" style="border: 1.00pt solid black; padding: 0.07in"><p class="western">
+                        <font face="Times New Roman, serif"><font size="3" style="font-size: 12pt"><a
+                                th:text="${num.index + 1}"></a></font></font>
+                    </p>
+                    </td>
+                    <td width="21%" style="border: 1.00pt solid black; padding: 0.07in"><p class="western">
+                        <font face="Times New Roman, serif"><font size="3" style="font-size: 12pt"></font></font></p>
+                    </td>
+                    <td width="16%" style="border: 1.00pt solid black; padding: 0.07in"><p class="western">
+                        <font face="Times New Roman, serif"><font size="3" style="font-size: 12pt"><a
+                                th:text="${client.name}"></a></font></font></p>
+                    </td>
+                    <td width="21%" style="border: 1.00pt solid black; padding: 0.07in"><p class="western">
+                        <font face="Times New Roman, serif"><font size="3" style="font-size: 12pt"></font></font></p>
+                    </td>
+                    <td width="16%" style="border: 1.00pt solid black; padding: 0.07in"><p class="western">
+                        <font face="Times New Roman, serif"><font size="3" style="font-size: 12pt"></font></font></p>
+                    </td>
+                    <td width="22%" style="border: 1.00pt solid black; padding: 0.07in"><p class="western">
+                        <font face="Times New Roman, serif"><font size="3" style="font-size: 12pt"></font></font></p>
+                    </td>
+                </tr>
+            </th:block>
+        </table>
+    </center>
+    <p lang="ru-RU" class="western" style="margin-bottom: 0.14in"><br/>
+        <br/>
+
+    </p>
+</div>
+<div style="display: inline-block">
+    <button onclick="createPDF()">Сохранить в PDF</button>
+    <button onclick="Export2Word('content', 'Ведомость');">Сохранить в DOC</button>
+</div>
+
+<script>
+    function Export2Word(element, filename = '') {
+        var preHtml = "<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'><head><meta charset='utf-8'><title>Export HTML To Doc</title></head><body>";
+        var postHtml = "</body></html>";
+        var html = preHtml + document.getElementById(element).innerHTML + postHtml;
+        var blob = new Blob(['\ufeff', html], {
+            type: 'application/msword'
+        });
+        var url = 'data:application/vnd.ms-word;charset=utf-8,' + encodeURIComponent(html);
+        filename = filename ? filename + '.doc' : 'document.doc';
+        var downloadLink = document.createElement("a");
+        document.body.appendChild(downloadLink);
+        if (navigator.msSaveOrOpenBlob) {
+            navigator.msSaveOrOpenBlob(blob, filename);
+        } else {
+            downloadLink.href = url;
+            downloadLink.download = filename;
+            downloadLink.click();
+        }
+        document.body.removeChild(downloadLink);
+    }
+</script>
+<script>
+    function createPDF() {
+        var pdf = document.getElementById("content");
+        var opt = {
+            margin: 1,
+            filename: 'Ведомость.pdf',
+            image: {type: 'jpeg', quality: 1},
+            html2canvas: {scale: 2},
+            jsPDF: {unit: 'in', format: 'a4', orientation: 'portrait'}
+        };
+        html2pdf().set(opt).from(pdf).save();
+    }
+</script>
+</body>
+</html>

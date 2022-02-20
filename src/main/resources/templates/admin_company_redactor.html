@@ -12,6 +12,10 @@
     <a th:href="@{/admin/dogovor/{idCompany}(idCompany = ${company.id})}">Договор</a>
     <a th:href="@{/admin/prilojenie_1/{idCompany}(idCompany = ${company.id})}">Приложение 1</a>
     <a th:href="@{/admin/prilojenie_2/{idCompany}(idCompany = ${company.id})}">Приложение 2</a>
+    <a th:href="@{/admin/schet/{idCompany}(idCompany = ${company.id})}">Счет</a>
+    <a th:href="@{/admin/vedomost/{idCompany}(idCompany = ${company.id})}">Ведомость</a>
+    <a th:href="@{/admin/prikaz_zach/{idCompany}(idCompany = ${company.id})}">Приказ зачисления</a>
+    <a th:href="@{/admin/prikaz_vypusk/{idCompany}(idCompany = ${company.id})}">Приказ выпуска</a>
 </div>
 <div th:if="${contextClient.name} == 'manager'">
     <a th:href="@{/manager/dopusk/{idCompany}(idCompany = ${company.id})}">Допуски</a>
@@ -19,10 +23,16 @@
     <a th:href="@{/manager/dogovor/{idCompany}(idCompany = ${company.id})}">Договор</a>
     <a th:href="@{/manager/prilojenie_1/{idCompany}(idCompany = ${company.id})}">Приложение 1</a>
     <a th:href="@{/manager/prilojenie_2/{idCompany}(idCompany = ${company.id})}">Приложение 2</a>
+    <a th:href="@{/manager/schet/{idCompany}(idCompany = ${company.id})}">Счет</a>
+    <a th:href="@{/manager/vedomost/{idCompany}(idCompany = ${company.id})}">Ведомость</a>
+    <a th:href="@{/manager/prikaz_zach/{idCompany}(idCompany = ${company.id})}">Приказ зачисления</a>
+    <a th:href="@{/manager/prikaz_vypusk/{idCompany}(idCompany = ${company.id})}">Приказ выпуска</a>
+
 </div>
 <br>
 <h2>Редактор заявки от компании</h2>
-<form th:action="@{/admin/edit_company}" th:object="${company}" th:method="POST" th:if="${contextClient.name} == 'admin'">
+<form th:action="@{/admin/edit_company}" th:object="${company}" th:method="POST"
+      th:if="${contextClient.name} == 'admin'">
     <div style="display: none">
         <input th:field="*{id}">
     </div>
@@ -168,10 +178,12 @@
         <td th:text="${client.password}"></td>
         <td th:text="${client.snils}"></td>
         <td th:text="${client.getTheme().getName()}"></td>
-        <td><a th:href="@{/admin/edit_client/{client_id}(client_id = ${client.id})}" th:if="${contextClient.name} == 'admin'">Редактировать</a>
+        <td><a th:href="@{/admin/edit_client/{client_id}(client_id = ${client.id})}"
+               th:if="${contextClient.name} == 'admin'">Редактировать</a>
     </tr>
 </table>
-<a th:href="@{/admin/new_client/{company_id}(company_id = ${company.id})}" th:if="${contextClient.name} == 'admin'">Добавить слушателя</a>
+<a th:href="@{/admin/new_client/{company_id}(company_id = ${company.id})}" th:if="${contextClient.name} == 'admin'">Добавить
+    слушателя</a>
 <br>
 <br>
 <a th:href="@{/admin/table_new}" th:if="${contextClient.name} == 'admin'">Назад</a>
