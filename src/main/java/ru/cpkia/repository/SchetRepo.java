@@ -4,6 +4,7 @@ import lombok.NonNull;
 import org.springframework.data.repository.CrudRepository;
 import ru.cpkia.entity.Schet;
 
+import java.util.List;
 import java.util.Set;
 
 public interface SchetRepo extends CrudRepository<Schet, Long> {
@@ -12,4 +13,7 @@ public interface SchetRepo extends CrudRepository<Schet, Long> {
     Set<Schet> findAll();
 
     Schet findAllById(Long id);
+
+    List<Schet> findAllByIsOpenedTrue();
+
 }

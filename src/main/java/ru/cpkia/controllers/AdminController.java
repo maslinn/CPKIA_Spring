@@ -165,6 +165,11 @@ public class AdminController {
 
     @GetMapping("/edit_company/{company_id}")
     public String editCompany(@PathVariable Long company_id, Model model) {
+        SecurityContext securityContext = SecurityContextHolder.getContext();
+        Authentication authentication = securityContext.getAuthentication();
+        Client contextClient = (Client) authentication.getPrincipal();
+        model.addAttribute("contextClient", contextClient);
+
         Company company = companyRepo.findAllById(company_id);
         List<Client> managers = clientRepo.findClientsByName("manager");
         List<String> regions = managers.stream().map(Client::getDateOfBirth).collect(Collectors.toList());
@@ -372,6 +377,26 @@ public class AdminController {
         return "admin_table_schet_faktur";
     }
 
+    @GetMapping("/open_schet/{idSchet}")
+    public String openUchList(@PathVariable Long idSchet, Model model) {
+        SecurityContext securityContext = SecurityContextHolder.getContext();
+        Authentication authentication = securityContext.getAuthentication();
+        Client contextClient = (Client) authentication.getPrincipal();
+        model.addAttribute("contextClient", contextClient);
+
+        Schet schetById = schetRepo.findAllById(idSchet);
+        schetById.setIsOpened(true);
+        schetRepo.save(schetById);
+
+        Company company = companyRepo.findAllById(schetById.getCompany().getId());
+        Set<Schet> schets = company.getSchets();
+
+        model.addAttribute("schets", schets);
+        model.addAttribute("company", company);
+
+        return "admin_table_schet_faktur";
+    }
+
     @GetMapping("add_schet/{idCompany}")
     public String addSchet(@PathVariable Long idCompany, Model model) {
         Company company = companyRepo.findAllById(idCompany);
@@ -381,6 +406,7 @@ public class AdminController {
         clientsWithoutSchet.removeIf(client -> client.getSchet() != null);
 
         Schet schet = new Schet();
+        schet.setIsOpened(Boolean.FALSE);
         schet.setClients(clientsWithoutSchet);
         schet.setCompany(company);
 
@@ -393,22 +419,26 @@ public class AdminController {
 
     @PostMapping("/add_schet")
     public String saveSchet(Schet schet) {
+        if (schet.getClients().isEmpty()) {
+            return "redirect:/admin/uch_list/" + schet.getCompany().getId();
+        }
         schet.getClients().removeIf(client -> client.getId() == null);
         if (schet.getClients().isEmpty()) {
-            return "redirect:/admin";
+            return "redirect:/admin/uch_list/" + schet.getCompany().getId();
         }
 
         for (int i = 0; i < schet.getClients().size(); i++) {
             schet.getClients().set(i, clientRepo.findAllById(schet.getClients().get(i).getId()));
         }
 
+        schet.setIsOpened(false);
         Schet savedSchet = schetRepo.save(schet);
 
         for (Client client : schet.getClients()) {
             client.setSchet(savedSchet);
             clientRepo.save(client);
         }
-        return "redirect:/admin";
+        return "redirect:/admin/uch_list/" + schet.getCompany().getId();
     }
 
     @GetMapping("edit_schet/{schetId}")
@@ -430,7 +460,7 @@ public class AdminController {
         Client contextClient = (Client) authentication.getPrincipal();
         model.addAttribute("contextClient", contextClient);
 
-        Set<Schet> schets = schetRepo.findAll();
+        List<Schet> schets = schetRepo.findAllByIsOpenedTrue();
         model.addAttribute("schets", schets);
         return "admin_table_schet_faktur";
     }

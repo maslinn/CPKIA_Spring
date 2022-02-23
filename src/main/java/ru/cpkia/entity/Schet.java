@@ -42,6 +42,8 @@ public class Schet {
 
     private String dateSchet;
 
+    private Boolean isOpened;
+
     public double getPrice() {
         if (clients.isEmpty()) {
             return .0;

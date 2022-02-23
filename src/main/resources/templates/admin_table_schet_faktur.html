@@ -61,7 +61,7 @@
         </tr>
         </thead>
         <tbody th:if="${!schets.isEmpty()}">
-        <tr th:each="schet : ${schets}">
+        <tr th:each="schet : ${schets}" th:class="${schet.isOpened}? 'table-success' : ''">
             <td><a th:text="${schet.id}" th:href="@{/admin/get_schet/{schet_id}(schet_id = ${schet.id})}"></a></td>
             <td th:text="${schet.getDateSchet().isEmpty() ? '' : schet.getDateSchetInEuropeFormat()}"></td>
             <td th:text="${schet.company.name}"></td>
@@ -72,6 +72,9 @@
             <td th:text="${schet.getPrice()}"></td>
             <td th:text="${schet.company.id}"></td>
             <td>
+                <ul th:if="${!schet.isOpened}">
+                    <a th:href="@{/admin/open_schet/{idSchet}(idSchet = ${schet.id})}">ДОБАВИТЬ В РЕЕСТР</a>
+                </ul>
                 <ul><a th:href="@{/admin/edit_schet/{schetId}(schetId = ${schet.id})}">РЕДАКТИРОВАТЬ</a></ul>
                 <ul><a th:href="@{/admin/delete_schet/{schet}(schet = ${schet.id})}">УДАЛИТЬ</a></ul>
             </td>
