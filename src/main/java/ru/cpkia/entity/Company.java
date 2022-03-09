@@ -39,6 +39,8 @@ public class Company {
     private String bik;//бик
     private String bank;//банк
     private Instant createAt;//дата создания
+    private Instant openedAt;//дата открытия договора, считается от счет фактуры
+
     private Integer status;// 1 - не оплачен, 2 - оплачен, 3 - закрыт
 
     private String region;
@@ -95,6 +97,16 @@ public class Company {
             return "";
         } else {
             Date myDate = Date.from(this.createAt);
+            SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy");
+            return formatter.format(myDate);
+        }
+    }
+
+    public String getOpenedAtToString() {
+        if (this.openedAt == null) {
+            return "";
+        } else {
+            Date myDate = Date.from(this.openedAt);
             SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy");
             return formatter.format(myDate);
         }
@@ -263,4 +275,13 @@ public class Company {
     public void setRegion(String region) {
         this.region = region;
     }
+
+    public Instant getOpenedAt() {
+        return openedAt;
+    }
+
+    public void setOpenedAt(Instant openedAt) {
+        this.openedAt = openedAt;
+    }
+
 }

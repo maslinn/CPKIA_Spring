@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import ru.cpkia.entity.Client;
 import ru.cpkia.entity.Company;
+import ru.cpkia.entity.Schet;
 import ru.cpkia.repository.ClientRepo;
 import ru.cpkia.repository.CompanyRepo;
 import ru.cpkia.securityAtribute.MoneyInWords;
@@ -22,6 +23,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Controller
@@ -145,6 +147,25 @@ public class ManagerController {
         model.addAttribute("contextClient", contextClient);
 
         Company companyInRepo = companyRepo.findAllById(idCompany);
+
+        String schetFactMinus14Days = companyInRepo.getOpenedAtToString();
+        if (Boolean.FALSE.equals(companyInRepo.getSchets().isEmpty())
+                && Objects.isNull(companyInRepo.getOpenedAt())) {
+            schetFactMinus14Days = companyInRepo.getSchets()
+                    .stream()
+                    .findFirst()
+                    .orElse(new Schet())
+                    .getDateSchetMinus14DayInEuropeFormat();
+        }
+
+        String schetFact = companyInRepo.getSchets()
+                .stream()
+                .findFirst()
+                .orElse(new Schet())
+                .getDateSchetInEuropeFormat();
+        model.addAttribute("dateSchetFactMinus14Days", schetFactMinus14Days);
+        model.addAttribute("dateSchetFact", schetFact);
+
         double price = companyInRepo.getClients().stream().mapToDouble(client -> client.getTheme().getPrice()).sum();
         model.addAttribute("company", companyInRepo);
         model.addAttribute("sumInWord", MoneyInWords.inwords(price));
@@ -161,6 +182,25 @@ public class ManagerController {
         model.addAttribute("contextClient", contextClient);
 
         Company companyInRepo = companyRepo.findAllById(idCompany);
+
+        String schetFactMinus14Days = companyInRepo.getOpenedAtToString();
+        if (Boolean.FALSE.equals(companyInRepo.getSchets().isEmpty())
+                && Objects.isNull(companyInRepo.getOpenedAt())) {
+            schetFactMinus14Days = companyInRepo.getSchets()
+                    .stream()
+                    .findFirst()
+                    .orElse(new Schet())
+                    .getDateSchetMinus14DayInEuropeFormat();
+        }
+
+        String schetFact = companyInRepo.getSchets()
+                .stream()
+                .findFirst()
+                .orElse(new Schet())
+                .getDateSchetInEuropeFormat();
+        model.addAttribute("dateSchetFactMinus14Days", schetFactMinus14Days);
+        model.addAttribute("dateSchetFact", schetFact);
+
         double price = companyInRepo.getClients().stream().mapToDouble(client -> client.getTheme().getPrice()).sum();
         model.addAttribute("company", companyInRepo);
         model.addAttribute("sumInWord", MoneyInWords.inwords(price));
@@ -214,6 +254,25 @@ public class ManagerController {
         model.addAttribute("contextClient", contextClient);
 
         Company companyInRepo = companyRepo.findAllById(idCompany);
+
+        String schetFactMinus14Days = companyInRepo.getOpenedAtToString();
+        if (Boolean.FALSE.equals(companyInRepo.getSchets().isEmpty())
+                && Objects.isNull(companyInRepo.getOpenedAt())) {
+            schetFactMinus14Days = companyInRepo.getSchets()
+                    .stream()
+                    .findFirst()
+                    .orElse(new Schet())
+                    .getDateSchetMinus14DayInEuropeFormat();
+        }
+
+        String schetFact = companyInRepo.getSchets()
+                .stream()
+                .findFirst()
+                .orElse(new Schet())
+                .getDateSchetInEuropeFormat();
+        model.addAttribute("dateSchetFactMinus14Days", schetFactMinus14Days);
+        model.addAttribute("dateSchetFact", schetFact);
+
         double price = companyInRepo.getClients().stream().mapToDouble(client -> client.getTheme().getPrice()).sum();
         model.addAttribute("company", companyInRepo);
         model.addAttribute("sumInWord", MoneyInWords.inwords(price));
@@ -230,6 +289,25 @@ public class ManagerController {
         model.addAttribute("contextClient", contextClient);
 
         Company companyInRepo = companyRepo.findAllById(idCompany);
+
+        String schetFactMinus14Days = companyInRepo.getOpenedAtToString();
+        if (Boolean.FALSE.equals(companyInRepo.getSchets().isEmpty())
+                && Objects.isNull(companyInRepo.getOpenedAt())) {
+            schetFactMinus14Days = companyInRepo.getSchets()
+                    .stream()
+                    .findFirst()
+                    .orElse(new Schet())
+                    .getDateSchetMinus14DayInEuropeFormat();
+        }
+
+        String schetFact = companyInRepo.getSchets()
+                .stream()
+                .findFirst()
+                .orElse(new Schet())
+                .getDateSchetInEuropeFormat();
+        model.addAttribute("dateSchetFactMinus14Days", schetFactMinus14Days);
+        model.addAttribute("dateSchetFact", schetFact);
+
         double price = companyInRepo.getClients().stream().mapToDouble(client -> client.getTheme().getPrice()).sum();
         model.addAttribute("company", companyInRepo);
         model.addAttribute("sumInWord", MoneyInWords.inwords(price));
@@ -262,6 +340,25 @@ public class ManagerController {
         model.addAttribute("contextClient", contextClient);
 
         Company companyInRepo = companyRepo.findAllById(idCompany);
+
+        String schetFactMinus14Days = companyInRepo.getOpenedAtToString();
+        if (Boolean.FALSE.equals(companyInRepo.getSchets().isEmpty())
+                && Objects.isNull(companyInRepo.getOpenedAt())) {
+            schetFactMinus14Days = companyInRepo.getSchets()
+                    .stream()
+                    .findFirst()
+                    .orElse(new Schet())
+                    .getDateSchetMinus14DayInEuropeFormat();
+        }
+
+        String schetFact = companyInRepo.getSchets()
+                .stream()
+                .findFirst()
+                .orElse(new Schet())
+                .getDateSchetInEuropeFormat();
+        model.addAttribute("dateSchetFactMinus14Days", schetFactMinus14Days);
+        model.addAttribute("dateSchetFact", schetFact);
+
         double price = companyInRepo.getClients().stream().mapToDouble(client -> client.getTheme().getPrice()).sum();
         model.addAttribute("company", companyInRepo);
         model.addAttribute("sumInWord", MoneyInWords.inwords(price));
@@ -278,6 +375,25 @@ public class ManagerController {
         model.addAttribute("contextClient", contextClient);
 
         Company companyInRepo = companyRepo.findAllById(idCompany);
+
+        String schetFactMinus14Days = companyInRepo.getOpenedAtToString();
+        if (Boolean.FALSE.equals(companyInRepo.getSchets().isEmpty())
+                && Objects.isNull(companyInRepo.getOpenedAt())) {
+            schetFactMinus14Days = companyInRepo.getSchets()
+                    .stream()
+                    .findFirst()
+                    .orElse(new Schet())
+                    .getDateSchetMinus14DayInEuropeFormat();
+        }
+
+        String schetFact = companyInRepo.getSchets()
+                .stream()
+                .findFirst()
+                .orElse(new Schet())
+                .getDateSchetInEuropeFormat();
+        model.addAttribute("dateSchetFactMinus14Days", schetFactMinus14Days);
+        model.addAttribute("dateSchetFact", schetFact);
+
         double price = companyInRepo.getClients().stream().mapToDouble(client -> client.getTheme().getPrice()).sum();
         model.addAttribute("company", companyInRepo);
         model.addAttribute("sumInWord", MoneyInWords.inwords(price));
@@ -294,6 +410,25 @@ public class ManagerController {
         model.addAttribute("contextClient", contextClient);
 
         Company companyInRepo = companyRepo.findAllById(idCompany);
+
+        String schetFactMinus14Days = companyInRepo.getOpenedAtToString();
+        if (Boolean.FALSE.equals(companyInRepo.getSchets().isEmpty())
+                && Objects.isNull(companyInRepo.getOpenedAt())) {
+            schetFactMinus14Days = companyInRepo.getSchets()
+                    .stream()
+                    .findFirst()
+                    .orElse(new Schet())
+                    .getDateSchetMinus14DayInEuropeFormat();
+        }
+
+        String schetFact = companyInRepo.getSchets()
+                .stream()
+                .findFirst()
+                .orElse(new Schet())
+                .getDateSchetInEuropeFormat();
+        model.addAttribute("dateSchetFactMinus14Days", schetFactMinus14Days);
+        model.addAttribute("dateSchetFact", schetFact);
+
         double price = companyInRepo.getClients().stream().mapToDouble(client -> client.getTheme().getPrice()).sum();
         model.addAttribute("company", companyInRepo);
         model.addAttribute("sumInWord", MoneyInWords.inwords(price));

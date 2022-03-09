@@ -46,16 +46,15 @@
         }
     </style>
 </head>
-<body lang="en-US" text="#000000" link="#0000ff" vlink="#800000" dir="ltr">
 <body style="background-color:#FFF;color:#000000; font-family:'Times New Roman', Times, serif; font-size:10pt;">
 <div id="content">
     <div class="hid">
         <center>Приказ<br>
             <span style="visibility:visible;"> (к договору № <a th:text="${company.id}"></a> от <a
-                    th:text="${createDatePlusTwoWeek}"></a>)</span></center>
+                    th:text="${dateSchetFact}"></a>)</span></center>
         <hr>
         <b>ЧУДПО "ЦПК"</b><br>Приказ № <a th:text="${company.id}"></a> от <a
-            th:text="${company.createAtToString}"></a> о выпуске слушателей
+            th:text="${dateSchetFact}"></a> о выпуске слушателей
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;г. Саратов
         <p>В соответствии с правилами приема и обучения слушателей, и в связи с завершением процедуры обучения
             и успешной сдачей итогового контроля приказываю:<br>

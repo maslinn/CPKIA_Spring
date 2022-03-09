@@ -30,6 +30,7 @@ public class Client implements UserDetails {
     private String email;
     private String snils;
     private String dateOfBirth;
+    private String dolgnost;
 
     private boolean isActive;//если открыт курс
     private String password;
@@ -56,7 +57,7 @@ public class Client implements UserDetails {
 
     private String dateOfExam;
 
-    public Client(String name, String email, Company company, String snils, Theme theme, String dateOfBirth, List<Long> answersId, float percentResult, String dateOfExam) {
+    public Client(String name, String email, Company company, String snils, Theme theme, String dateOfBirth, List<Long> answersId, float percentResult, String dateOfExam, String dolgnost) {
         this.name = name;
         this.email = email;
         this.company = company;
@@ -66,6 +67,7 @@ public class Client implements UserDetails {
         this.answersId = answersId;
         this.percentResult = percentResult;
         this.dateOfExam = dateOfExam;
+        this.dolgnost = dolgnost;
     }
 
     public Client(String name, String email) {
@@ -220,5 +222,13 @@ public class Client implements UserDetails {
 
     public void setDateOfExam(String dateOfExam) {
         this.dateOfExam = dateOfExam;
+    }
+
+    public String getDolgnost() {
+        return dolgnost;
+    }
+
+    public void setDolgnost(String dolgnost) {
+        this.dolgnost = dolgnost;
     }
 }

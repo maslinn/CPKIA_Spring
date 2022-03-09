@@ -50,14 +50,14 @@
 <div id="content">
     <center>Приказы<br>
         <span style="visibility:visible;"> (№ <a th:text="${company.id}"></a> от <a
-                th:text="${company.createAtToString}"></a>)</span></center>
+                th:text="${dateSchetFactMinus14Days}"></a>)</span></center>
     <th:block th:each="client : ${company.clients}">
         <hr>
-        <b>ЧУДПО "ЦПК"</b><br>Приказ <a th:text="${company.id}"></a> от <a th:text="${company.createAtToString}"></a>
+        <b>ЧУДПО "ЦПК"</b><br>Приказ <a th:text="${company.id}"></a> от <a th:text="${dateSchetFactMinus14Days}"></a>
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;г. Саратов
         <p>О зачислении на курсы повышения квалификации</p>
         <p align="left">
-            Зачислить с <a th:text="${company.createAtToString}"></a> на курсы повышения квалификации с применением
+            Зачислить с <a th:text="${dateSchetFactMinus14Days}"></a> на курсы повышения квалификации с применением
             электронного обучения и
             дистанционных образовательных технологий, успешно выдержавшего вступительные
             испытания (входной контроль)<br>со следующей тематикой обучения:<br><a th:text="${client.theme.name}"></a>

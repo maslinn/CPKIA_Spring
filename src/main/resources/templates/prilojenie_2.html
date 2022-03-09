@@ -62,7 +62,7 @@
                 &quot;ЦПК&quot;</b></font></p>
         <p lang="ru-RU" class="western" style="line-height: 100%; margin-top: 0.19in; margin-bottom: 0.19in">
             <font face="Times New Roman, serif">Заявление № <a th:text="${company.id}"></a> от
-                <a th:text="${company.createAtToString}"></a></font></p>
+                <a th:text="${dateSchetFactMinus14Days}"></a></font></p>
         <p lang="ru-RU" class="western" style="line-height: 100%; margin-top: 0.19in; margin-bottom: 0.19in">
             <font color="#000000"><font face="Times New Roman, serif"><a th:text="${company.fullname}"></a> в лице
                 <a th:text="${company.director}"></a>, действующего на основании
@@ -98,7 +98,7 @@
 
             <tr>
                 <td width="32%" style="border: none; padding: 0in"><p lang="ru-RU" class="western">
-                    <font face="Times New Roman, serif">Дата: <a th:text="${company.createAtToString}"></a></font></p>
+                    <font face="Times New Roman, serif">Дата: <a th:text="${dateSchetFactMinus14Days}"></a></font></p>
                 </td>
                 <td width="68%" style="border: none; padding: 0in"><p lang="ru-RU" class="western" align="right">
                     <font face="Times New Roman, serif">Подпись
@@ -152,7 +152,8 @@
                     style="border-top: none; border-bottom: 1px solid #000000; border-left: none; border-right: none; padding-top: 0in; padding-bottom: 0.06in; padding-left: 0in; padding-right: 0in">
                     <p lang="ru-RU" class="western">
                         <font face="Times New Roman, serif"><font size="2" style="font-size: 9pt">Занимаемая
-                            должность</font></font></p>
+                            должность:  <a
+                                    th:text="${client.dolgnost}"></a></font></font></p>
                 </td>
             </tr>
             <tr>
@@ -176,7 +177,8 @@
                 <td width="100%"
                     style="border-top: none; border-bottom: 1px solid #000000; border-left: none; border-right: none; padding-top: 0in; padding-bottom: 0.06in; padding-left: 0in; padding-right: 0in">
                     <p lang="ru-RU" class="western">
-                        <font face="Times New Roman, serif"><font size="2" style="font-size: 9pt">СНИЛС: <a th:text="${client.snils}"></a></font></font>
+                        <font face="Times New Roman, serif"><font size="2" style="font-size: 9pt">СНИЛС: <a
+                                th:text="${client.snils}"></a></font></font>
                     </p>
                 </td>
             </tr>
@@ -216,7 +218,7 @@
                 <td width="20%"
                     style="border-top: none; border-bottom: 1px solid #000000; border-left: none; border-right: none; padding-top: 0in; padding-bottom: 0.06in; padding-left: 0in; padding-right: 0in">
                     <p lang="ru-RU" class="western">
-                        <font face="Times New Roman, serif"><a th:text="${company.createAtToString}"></a></font></p>
+                        <font face="Times New Roman, serif"><a th:text="${dateSchetFactMinus14Days}"></a></font></p>
                 </td>
                 <td width="60%" style="border: none; padding: 0in"><p lang="ru-RU" class="western">
                     &nbsp;</p>
@@ -257,7 +259,7 @@
                 <td width="20%"
                     style="border-top: none; border-bottom: 1px solid #000000; border-left: none; border-right: none; padding-top: 0in; padding-bottom: 0.06in; padding-left: 0in; padding-right: 0in">
                     <p lang="ru-RU" class="western">
-                        <font face="Times New Roman, serif"><a th:text="${company.createAtToString}"></a></font></p>
+                        <font face="Times New Roman, serif"><a th:text="${dateSchetFactMinus14Days}"></a></font></p>
                 </td>
                 <td width="60%" style="border: none; padding: 0in"><p lang="ru-RU" class="western">
                     &nbsp;</p>

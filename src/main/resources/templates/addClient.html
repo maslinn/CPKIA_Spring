@@ -20,12 +20,16 @@
                 <label> Email: </label>
                 <input type="email" th:field="*{email}" required>
 
-                <label> СНИЛС: </label>
+                <label> СНИЛС (XXX-XXX-XXX XX): </label>
                 <input type="text" th:field="*{snils}"
+                       placeholder="123-456-789 00"
                        required pattern="(^\d{3}-\d{3}-\d{3}\s\d{2}$)">
 
                 <label> Дата рождения: </label>
                 <input type="date" th:field="*{dateOfBirth}" pattern="[0-9]{4}.[0-9]{2}.[0-9]{2}">
+
+                <label> Должность: </label>
+                <input type="text" th:field="*{dolgnost}">
 
                 <label> Тема: </label>
                 <select class="select-css" th:field="*{theme}">
@@ -47,6 +51,7 @@
                     <td>Имя</td>
                     <td>Email</td>
                     <td>СНИЛС</td>
+                    <td>Должность</td>
                     <td>Тема</td>
                     <td></td>
                 </tr>
@@ -55,6 +60,7 @@
                     <td th:text="${added_client.name}"></td>
                     <td th:text="${added_client.email}"></td>
                     <td th:text="${added_client.snils}"></td>
+                    <td th:text="${added_client.dolgnost}"></td>
                     <td th:text="${added_client.theme.name}"></td>
                     <td><a th:href="@{/company/client/delete/{snils}(snils=${added_client.getSnils()})}">Удалить</a>
                     </td>
@@ -67,6 +73,8 @@
                     <button type="submit">Отправить заявку</button>
                 </div>
             </form>
+            <br>
+            <b>Нажимая на кнопку "отправить заявку", вы даете согласие на обработку персональных данных</b>
             <br>
             <p>На email сотрудников будут высланы логин и пароль для входа в систему</p>
         </div>

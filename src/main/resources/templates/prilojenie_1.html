@@ -60,7 +60,7 @@
        style="line-height: 100%; margin-bottom: 0in">
         <font color="#000000"><font face="Times New Roman, serif">Приложение
             № 1<br/>
-            К договору № <a th:text="${company.id}"></a> от <a th:text="${company.createAtToString}"></a><br/>
+            К договору № <a th:text="${company.id}"></a> от <a th:text="${dateSchetFactMinus14Days}"></a><br/>
             об оказании
             образовательных услуг по повышению
             квалификации<br/>
@@ -132,7 +132,7 @@
                 <td width="15%" bgcolor="#ffffff" style="background: #ffffff; border: 1.00pt solid black; padding: 0in">
                     <p
                             class="western">
-                        <font face="Times New Roman, serif"> </font></p>
+                        <font face="Times New Roman, serif"><a th:text="${client.dolgnost}"></a></font></p>
                 </td>
             </tr>
         </th:block>

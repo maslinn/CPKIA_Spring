@@ -20,7 +20,7 @@
     <p></p>
     <div>
         <center>по договору № <a th:text="${company.id}"></a>
-            от <a th:text="${company.createAtToString}"></a>
+            от <a th:text="${dateSchetFactMinus14Days}"></a>
             <br>
             об оказании образовательных услуг по повышению квалификации
         </center>
@@ -29,7 +29,7 @@
             <tbody>
             <tr>
                 <td>г. Саратов</td>
-                <td align="right"><span>«____» _______ ____г.</span></td>
+                <td align="right"><a th:text="${dateSchetFact}"></a></td>
             </tr>
             </tbody>
         </table>
@@ -41,7 +41,7 @@
         составили настоящий акт в том, что Образовательным учреждением были оказаны образовательные услуги по обучению
         специалиста(ов) Заказчика (Слушателей) на сумму <a th:text="${price}"></a> (<a th:text="${sumInWord}"></a>)
         согласно договору № <a th:text="${company.id}"></a> от <a
-            th:text="${company.createAtToString}"></a> в полном объеме и с надлежащим качеством.
+            th:text="${dateSchetFactMinus14Days}"></a> в полном объеме и с надлежащим качеством.
     </p>
         <p>&nbsp; &nbsp; &nbsp; Представители Заказчика (Слушатели) в количестве <a th:text="${countOfClients}"></a>
             человек успешно прошел (прошли) курс повышения квалификации с применением электронного обучения и

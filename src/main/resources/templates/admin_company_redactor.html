@@ -3,6 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <title>Redactor Company</title>
+    <style>
+        .table {
+            width: 100%;
+            margin-bottom: 20px;
+            border: 1px solid #dddddd;
+            border-collapse: collapse;
+        }
+
+        .table th {
+            font-weight: bold;
+            padding: 5px;
+            background: #7a7979;
+            border: 1px solid #dddddd;
+        }
+
+        .table td {
+            border: 1px solid #dddddd;
+            padding: 5px;
+        }
+    </style>
 </head>
 <body>
 <div th:if="${contextClient.name} == 'admin'">
@@ -90,6 +110,11 @@
     </div>
     <br>
     <div class="field">
+        <label> Дата открытия: </label>
+        <input type="date" th:field="*{openedAt}">
+    </div>
+    <br>
+    <div class="field">
         <label> Регион: </label>
         <select th:field="*{region}">
             <option th:each="region : ${regions}" th:value="${region}" th:text="${region}"></option>
@@ -161,10 +186,10 @@
 
 <br>
 <br>
-<table>
+<table class="table">
     <thead>
     <tr>
-        <td>Имя</td>
+        <td>ФИО</td>
         <td>Email</td>
         <td>Пароль</td>
         <td>СНИЛС</td>

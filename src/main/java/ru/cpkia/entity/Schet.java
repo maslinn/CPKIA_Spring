@@ -52,12 +52,27 @@ public class Schet {
     }
 
     public String getDateDocInEuropeFormat() {
+        if (this.dateDoc.isEmpty()) {
+            return "";
+        }
         LocalDate datetime = LocalDate.parse(this.dateDoc, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
         return datetime.format(DateTimeFormatter.ofPattern("dd.MM.yyyy"));
     }
 
     public String getDateSchetInEuropeFormat() {
+        if (this.dateSchet == null || this.dateSchet.isEmpty()) {
+            return "";
+        }
         LocalDate datetime = LocalDate.parse(this.dateSchet, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        return datetime.format(DateTimeFormatter.ofPattern("dd.MM.yyyy"));
+    }
+
+    public String getDateSchetMinus14DayInEuropeFormat() {
+        if (this.dateSchet.isEmpty()) {
+            return "";
+        }
+        LocalDate datetime = LocalDate.parse(this.dateSchet, DateTimeFormatter.ofPattern("yyyy-MM-dd"))
+                .minusWeeks(2);
         return datetime.format(DateTimeFormatter.ofPattern("dd.MM.yyyy"));
     }
 

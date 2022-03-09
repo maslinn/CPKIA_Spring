@@ -26,6 +26,8 @@
         <input type="text" th:field="*{snils}">
         <label> Дата рождения: </label>
         <input type="date" th:field="*{dateOfBirth}">
+        <label> Должность: </label>
+        <input type="text" th:field="*{dolgnost}">
 
         <select th:field="*{theme.id}">
             <option th:each="one_theme : ${themes}" th:value="${one_theme.id}" th:text="${one_theme.name}"></option>
@@ -37,6 +39,6 @@
     </div>
 </form>
 <br>
-<a th:href="@{/admin/table_new}">Назад</a>
+<a th:href="@{/admin/edit_company/__${client.company.id.toString()}__}">Назад</a>
 </body>
 </html>
