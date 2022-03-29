@@ -3,48 +3,94 @@
 <head>
     <meta charset="UTF-8">
     <title>Answers Redactor</title>
+    <style>
+        textarea {
+            margin-top: 20px;
+            height: auto;
+            min-width: 50em;
+            overflow: auto;
+        }
+
+        .table {
+            width: 100%;
+            margin-bottom: 20px;
+            border: 1px solid #7e7e7e;
+            border-collapse: collapse;
+        }
+
+        .table th {
+            font-weight: bold;
+            padding: 5px;
+            background: #797979;
+            border: 1px solid #7e7e7e;
+        }
+
+        .table td {
+            border: 1px solid #7e7e7e;
+            padding: 7px;
+        }
+
+        .row{
+            margin: 1em 0 1em;
+        }
+    </style>
 </head>
 <body>
-<h2>Дабавить ответ</h2>
+<h2>Добавить ответ</h2>
 <br>
 <a th:href="@{/admin/get_question_redactor/{theme_id}(theme_id=${question.getTheme().getId()})}">Назад</a>
 <br>
-<p th:text="${'Вопрос: ' + question.text}"></p>
+<br>
+<form th:action="@{/admin/edit_question}" th:object="${question}" th:method="POST">
+    <div class="row">
+        <label> Текст вопроса: </label>
+        <label>
+            <textarea type="text" th:field="*{text}"></textarea>
+        </label>
+        <label style="display: none">
+            <input th:field="*{id}"/>
+        </label>
+    </div>
+    <div class="row">
+        <button id="edit" type="submit">Редактировать вопрос</button>
+    </div>
+</form>
+<br>
+<br>
 <form th:action="@{/admin/save_answer}" th:object="${answer}" th:method="POST">
     <div class="row">
         <label> Текст ответа: </label>
         <label>
-            <input type="text" th:field="*{text}"/>
+            <textarea type="text" th:field="*{text}"></textarea>
         </label>
         <label style="display: none">
             <input th:field="*{question}" th:text="${question}"/>
         </label>
     </div>
-    <br>
     <div class="row">
         <button id="save" type="submit">Добавить ответ</button>
     </div>
 </form>
 <br>
-
-
 <h2>Добавленные ответы</h2>
-<table>
+<table class="table">
     <thead>
     <tr>
-        <td style="width: 5em">Текст ответа</td>
-        <td style="width: 5em">Ответ?</td>
-        <td style="width: 5em"></td>
+        <td style="width: 90%">Текст ответа</td>
+        <td style="width: 5%">Ответ?</td>
+        <td style="width: 5%"></td>
     </tr>
     </thead>
     <tr th:if="${!answers.isEmpty()}" th:each="one_answer : ${answers}">
-        <td th:style="${one_answer.isAnswer} ? 'color: black' : 'color:green'">
-            <a th:text="${one_answer.text}"
+        <td>
+            <a th:style="${one_answer.isAnswer}? 'color:green; font-weight: bold;' : 'color:black;'"
+               th:text="${one_answer.text}"
                th:href="@{/admin/set_answer_value/{answer_id}(answer_id = ${one_answer.id})}">
             </a>
         </td>
         <td th:text="${one_answer.isAnswer()} ? 'Да' : 'Нет'"></td>
-        <td style="color: red"><a
+        <td><a
+                th:style="'color: red;'"
                 th:href="@{/admin/delete_answer/{answer_id}(answer_id=${one_answer.getId()})}">Удалить</a></td>
     </tr>
 </table>

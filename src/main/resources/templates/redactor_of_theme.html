@@ -3,6 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <title>Redactor</title>
+    <style>
+        textarea {
+            margin-top: 20px;
+            height: auto;
+            min-width: 50em;
+            overflow: auto;
+        }
+
+        .table {
+            width: 100%;
+            margin-bottom: 20px;
+            border: 1px solid #7e7e7e;
+            border-collapse: collapse;
+        }
+
+        .table th {
+            font-weight: bold;
+            padding: 5px;
+            background: #797979;
+            border: 1px solid #7e7e7e;
+        }
+
+        .table td {
+            border: 1px solid #7e7e7e;
+            padding: 7px;
+        }
+    </style>
 </head>
 <body>
 <h2>Дабавить тему</h2>
@@ -13,8 +40,10 @@
     <div class="row">
         <label> Назвние: </label>
         <label>
-            <input type="text" th:field="*{name}"/>
+            <textarea type="text" th:field="*{name}" style="width: 30em"></textarea>
         </label>
+        <br>
+        <br>
         <label> Цена: </label>
         <label>
             <input type="number" th:field="*{price}"/>
@@ -29,18 +58,16 @@
 <br>
 
 <h2>Добавленные темы</h2>
-<table>
+<table class="table">
     <thead>
     <tr>
-        <td>Название</td>
-        <td></td>
-        <td></td>
+        <td style="width: 95%">Название</td>
+        <td style="width: 5%"></td>
     </tr>
     </thead>
     <tr th:each="theme : ${themes}">
         <td><a th:text="${theme.name}"
                th:href="@{/admin/get_question_redactor/{theme_id}(theme_id=${theme.getId()})}"></a></td>
-        <td></td>
         <td style="color: red"><a th:method="delete"
                                   th:href="@{/admin/delete_theme/{id}(id=${theme.getId()})}">Удалить</a></td>
     </tr>

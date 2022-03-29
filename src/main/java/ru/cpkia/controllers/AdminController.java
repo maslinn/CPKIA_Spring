@@ -300,6 +300,15 @@ public class AdminController {
         return "redirect:/admin/redactor_theme";
     }
 
+    @PostMapping("/edit_theme")
+    public String editTheme(Theme theme) {
+        Theme themeById = themeRepo.findAllById(theme.getId());
+        themeById.setName(theme.getName());
+        themeById.setPrice(theme.getPrice());
+        themeRepo.save(themeById);
+        return "redirect:/admin/redactor_theme";
+    }
+
     @GetMapping("/delete_theme/{id}")
     public String deleteTheme(@PathVariable Long id) {
         themeRepo.deleteById(id);
@@ -311,7 +320,7 @@ public class AdminController {
         Theme theme = themeRepo.findAllById(theme_id);
         model.addAttribute("theme", theme);
         Question question = new Question();         //хз как это работает, но если передавать тему вопроса
-        question.setTheme(theme);                    //здесь и в срытом лэйбле в шаблоне html,
+        question.setTheme(theme);                   //здесь и в срытом лэйбле в шаблоне html,
         model.addAttribute("question", question);//то все передается нормально
         if (!theme.getQuestions().isEmpty()) {
             model.addAttribute("questions", theme.getQuestions());
@@ -324,6 +333,14 @@ public class AdminController {
         Question savedQuestion = questionRepo.save(question);
         Long themeId = savedQuestion.getTheme().getId();
         return "redirect:/admin/get_question_redactor/" + themeId;
+    }
+
+    @PostMapping("edit_question")
+    public String editQuestion(Question question) {
+        Question questionById = questionRepo.findAllById(question.getId());
+        questionById.setText(question.getText());
+        questionRepo.save(questionById);
+        return "redirect:/admin/get_answer_redactor/" + questionById.getId();
     }
 
     @GetMapping("/delete_question/{id}")

@@ -3,22 +3,46 @@
 <head>
     <meta charset="UTF-8">
     <title>Question Redactor</title>
+    <style>
+        textarea {
+            margin-top: 20px;
+            min-width: 150px;
+        }
+
+        .table {
+            width: 100%;
+            margin-bottom: 20px;
+            border: 1px solid #7e7e7e;
+            border-collapse: collapse;
+        }
+
+        .table th {
+            font-weight: bold;
+            padding: 5px;
+            background: #797979;
+            border: 1px solid #7e7e7e;
+        }
+
+        .table td {
+            border: 1px solid #7e7e7e;
+            padding: 7px;
+        }
+    </style>
 </head>
 <body>
 <h2>Добавить вопрос</h2>
 <br>
 <a th:href="@{/admin/redactor_theme}">Назад</a>
 <br>
-<form th:action="@{/admin/save_theme}" th:object="${theme}" th:method="POST">
+<form th:action="@{/admin/edit_theme}" th:object="${theme}" th:method="POST">
     <div class="row">
         <input style="display: none" th:field="*{id}">
-        <input style="display: none" th:field="*{questions}">
-        <input style="display: none" th:field="*{clients}">
         <label> Тема: </label>
         <label>
-            <input type="text" th:field="*{name}"/>
+            <textarea type="text" th:field="*{name}"></textarea>
         </label>
-
+        <br>
+        <br>
         <label> Цена: </label>
         <label>
             <input type="number" th:field="*{price}"/><a> рублей</a>
@@ -35,9 +59,10 @@
     <div class="row">
         <label> Текст вопроса: </label>
         <label>
-            <input type="text" th:field="*{text}"/>
+            <textarea type="text" th:field="*{text}"></textarea>
         </label>
-
+        <br>
+        <br>
         <label> Материалы для подготовки: </label>
         <label>
             <input type="text" th:field="*{material}"/>
@@ -56,11 +81,12 @@
 <br>
 
 <h2>Добавленные вопросы</h2>
-<table>
+<table class="table">
     <thead>
     <tr>
-        <td>Вопросы</td>
-        <td></td>
+        <td style="width: 80%">Вопросы</td>
+        <td style="width: 15%">Материалы</td>
+        <td style="width: 5%"></td>
     </tr>
     </thead>
     <tr th:if="${!questions.isEmpty()}" th:each="one_question : ${questions}">
